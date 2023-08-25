@@ -1,6 +1,7 @@
 import GlobalStyles from "@/components/styles/GlobalStyles";
 import "./globals.css";
 import type { Metadata } from "next";
+import StyledComponentsRegistry from "@/lib/registry";
 
 export const metadata: Metadata = {
   title: "Renext App",
@@ -43,8 +44,10 @@ export default function RootLayout({
         <meta httpEquiv="x-ua-compatible" content="ie=edge" />
       </head>
       <body>
-        <GlobalStyles />
-        <main>{children}</main>
+        <StyledComponentsRegistry>
+          <GlobalStyles />
+          <main>{children}</main>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
