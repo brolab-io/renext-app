@@ -23,7 +23,7 @@ const MainMenu = () => {
     <NavWrapper className="gamfi_header" id="navbar">
       <div className="container mx-auto">
         {/* Main Menu Start */}
-        <div className="gamfi_menu_sect">
+        <div className="gamfi_menu_sect px-5 md:px-0">
           <div className="gamfi_menu_left_sect">
             <div className="logo">
               <Link href="/">
@@ -84,7 +84,7 @@ const MainMenu = () => {
               <button className="menu_btn" onClick={() => handleMobileMenu()}>
                 <MdNotes />
               </button>
-              <Button sm variant="white" className="connect_btn">
+              <Button $sm $variant="white" className="connect_btn">
                 <Image
                   src={"/assets/connect.png"}
                   alt="icon"

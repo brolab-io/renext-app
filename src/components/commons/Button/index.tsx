@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 
 import LinkStyle, { LinkStyleProps } from "./Button.style";
@@ -5,8 +6,7 @@ import LinkStyle, { LinkStyleProps } from "./Button.style";
 type ButtonProps = {
   children: React.ReactNode;
   href?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement> &
-  LinkStyleProps;
+} & LinkStyleProps;
 const Button: React.FC<ButtonProps> = ({ children, href, ...props }) => {
   return (
     <Link href={href ? href : "#"} passHref legacyBehavior>

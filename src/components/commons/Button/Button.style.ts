@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components";
 export type LinkStyleProps = {
-  variant?: "mint" | "outline" | "dark" | "white";
+  $variant?: "mint" | "outline" | "dark" | "white";
   hovered?: boolean;
-  sm?: boolean;
-  md?: boolean;
-  lg?: boolean;
-  xl?: boolean;
-  xxl?: boolean;
+  $sm?: boolean | undefined;
+  $md?: boolean;
+  $lg?: boolean;
+  $xl?: boolean;
+  $xxl?: boolean;
   isCenter?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -76,7 +76,7 @@ const LinkStyle = styled.a<LinkStyleProps>`
       margin: 0 auto;
     `;
   }}
-  ${({ variant }) =>
+  ${({ $variant: variant }) =>
     variant === "mint" &&
     css`
       background: #a3ff12;
@@ -85,7 +85,7 @@ const LinkStyle = styled.a<LinkStyleProps>`
         color: #090a1a;
       }
     `}
-  ${({ variant }) =>
+  ${({ $variant: variant }) =>
     variant === "outline" &&
     css`
       color: #ffffff;
@@ -98,7 +98,7 @@ const LinkStyle = styled.a<LinkStyleProps>`
         }
       }
     `}
-  ${({ variant }) =>
+  ${({ $variant: variant }) =>
     variant === "dark" &&
     css`
       color: #ffffff;
@@ -110,7 +110,7 @@ const LinkStyle = styled.a<LinkStyleProps>`
         }
       }
     `}
-  ${({ variant }) =>
+  ${({ $variant: variant }) =>
     variant === "white" &&
     css`
       color: #090a1a;
@@ -144,8 +144,8 @@ const LinkStyle = styled.a<LinkStyleProps>`
         }
       }
     `}
-  ${({ sm }) =>
-    sm &&
+  ${({ $sm }) =>
+    $sm &&
     css`
       width: 170px;
       height: 50px;
@@ -154,8 +154,8 @@ const LinkStyle = styled.a<LinkStyleProps>`
         height: 50px;
       }
     `}
-  ${({ md }) =>
-    md &&
+  ${({ $md }) =>
+    $md &&
     css`
       width: 200px;
       height: 60px;
@@ -164,8 +164,8 @@ const LinkStyle = styled.a<LinkStyleProps>`
         height: 50px;
       }
     `}
-  ${({ lg }) =>
-    lg &&
+  ${({ $lg }) =>
+    $lg &&
     css`
       width: 270px;
       height: 60px;
@@ -174,8 +174,8 @@ const LinkStyle = styled.a<LinkStyleProps>`
         height: 50px;
       }
     `}
-  ${({ xl }) =>
-    xl &&
+  ${({ $xl }) =>
+    $xl &&
     css`
       width: 370px;
       height: 60px;
@@ -188,8 +188,8 @@ const LinkStyle = styled.a<LinkStyleProps>`
         height: 50px;
       }
     `}
-  ${({ xxl }) =>
-    xxl &&
+  ${({ $xxl }) =>
+    $xxl &&
     css`
       width: 570px;
       height: 60px;

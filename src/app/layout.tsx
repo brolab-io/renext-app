@@ -1,5 +1,7 @@
 import GlobalStyles from "@/components/styles/GlobalStyles";
 import "./globals.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
 

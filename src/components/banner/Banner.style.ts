@@ -12,7 +12,7 @@ const rocketAnimation = keyframes`
 `;
 
 const rocketParticleAnimation = (start: any, end: any) => {
-    return keyframes`
+  return keyframes`
 
         from {top: ${start}; opacity: 1}
         to {top: ${end}; opacity: 0}

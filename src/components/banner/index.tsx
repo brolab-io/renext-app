@@ -7,18 +7,18 @@ const Banner = () => {
   return (
     <BannerStyleWrapper>
       <div className="container mx-auto">
-        <div className="grid grid-cols-2">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="px-5 md:px-0">
             <div className="gamfi_v2_hero_left">
               <h2>
                 Web <span>3.0</span> IGO/IDO Token Launchpad
               </h2>
               <p>The next generation crypto token launching platform</p>
               <div className="banner-btns">
-                <Button href="/projects" md variant="mint">
+                <Button href="/projects" $md $variant="mint">
                   View Projects
                 </Button>
-                <Button href="/apply" md variant="outline">
+                <Button href="/apply" $md $variant="outline">
                   Apply Project
                 </Button>
               </div>
