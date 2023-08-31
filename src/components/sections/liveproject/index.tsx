@@ -1,13 +1,15 @@
 "use client";
 import { zeroPad } from "react-countdown";
 import LiveProjectStyleWrapper from "./Project.style";
-import { Slider, SliderItem } from "../slider";
+
 import Link from "next/link";
 import Image from "next/image";
-import ProgressBar from "../commons/ProgressBar";
-import CardHover from "../commons/CardHover";
+
 import useLiveProject from "@/hooks/useLiveProject";
 import dynamic from "next/dynamic";
+import { Slider, SliderItem } from "@/components/slider";
+import ProgressBar from "@/components/commons/ProgressBar";
+import CardHover from "@/components/commons/CardHover";
 
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });

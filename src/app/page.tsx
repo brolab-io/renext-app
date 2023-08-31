@@ -1,6 +1,6 @@
-import About from "@/components/about";
-import Banner from "@/components/banner";
+import About from "@/components/sections/about";
 import MainMenu from "@/components/header/MainMenu";
+import Banner from "@/components/sections/banner";
 
 import { buildMetadata } from "@/utils/seo.util";
 import { Metadata } from "next";

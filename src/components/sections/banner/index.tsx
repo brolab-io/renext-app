@@ -1,7 +1,8 @@
 "use client";
 import Image from "next/image";
-import Button from "../commons/Button";
+
 import BannerStyleWrapper from "./Banner.style";
+import Button from "@/components/commons/Button";
 const Banner = () => {
   const particles = Array.from({ length: 5 }, () => "/assets/rocketStar.svg");
   return (
