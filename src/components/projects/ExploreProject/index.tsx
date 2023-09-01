@@ -26,7 +26,7 @@ const ExploreProjects = () => {
                   <Button
                     $variant="outline"
                     $sm
-                    // onClick={(e) => e.preventDefault()}
+                    onClick={(e) => e.preventDefault()}
                   >
                     {child}
                   </Button>

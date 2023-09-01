@@ -1,9 +1,10 @@
 export type ProjectType = {
+    id: string;
     thumb: string;
     title: string;
     price: string;
     saleEnd: string;
-    coinIcon: string;
+    currency: string;
     projectDetails: ProjectDetailType[];
     socialLinks: SocialLinkType[];
 }

@@ -28,23 +28,24 @@ const FAKE_PROJECTS = [
         projects: [
             // porject
             {
+                id: "1",
                 thumb: '/assets/ninga-image.png',
                 title: "Galaxy War",
-                price: "0.59 BUSD",
+                price: "0.59 RENEC",
                 saleEnd: "08",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.33 BUSD",
+                        text: "0.33 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "900.00 BUSD",
+                        text: "900.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "200,000 BUSD",
+                        text: "200,000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -54,23 +55,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "2",
                 thumb: '/assets/ninga-image.png',
                 title: "Super Sidero",
-                price: "0.13 BUSD",
+                price: "0.13 REUSD",
                 saleEnd: "03",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.89 BUSD",
+                        text: "0.89 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "300.00 BUSD",
+                        text: "300.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "899,900 BUSD",
+                        text: "899,900 REUSD",
                     },
                     {
                         title: "Access type",
@@ -80,23 +82,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "3",
                 thumb: '/assets/ninga-image.png',
                 title: "Meta World",
-                price: "0.33 BUSD",
+                price: "0.33 RENEC",
                 saleEnd: "05",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "2.25 BUSD",
+                        text: "2.25 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "1000.00 BUSD",
+                        text: "1000.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,00,000 BUSD",
+                        text: "50,00,000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -106,23 +109,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "4",
                 thumb: '/assets/ninga-image.png',
                 title: "Fisrt Survivor",
-                price: "0.89 BUSD",
+                price: "0.89 REUSD",
                 saleEnd: "12",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.59 BUSD",
+                        text: "0.59 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "399.00 BUSD",
+                        text: "399.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,0000 BUSD",
+                        text: "50,0000 REUSD",
                     },
                     {
                         title: "Access type",
@@ -132,23 +136,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "5",
                 thumb: '/assets/ninga-image.png',
                 title: "Cryowar Two",
-                price: "0.45 BUSD",
+                price: "0.45 RENEC",
                 saleEnd: "14",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.66 BUSD",
+                        text: "0.66 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "800.00 BUSD",
+                        text: "800.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "999,0000 BUSD",
+                        text: "999,0000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -158,23 +163,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "6",
                 thumb: '/assets/ninga-image.png',
                 title: "Gaia Everworld",
-                price: "0.13 BUSD",
+                price: "0.13 REUSD",
                 saleEnd: "15",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.25 BUSD",
+                        text: "0.25 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "500.00 BUSD",
+                        text: "500.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "869,0000 BUSD",
+                        text: "869,0000 REUSD",
                     },
                     {
                         title: "Access type",
@@ -191,23 +197,24 @@ const FAKE_PROJECTS = [
         projects: [
             // project
             {
+                id: "7",
                 thumb: '/assets/ninga-image.png',
                 title: "Meta World",
-                price: "0.33 BUSD",
+                price: "0.33 RENEC",
                 saleEnd: "05",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "2.25 BUSD",
+                        text: "2.25 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "1000.00 BUSD",
+                        text: "1000.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,00,000 BUSD",
+                        text: "50,00,000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -217,23 +224,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "8",
                 thumb: '/assets/ninga-image.png',
                 title: "Fisrt Survivor",
-                price: "0.89 BUSD",
+                price: "0.89 REUSD",
                 saleEnd: "12",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.59 BUSD",
+                        text: "0.59 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "399.00 BUSD",
+                        text: "399.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,0000 BUSD",
+                        text: "50,0000 REUSD",
                     },
                     {
                         title: "Access type",
@@ -243,23 +251,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "9",
                 thumb: '/assets/ninga-image.png',
                 title: "Cryowar Two",
-                price: "0.45 BUSD",
+                price: "0.45 RENEC",
                 saleEnd: "14",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.66 BUSD",
+                        text: "0.66 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "800.00 BUSD",
+                        text: "800.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "999,0000 BUSD",
+                        text: "999,0000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -269,23 +278,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "10",
                 thumb: '/assets/ninga-image.png',
                 title: "Gaia Everworld",
-                price: "0.13 BUSD",
+                price: "0.13 REUSD",
                 saleEnd: "15",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.25 BUSD",
+                        text: "0.25 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "500.00 BUSD",
+                        text: "500.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "869,0000 BUSD",
+                        text: "869,0000 REUSD",
                     },
                     {
                         title: "Access type",
@@ -302,23 +312,24 @@ const FAKE_PROJECTS = [
         projects: [
             // project
             {
+                id: "11",
                 thumb: '/assets/ninga-image.png',
                 title: "Super Sidero",
-                price: "0.13 BUSD",
+                price: "0.13 REUSD",
                 saleEnd: "03",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.89 BUSD",
+                        text: "0.89 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "300.00 BUSD",
+                        text: "300.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "899,900 BUSD",
+                        text: "899,900 REUSD",
                     },
                     {
                         title: "Access type",
@@ -328,23 +339,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "12",
                 thumb: '/assets/ninga-image.png',
                 title: "Meta World",
-                price: "0.33 BUSD",
+                price: "0.33 RENEC",
                 saleEnd: "05",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "2.25 BUSD",
+                        text: "2.25 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "1000.00 BUSD",
+                        text: "1000.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,00,000 BUSD",
+                        text: "50,00,000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -354,23 +366,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "13",
                 thumb: '/assets/ninga-image.png',
                 title: "Fisrt Survivor",
-                price: "0.89 BUSD",
+                price: "0.89 REUSD",
                 saleEnd: "12",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.59 BUSD",
+                        text: "0.59 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "399.00 BUSD",
+                        text: "399.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "50,0000 BUSD",
+                        text: "50,0000 REUSD",
                     },
                     {
                         title: "Access type",
@@ -380,23 +393,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "14",
                 thumb: '/assets/ninga-image.png',
                 title: "Cryowar Two",
-                price: "0.45 BUSD",
+                price: "0.45 RENEC",
                 saleEnd: "14",
-                coinIcon: '/assets/renec.png',
+                currency: 'renec',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.66 BUSD",
+                        text: "0.66 RENEC",
                     },
                     {
                         title: "Max allocation",
-                        text: "800.00 BUSD",
+                        text: "800.00 RENEC",
                     },
                     {
                         title: "Targeted raise",
-                        text: "999,0000 BUSD",
+                        text: "999,0000 RENEC",
                     },
                     {
                         title: "Access type",
@@ -406,23 +420,24 @@ const FAKE_PROJECTS = [
                 socialLinks
             },
             {
+                id: "15",
                 thumb: '/assets/ninga-image.png',
                 title: "Gaia Everworld",
-                price: "0.13 BUSD",
+                price: "0.13 REUSD",
                 saleEnd: "15",
-                coinIcon: '/assets/reusd.png',
+                currency: 'reusd',
                 projectDetails: [
                     {
                         title: "Min allocation",
-                        text: "0.25 BUSD",
+                        text: "0.25 REUSD",
                     },
                     {
                         title: "Max allocation",
-                        text: "500.00 BUSD",
+                        text: "500.00 REUSD",
                     },
                     {
                         title: "Targeted raise",
-                        text: "869,0000 BUSD",
+                        text: "869,0000 REUSD",
                     },
                     {
                         title: "Access type",
