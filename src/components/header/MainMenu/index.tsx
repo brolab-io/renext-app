@@ -1,18 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import NavWrapper from "./Menu.style";
-import {
-  MdNotes,
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowRight,
-} from "react-icons/md";
+import { MdNotes, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
 import MobileMenu from "../MobileMenu";
 import { getMenuData } from "@/utils/data.util";
 import Button from "@/components/commons/Button";
 import Image from "next/image";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 const data = getMenuData();
-const MainMenu = () => {
+
+type MenuProps = {
+  className?: string;
+};
+
+const MainMenu: React.FC<MenuProps> = ({ className }) => {
+  const path = usePathname();
+
+  const isOnPage = useMemo(() => {
+    return path === "/explore";
+  }, [path]);
+
   const [isMobileMenu, setMobileMenu] = useState(false);
 
   const handleMobileMenu = () => {
@@ -20,7 +29,11 @@ const MainMenu = () => {
   };
 
   return (
-    <NavWrapper className="gamfi_header" id="navbar">
+    <NavWrapper
+      $onPage={isOnPage}
+      className={clsx("gamfi_header", className)}
+      id="navbar"
+    >
       <div className="container mx-auto">
         {/* Main Menu Start */}
         <div className="gamfi_menu_sect px-5 md:px-0">
@@ -48,18 +61,18 @@ const MainMenu = () => {
                       {subMenus?.length > 0 ? (
                         <ul className="sub_menu_list">
                           {subMenus?.map((subMenu, i) => {
-                            const subMenuChilds = subMenu.subMenuChilds || [];
+                            // const subMenuChilds = subMenu.subMenuChilds || [];
                             return (
                               <li key={i}>
                                 <Link href={subMenu.url}>
                                   {subMenu.title}{" "}
-                                  {subMenuChilds?.length > 0 && (
+                                  {/* {subMenuChilds?.length > 0 && (
                                     <MdOutlineKeyboardArrowRight />
-                                  )}
+                                  )} */}
                                 </Link>
 
                                 {/* if subMenu child has menu child */}
-                                {subMenuChilds?.length > 0 ? (
+                                {/* {subMenuChilds?.length > 0 ? (
                                   <ul className="sub_menu_child_list">
                                     {subMenuChilds?.map((subChild, i) => (
                                       <li key={i}>
@@ -69,7 +82,7 @@ const MainMenu = () => {
                                       </li>
                                     ))}
                                   </ul>
-                                ) : null}
+                                ) : null} */}
                               </li>
                             );
                           })}

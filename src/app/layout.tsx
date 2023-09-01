@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
 import AppProvider from "@/components/providers/AppProvider";
+import MainMenu from "@/components/header/MainMenu";
 
 export const metadata: Metadata = {
   title: "Renext App",
@@ -50,7 +51,11 @@ export default function RootLayout({
         <AppProvider>
           <StyledComponentsRegistry>
             <GlobalStyles />
-            <main>{children}</main>
+
+            <main>
+              <MainMenu />
+              {children}
+            </main>
           </StyledComponentsRegistry>
         </AppProvider>
       </body>

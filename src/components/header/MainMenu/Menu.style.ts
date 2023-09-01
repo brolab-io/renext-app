@@ -1,15 +1,62 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const NavWrapper = styled.nav`
+type NavWrapperProps = {
+  $onPage?: boolean;
+};
+
+const NavWrapper = styled.nav<NavWrapperProps>`
   z-index: 999;
+  ${({ $onPage }) => {
+    return $onPage &&
+      css`
+      position: relative;
+      background: #090a1a;
+
+      &::before,
+      &::after {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 300px;
+        height: 100%;
+        background: url("/assets/header-shape1.png") center no-repeat;
+        background-size: cover;
+        content: "";
+        opacity: 0.7;
+      }
+      &::after {
+        left: auto;
+        right: 0;
+        background: url("/assets/header-shape2.png") center no-repeat;
+        background-size: cover;
+      }
+    `;
+  }}
+
+
   &.gamfi_header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    margin-top: 1px;
-    height: 100px;
-    transition: all 0.3s;
+    ${({ $onPage }) => {
+    return $onPage ?
+      css`
+        display: flex;
+        align-items: center;
+        width: 100%; 
+        height: 105px;
+        transition: all 0.3s;
+        z-index: 12;
+      ` :
+      css`
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin-top: 1px;
+        height: 100px;
+        transition: all 0.3s;
+      `;
+
+  }}
+    
 
     &.sticky {
       position: fixed;
@@ -21,6 +68,10 @@ const NavWrapper = styled.nav`
       margin-top: 0px;
       transition: all 0.2s;
     }
+  }
+
+  &.on-page{
+    display: flex;
   }
 
   .gamfi_menu_sect {

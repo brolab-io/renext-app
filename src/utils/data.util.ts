@@ -3,24 +3,7 @@ export const getMenuData = () => {
         {
             id: "1W6WV",
             title: "Home",
-            url: "#",
-            subMenus: [
-                {
-                    id: "TU4X2",
-                    title: "Home 1",
-                    url: "/",
-                },
-                {
-                    id: "WTY5W",
-                    title: "Home 2",
-                    url: "/home-two",
-                },
-                {
-                    id: "365V6",
-                    title: "Home 3",
-                    url: "/home-three",
-                },
-            ],
+            url: "/",
         },
         {
             id: "2ZYYU",
@@ -29,95 +12,21 @@ export const getMenuData = () => {
             subMenus: [
                 {
                     id: "0300T",
-                    title: "Project Classic",
-                    url: "/projects-classic-1",
+                    title: "Explore",
+                    url: "/explore",
                 },
                 {
                     id: "4XZ00",
-                    title: "Project List",
-                    url: "/projects-list",
-                },
-                {
-                    id: "43X1V",
-                    title: "Project Grid",
-                    url: "/projects-grid",
-                },
-                {
-                    id: "4IX1V",
-                    title: "Project Calendar",
-                    url: "/project-calendar",
-                },
-                {
-                    id: "VWXWY",
-                    title: "Project Details",
-                    url: "/projects-details-1",
+                    title: "Featured Projects",
+                    url: "/featured-projects",
                 },
             ],
         },
         {
             id: "ZZUVV",
-            title: "Pages",
+            title: "About",
             url: "#",
             subMenus: [
-                {
-                    id: "5Z4XW",
-                    title: "KYC Process",
-                    url: "#",
-                    subMenuChilds: [
-                        {
-                            id: "V6X1W",
-                            title: "KYC Step 1",
-                            url: "/kyc-1",
-                        },
-                        {
-                            id: "1WXX4",
-                            title: "KYC Step 2",
-                            url: "/kyc-2",
-                        },
-                        {
-                            id: "V6YVU",
-                            title: "KYC Step 3",
-                            url: "/kyc-3",
-                        },
-                    ],
-                },
-                {
-                    id: "3YY6V",
-                    title: "Auth Page",
-                    url: "#",
-                    subMenuChilds: [
-                        {
-                            id: "X6ZU4",
-                            title: "Sign In",
-                            url: "/login",
-                        },
-                        {
-                            id: "YVWVW",
-                            title: "Sign Up",
-                            url: "/register",
-                        },
-                        {
-                            id: "2ZYW6",
-                            title: "Forget Password",
-                            url: "/forget-password",
-                        },
-                    ],
-                },
-                {
-                    id: "39Y6V",
-                    title: "Farming",
-                    url: "/farming",
-                },
-                {
-                    id: "4XY6V",
-                    title: "Leader Board",
-                    url: "/leaderboard",
-                },
-                {
-                    id: "4XP60",
-                    title: "IGO Ranking",
-                    url: "/igo-ranking",
-                },
                 {
                     id: "PMQ60",
                     title: "Roadmap Details",

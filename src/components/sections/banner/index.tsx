@@ -16,7 +16,7 @@ const Banner = () => {
               </h2>
               <p>The next generation crypto token launching platform</p>
               <div className="banner-btns">
-                <Button href="/projects" $md $variant="mint">
+                <Button href="/explore" $md $variant="mint">
                   View Projects
                 </Button>
                 <Button href="/apply" $md $variant="outline">

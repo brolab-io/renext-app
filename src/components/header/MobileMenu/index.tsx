@@ -3,6 +3,7 @@ import MobileMenuStyleWrapper from "./MobileMenu.style";
 import { BsXLg } from "react-icons/bs";
 import Link from "next/link";
 import { getMenuData } from "@/utils/data.util";
+import clsx from "clsx";
 type Props = {
   mobileMenuhandle: () => void;
 };
@@ -46,23 +47,20 @@ const MobileMenu: React.FC<Props> = ({ mobileMenuhandle }) => {
                   {subMenus.length > 0 ? (
                     <ul className="sub_menu_list">
                       {subMenus.map((subMenu, i) => {
-                        const subMenuChilds = subMenu.subMenuChilds || [];
+                        // const subMenuChilds = subMenu.subMenuChilds || [];
                         return (
                           <li
                             key={i}
                             // manu expand icon and menu active based on condition
-                            className={`${
-                              subMenuChilds.length > 0 ? "sub_has_submenu" : ""
-                            } ${
-                              subMenuId === subMenu.id
-                                ? "expand_submenu_child"
-                                : ""
-                            }`}
+                            className={clsx(
+                              subMenuId === subMenu.id && "expand_submenu_child"
+                              // subMenuChilds.length > 0 && "sub_has_submenu"
+                            )}
                             onClick={() => setSubMenuId(subMenu.id)}
                           >
                             <Link href={subMenu.url}>{subMenu.title}</Link>
                             {/* if subMenu child has menu child */}
-                            {subMenuChilds.length > 0 ? (
+                            {/* {subMenuChilds.length > 0 ? (
                               <ul className="sub_menu_child_list">
                                 {subMenuChilds.map((subChild, i) => (
                                   <li key={i}>
@@ -72,7 +70,7 @@ const MobileMenu: React.FC<Props> = ({ mobileMenuhandle }) => {
                                   </li>
                                 ))}
                               </ul>
-                            ) : null}
+                            ) : null} */}
                           </li>
                         );
                       })}
