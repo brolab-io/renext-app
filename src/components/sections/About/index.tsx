@@ -1,5 +1,5 @@
-import LiveProject from "../liveproject";
-import Tutorial from "../tutorial";
+import LiveProject from "../LiveProject";
+import Tutorial from "../Tutorial";
 import AboutStyleWrapper from "./About.style";
 
 const About = () => {

@@ -7,7 +7,7 @@ import Image from "next/image";
 
 import useLiveProject from "@/hooks/useLiveProject";
 import dynamic from "next/dynamic";
-import { Slider, SliderItem } from "@/components/slider";
+import { Slider, SliderItem } from "@/components/Slider";
 import ProgressBar from "@/components/commons/ProgressBar";
 import CardHover from "@/components/commons/CardHover";
 
