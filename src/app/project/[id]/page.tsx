@@ -1,4 +1,4 @@
-import PageHeader from "@/components/Project/ProjectHeader";
+import ProjectDetails from "@/components/ProjectDetail";
 import React from "react";
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 const page: React.FC<Props> = ({ params }) => {
   return (
     <>
-      <PageHeader currentPage="PROJECT DETAILS " />
+      <ProjectDetails id={params.id} />
     </>
   );
 };
