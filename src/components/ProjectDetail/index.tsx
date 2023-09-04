@@ -28,7 +28,8 @@ const ProjectDetails: React.FC<Props> = ({ id }) => {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-12 gap-8">
+        <Summary content={data?.summary} />
+        {/* <div className="grid grid-cols-12 gap-8">
           <div className="col-span-4">
             <Sidebar />
           </div>
@@ -41,7 +42,7 @@ const ProjectDetails: React.FC<Props> = ({ id }) => {
             {"<Team />"}
             {"<Partner />"}
           </div>
-        </div>
+        </div> */}
       </div>
     </ProjectDetailsStyleWrapper>
   );

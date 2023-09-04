@@ -8,6 +8,8 @@ import Link from "next/link";
 import useProject from "@/hooks/useProject";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import dayjs from "dayjs";
+import DisplayNumber from "@/components/commons/DisplayNumber";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
@@ -61,6 +63,14 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
     );
   };
 
+  const calculateProgress = (
+    remaining: number | undefined,
+    allocation: number
+  ) => {
+    if (!remaining || !allocation) return 0;
+    const progress = ((allocation - remaining) / allocation) * 100;
+    return progress;
+  };
   if (!project) return null;
 
   return (
@@ -68,7 +78,7 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
       <div className="game-price-item">
         <div className="game-price-inner">
           <div className="total-price">
-            <div className="price-inner d-flex">
+            <div className="price-inner flex">
               <div className="image-icon">
                 <Image
                   src={project.thumb}
@@ -87,11 +97,20 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
                     project.info.find((el) => el.title === "Token Info")
                       ?.tokenInfo[1].text
                   }
-                  ) = 0.13 {project.currency.toUpperCase()}
+                  ) = {project.price} {project.currency.toUpperCase()}
                 </div>
               </div>
             </div>
-            <div className="all-raise">Total Raise 75,999.70 BUSD ( 86% )</div>
+            <div className="all-raise">
+              Total Raise:{" "}
+              <DisplayNumber
+                value={
+                  project.price *
+                  (project.allocation - (project.remaining || 0))
+                }
+              />{" "}
+              {project.currency.toUpperCase()}
+            </div>
           </div>
           <div className="allocation-max text-center">
             <Image
@@ -100,23 +119,37 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               width={50}
               height={50}
             />
-            <div className="allocation">Allocation: 500 BUSD Max</div>
+            <div className="allocation">
+              Allocation: <DisplayNumber value={project.allocation} />{" "}
+              {project.symbol.toUpperCase()}
+            </div>
           </div>
           <div className="targeted-raise">
             <div className="seles-end-text">Sale End In</div>
-            <Countdown date="2024-02-01T01:02:03" renderer={CountdownRender} />
+            <Countdown
+              date={dayjs(project.saleEnd * 1000).toString()}
+              renderer={CountdownRender}
+            />
             <div className="targeted-raise-amount">
-              Targeted Raise 100,000 BUSD
+              Targeted Raise:{" "}
+              <DisplayNumber value={project.price * project.allocation} />{" "}
+              {project.currency.toUpperCase()}
             </div>
           </div>
         </div>
         <div className="progress-inner">
-          <ProgressBar progress="83%" />
+          <ProgressBar
+            progress={calculateProgress(project.remaining, project.allocation)}
+          />
         </div>
 
         <div className="project_card_footer">
           <Button $sm>Claim Token</Button>
-          <div className="participants">Participants 4017/5000</div>
+          {project.participants ? (
+            <div className="participants">
+              Participants {project.participants}
+            </div>
+          ) : null}
           <div className="social_links">
             {project.socialLinks?.map((profile, i) => (
               <Link key={i} href={profile.url}>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 const SummaryStyleWrapper = styled.div` 
- margin-bottom: 55px;
+ padding-bottom: 55px;
   .widget_title {
     margin-bottom: 15px;
   }

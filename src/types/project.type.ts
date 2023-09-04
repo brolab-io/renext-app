@@ -3,7 +3,7 @@ export type ProjectType = {
     thumb: string;
     title: string;
     price: string;
-    saleEnd: string;
+    saleEnd: number;
     currency: string;
     projectDetails: ProjectDetailType[];
     socialLinks: SocialLinkType[];

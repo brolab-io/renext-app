@@ -1,7 +1,7 @@
 import ProgressBarStyle from "./ProgressBar.style";
 
 type ProgressBarProps = {
-  progress?: string;
+  progress?: number;
 };
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
@@ -10,7 +10,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
       <div className="progress_bar">
         <span
           className="progress_bar_overlay"
-          style={{ width: progress ? progress : "50%" }}
+          style={{ width: progress ? `${progress.toFixed(2)}%` : "50%" }}
         ></span>
       </div>
     </ProgressBarStyle>
