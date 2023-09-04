@@ -74,6 +74,23 @@ export const FAKE_PROJECT_INFO = [
     },
 ]
 
+const FAKE_PROJECT_CONTENT = `
+    <p>lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    Donec euismod, nisl sed aliquam ultricies, nunc leo
+    ultricies nunc, vitae luctus odio nisl eu velit. Donec
+    euismod, nisl sed aliquam ultricies, nunc leo ultricies
+    </p>
+    <p>nunc leo ultricies nunc, vitae luctus odio nisl eu
+    nunc, vitae luctus odio nisl eu velit. Donec euismod,
+    nisl sed aliquam ultricies, nunc leo ultricies nunc,
+    vitae luctus odio nisl eu velit. Donec euismod, nisl sed
+    aliquam ultricies, nunc leo ultricies nunc, vitae luctus
+    odio nisl eu velit. Donec euismod, nisl sed aliquam
+    ultricies, nunc leo ultricies nunc, vitae luctus odio
+    nisl eu velit. Donec euismod, nisl sed aliquam ultricies,
+    </p>
+`
+
 export const FAKE_PROJECTS = [
     {
         id: "1",
@@ -102,7 +119,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "2",
@@ -131,7 +149,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "3",
@@ -160,7 +179,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "4",
@@ -189,7 +209,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "5",
@@ -218,7 +239,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "6",
@@ -247,7 +269,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
 
     {
@@ -277,7 +300,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "8",
@@ -306,7 +330,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "9",
@@ -335,7 +360,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "10",
@@ -364,7 +390,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
 
     {
@@ -394,7 +421,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "12",
@@ -423,7 +451,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "13",
@@ -452,7 +481,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "14",
@@ -481,7 +511,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
     {
         id: "15",
@@ -510,7 +541,8 @@ export const FAKE_PROJECTS = [
             },
         ],
         socialLinks,
-        info: FAKE_PROJECT_INFO
+        info: FAKE_PROJECT_INFO,
+        summary: FAKE_PROJECT_CONTENT,
     },
 
 ]
