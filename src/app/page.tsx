@@ -1,9 +1,9 @@
-import About from "@/components/sections/about";
-import Banner from "@/components/sections/banner";
+import About from "@/components/sections/About";
+import Banner from "@/components/sections/Banner";
 
 import { buildMetadata } from "@/utils/seo.util";
 import { Metadata } from "next";
-import ExploreProjects from "@/components/projects/ExploreProject";
+import ExploreProjects from "@/components/Project/ExploreProject";
 
 export const metadata: Metadata = buildMetadata("Home");
 

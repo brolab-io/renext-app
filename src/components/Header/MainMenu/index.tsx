@@ -15,11 +15,13 @@ type MenuProps = {
   className?: string;
 };
 
+const onPagePath = ["/explore", "/project"];
+
 const MainMenu: React.FC<MenuProps> = ({ className }) => {
   const path = usePathname();
 
   const isOnPage = useMemo(() => {
-    return path === "/explore";
+    return onPagePath.findIndex((item) => path.includes(item)) > -1;
   }, [path]);
 
   const [isMobileMenu, setMobileMenu] = useState(false);
@@ -40,7 +42,12 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
           <div className="gamfi_menu_left_sect">
             <div className="logo">
               <Link href="/">
-                {/* <img src={logo.src} alt="gamfi nft logo" /> */}
+                <Image
+                  src={"/assets/renext-logo.svg"}
+                  alt="gamfi nft logo"
+                  width={159}
+                  height={30}
+                />
               </Link>
             </div>
           </div>

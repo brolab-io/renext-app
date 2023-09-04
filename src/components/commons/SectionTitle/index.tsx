@@ -4,21 +4,24 @@ import {
   SectionTitleWrapperStyle,
 } from "./SectionTitle.style";
 import Image from "next/image";
+import clsx from "clsx";
 
 type SectionTitleProps = {
   title?: string;
   subtitle?: string;
   isCenter?: boolean;
+  className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const SectionTitle: React.FC<SectionTitleProps> = ({
   title,
   subtitle,
   isCenter,
+  className,
   ...props
 }) => {
   return (
-    <SectionTitleStyle {...props} className="section_title">
+    <SectionTitleStyle {...props} className={clsx("section_title", className)}>
       {subtitle && (
         <span className="subtitle">
           {isCenter ? (

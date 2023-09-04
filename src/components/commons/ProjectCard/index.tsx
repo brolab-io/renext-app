@@ -5,6 +5,7 @@ import Image from "next/image";
 import React from "react";
 import { ProjectType } from "@/types/project.type";
 import CardHover from "../CardHover";
+import DisplayDayLeft from "../DisplayDayLeft";
 
 const ProjectCard: React.FC<ProjectType> = ({
   id,
@@ -35,7 +36,7 @@ const ProjectCard: React.FC<ProjectType> = ({
       <div className="project-content">
         <div className="project-header flex justify-between items-center">
           <div className="heading-title">
-            <h4>{saleEnd} Days Left</h4>
+            <DisplayDayLeft timestamp={saleEnd} />
           </div>
           <div className="project-icon">
             <Image
