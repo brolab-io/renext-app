@@ -5,6 +5,7 @@ import ProjectInfo from "./ProjectInfo";
 import TokenInfo from "./TokenInfo";
 import Sidebar from "./SideBar";
 import Summary from "./Summary";
+import History from "./History";
 
 type Props = {
   id: string;
@@ -29,6 +30,7 @@ const ProjectDetails: React.FC<Props> = ({ id }) => {
           ))}
         </div>
         <Summary content={data?.summary} />
+        <History id={id} />
         {/* <div className="grid grid-cols-12 gap-8">
           <div className="col-span-4">
             <Sidebar />

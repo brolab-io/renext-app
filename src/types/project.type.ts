@@ -2,7 +2,7 @@ export type ProjectType = {
     id: string;
     thumb: string;
     title: string;
-    price: string;
+    price: string | number;
     saleEnd: number;
     currency: string;
     projectDetails: ProjectDetailType[];

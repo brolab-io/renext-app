@@ -1,10 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import useProjects from "@/hooks/useProjects";
 import ProjectItemsStyleWrapper from "./ProjectItems.style";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
-import ProjectCard from "@/components/commons/ProjectCard";
-import { useMemo } from "react";
 import ProjectTab from "../../ExploreProject/ProjectTab";
 const TABS = ["On Going", "Upcomming", "Ended"];
 const ProjectItems = () => {

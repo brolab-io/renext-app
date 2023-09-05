@@ -7,7 +7,7 @@ const LIMIT = 10;
 const useProjects = (type: string = "On Going") => {
     return useInfiniteQuery(
         ['projects', type],
-        async ({ pageParam = 0 }) => {
+        async ({ pageParam }) => {
             const limit = pageParam?.limit || LIMIT;
             const offset = pageParam?.offset || 0;
 

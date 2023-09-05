@@ -604,3 +604,36 @@ export const FAKE_PROJECTS = [
     },
 
 ]
+
+export const FAKE_PROJECT_HISTORY = [
+    {
+        tx: '5iy1isbv77dad6wFPcTmDDZciX6xY4PDS6MweNp7RqvzKEfmy82PnFTERVv2iD3JrXEpMyEq7EuCMrpgJks58GJv',
+        wallet: '4JX1oVJcuu475PsrDdnQ7Td7YyiFDyAzsJoMLRmbANE6',
+        amount: 150,
+        date: 1691209534,
+    },
+    {
+        tx: '3zRXHDaW79gVpiTCyfGAfTrzdog6nHRt1QrKH6iwCX7zji5seXgPsSLEPpFpyKyDci7hZq4KzaZW1GbZqyDViNeC',
+        wallet: "9y1JeEqe35A6fA2Ti6LDv1VaVMnU5wxjWKyADE3duBeJ",
+        amount: 300,
+        date: 1691641534,
+    },
+    {
+        tx: '3DE99Dwy8E4ZxV9nECd6L2Uz2NtZccUfRYi2SHALLtQD8B5KhPJRxD1rCDMA6roJEijvve4HHhbkzU8SkfTyLkZ6',
+        wallet: "75MxEDJAmSkAnr73RBZHxZG2RQ57Xpi2RzPZmHJVnb86",
+        amount: 200,
+        date: 1688963134,
+    },
+    {
+        tx: '3vFN4pMf3Jrz9reYP5aDYYjoe1QeSYXAHWMGHAuECDfEiKvZV88GF5c9ttAq9dxQULPf64jsrnau6j1JwY9AJZoZ',
+        wallet: "7uSufY7ugzMJHjTM29tnQUPFBY8or7nk25pTHaMc1iz7",
+        amount: 100,
+        date: 1689827134,
+    },
+    {
+        tx: '2b9dvTPyUhTSzSDarwu6xmaTEgkzc5uxFV6Dr2PnwcJkHFWVjCNpQkoZahSAwtdJ8NcDWARqTWBS9RShafjk7P5o',
+        wallet: "84qzbLBfZFbxrc6wGDGWHKAk8ZCAL6nVzdzv3pZibTAP",
+        amount: 10,
+        date: 1690691134,
+    }
+]
