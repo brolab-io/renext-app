@@ -234,7 +234,7 @@ const NavWrapper = styled.nav<NavWrapperProps>`
     align-items: center;
     min-width: 284px;
     column-gap: 24px;
-    button {
+    button.menu_btn {
       color: #ffffff;
       text-transform: uppercase;
       font-family: "Russo One", sans-serif;

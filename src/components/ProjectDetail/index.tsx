@@ -6,6 +6,7 @@ import TokenInfo from "./TokenInfo";
 import Sidebar from "./SideBar";
 import Summary from "./Summary";
 import History from "./History";
+import Actions from "./Actions";
 
 type Props = {
   id: string;
@@ -20,8 +21,10 @@ const ProjectDetails: React.FC<Props> = ({ id }) => {
         <div className="flex">
           <div className="w-full">
             <ProjectInfo project={data} />
+            <Actions id={id} currency={data.currency} />
           </div>
         </div>
+
         <div className="token_info_row grid grid-cols-1 sm:grid-cols-2 gap-8">
           {data?.info.map((item, i) => (
             <div key={i}>

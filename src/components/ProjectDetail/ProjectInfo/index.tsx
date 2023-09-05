@@ -144,7 +144,9 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
         </div>
 
         <div className="project_card_footer">
-          <Button $sm>Claim Token</Button>
+          <Button $sm $variant="mint">
+            Claim Token
+          </Button>
           {project.participants ? (
             <div className="participants">
               Participants {project.participants}
