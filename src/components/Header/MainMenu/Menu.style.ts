@@ -264,15 +264,19 @@ const NavWrapper = styled.nav<NavWrapperProps>`
       text-transform: uppercase;
       transition: all 0.4s ease-in-out;
       box-sizing: border-box;
-      width: 120px;
       height: 40px;
-      border: 2px solid #393941;
+      // border: 2px solid #393941;
       background: transparent;
       z-index: 1;
-      color: #ffffff;
-      width: 170px;
+      // color: #ffffff;
+      width: 200px;
       height: 50px;
       cursor: pointer;
+      background: #a3ff12;
+      color: #090a1a;
+      &:hover {
+        color: #090a1a;
+      }
 
       svg {
         font-size: 20px !important;
@@ -280,29 +284,34 @@ const NavWrapper = styled.nav<NavWrapperProps>`
 
       .wallet_token_list {
         position: absolute;
-        left: -2px;
-        top: calc(100% + 2px);
+        right: 0px;
+        top: calc(100%);
         background: #222231;
-        width: 240px;
+        width: 200px;
         opacity: 0;
         visibility: hidden;
         transform: scaleY();
         z-index: -999;
 
-        a {
+        button {
           display: flex;
           align-items: center;
           padding: 20px;
           column-gap: 8px;
+          width: 100%;
+          color: #ffffff;
+          &:hover {
+            color: #a3ff12;
+          }
         }
 
-        a + a {
+        button + button {
           border-top: 1px solid #393941;
         }
       }
 
       &:hover {
-        color: #a3ff12;
+        // color: #a3ff12;
         .wallet_token_list {
           opacity: 1;
           visibility: visible;
@@ -337,7 +346,9 @@ const NavWrapper = styled.nav<NavWrapperProps>`
       }
 
       .wallet_btn {
-        display: none;
+        // display: none;
+        width: 140px;
+        column-gap: 5px;
       }
     }
 

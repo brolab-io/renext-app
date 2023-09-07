@@ -51,7 +51,6 @@ export default function RootLayout({
         <AppProvider>
           <StyledComponentsRegistry>
             <GlobalStyles />
-
             <main>
               <MainMenu />
               {children}
