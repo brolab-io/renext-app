@@ -1,29 +1,26 @@
 "use client";
 
+import { useState } from "react";
+import ApplyFormStep1 from "./ApplyFormStep1";
 import ApplyProjectStyleWrapperStyle from "./ApplyProject.style";
-import ProjectInfo from "./ProjectInfo";
+import ApplyFormStep2 from "./ApplyFormStep2";
+import ApplyFormWrapperStyle from "./ApplyForm.style";
+import ApplyFormProvider, { useApplyFormContext } from "./FormProvider";
+import { useApplyProjectContext } from "@/app/apply/provider";
 
 type Props = {};
 
 const ApplyProject: React.FC<Props> = () => {
+  const { step } = useApplyProjectContext();
   return (
     <ApplyProjectStyleWrapperStyle>
       <div className="container mx-auto p-3 sm:p-0">
-        <div className="flex">
-          <div className="w-full">
-            <ProjectInfo />
-            {/* <Actions id={id} currency={data.currency} /> */}
-          </div>
-        </div>
-
-        <div className="token_info_row grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {/* {data?.info.map((item, i) => (
-            <div key={i}>
-              <TokenInfo title={item.title} tokenInfo={item.tokenInfo} />
-            </div>
-          ))} */}
-        </div>
-        {/* <Summary content={data?.summary} /> */}
+        <ApplyFormWrapperStyle>
+          <ApplyFormProvider>
+            {step === 1 && <ApplyFormStep1 />}
+            {step === 2 && <ApplyFormStep2 />}
+          </ApplyFormProvider>
+        </ApplyFormWrapperStyle>
       </div>
     </ApplyProjectStyleWrapperStyle>
   );

@@ -15,7 +15,7 @@ type MenuProps = {
   className?: string;
 };
 
-const onPagePath = ["/explore", "/project"];
+const onPagePath = ["/explore", "/project", "/apply"];
 
 const MainMenu: React.FC<MenuProps> = ({ className }) => {
   const path = usePathname();
@@ -31,11 +31,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
   };
 
   return (
-    <NavWrapper
-      $onPage={isOnPage}
-      className={clsx("gamfi_header", className)}
-      id="navbar"
-    >
+    <NavWrapper $onPage={isOnPage} className={clsx("gamfi_header", className)} id="navbar">
       <div className="container mx-auto">
         {/* Main Menu Start */}
         <div className="gamfi_menu_sect px-5 md:px-0">
@@ -60,8 +56,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
                   return (
                     <li key={i}>
                       <Link href={menu.url}>
-                        {menu.title}{" "}
-                        {subMenus?.length > 0 && <MdOutlineKeyboardArrowDown />}
+                        {menu.title} {subMenus?.length > 0 && <MdOutlineKeyboardArrowDown />}
                       </Link>
 
                       {/* if has subMenu and length is greater than 0 */}
@@ -105,12 +100,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
                 <MdNotes />
               </button>
               <Button $sm $variant="white" className="connect_btn">
-                <Image
-                  src={"/assets/connect.png"}
-                  alt="icon"
-                  width={18}
-                  height={18}
-                />
+                <Image src={"/assets/connect.png"} alt="icon" width={18} height={18} />
                 Connect
               </Button>
             </div>

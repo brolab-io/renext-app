@@ -2,13 +2,12 @@ import styled from "styled-components";
 
 const ApplyHeaderStyleWrapper = styled.div`
   background: url("/assets/breadcrumbs-bg2.jpg");
-  background-position: bottom;
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 130px 0 115px;
+  padding: 80px 0 70px;
 
   .breadcrumb_area {
-    position: relative;
     font-family: "Russo One", sans-serif;
 
     .breadcrumb_menu {
@@ -28,9 +27,6 @@ const ApplyHeaderStyleWrapper = styled.div`
         color: rgba(255, 255, 255, 0.7);
         margin: 0 10px;
       }
-      p {
-        margin: 0;
-      }
       img {
         margin-left: 15px;
       }
@@ -40,59 +36,45 @@ const ApplyHeaderStyleWrapper = styled.div`
       color: white;
       margin: 15px 0 0;
     }
+  }
 
-    .share_icon {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      column-gap: 5px;
-      cursor: pointer;
+  .stake_counter {
+    display: flex;
+    justify-content: flex-end;
+
+    h6 {
+      font-weight: 400;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+      span {
+        margin-top: 24px;
+        display: block;
+        font-family: "Russo One";
+        font-weight: 400;
+        font-size: 30px;
+        color: #ffffff;
+      }
     }
   }
 
-  .breadcrumb_form {
+  .page_header_progressbar {
     display: flex;
     align-items: center;
-    justify-content: end;
-    column-gap: 30px;
-
-    form {
-      position: relative;
-
-      input,
-      button {
-        background: transparent;
-      }
-
-      input {
-        width: 380px;
-        padding: 11px 50px 11px 20px;
-        color: rgba(255, 255, 255, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-
-        &:focus {
-          outline: none;
-        }
-      }
-
-      button {
-        height: 100%;
-        width: 50px;
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        top: 50%;
-        right: 0;
-        font-size: 20px;
-        color: rgba(255, 255, 255, 0.7);
-        transform: translate(0, -50%);
-        border: none;
-      }
+    position: relative;
+    column-gap: 20px;
+    span {
+      font-family: "Russo One";
+      font-style: normal;
+      font-weight: normal;
+      font-size: 16px;
+      line-height: 19px;
+      text-transform: uppercase;
+      margin-bottom: 0px;
+      color: #ffffff;
+    }
+    .progressbar_wrapper {
+      width: 72%;
     }
   }
 
@@ -100,75 +82,53 @@ const ApplyHeaderStyleWrapper = styled.div`
     .breadcrumb_title {
       font-size: 30px;
     }
+
+    .stake_counter {
+      margin-top: 35px;
+      justify-content: flex-start;
+      h6 {
+        span {
+          font-size: 22px;
+        }
+      }
+    }
+
+    .page_header_progressbar {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 30px;
+      row-gap: 14px;
+    }
   }
 
   @media only screen and (max-width: 768px) {
     .breadcrumb_title {
       font-size: 26px;
     }
-    .breadcrumb_form {
-      justify-content: start;
-      margin-top: 40px;
-      form {
-        width: 70%;
-        input {
-          width: 100%;
-        }
-      }
-    }
   }
   @media only screen and (max-width: 540px) {
-    padding-top: 120px;
-    .breadcrumb_area {
-      .share_icon {
-        transform: none;
-        right: auto;
-        left: 0;
-        top: 30px;
-        font-size: 14px;
-      }
-    }
     .breadcrumb_menu {
-      a,
-      p {
+      a {
         font-size: 14px;
       }
     }
     .breadcrumb_title {
       font-size: 22px;
     }
-    .breadcrumb_form {
-      justify-content: start;
-      flex-direction: column;
-      align-items: flex-start;
-      row-gap: 20px;
+
+    .stake_counter {
       margin-top: 30px;
-      form {
-        width: 80%;
-        input {
-          width: 100%;
+      h6 {
+        span {
+          font-size: 18px;
         }
       }
     }
   }
-
-  @media only screen and (max-width: 375px) {
-    .breadcrumb_area {
-      .breadcrumb_menu {
-        a,
-        p {
-          font-size: 11px;
-        }
-        span {
-          margin: 0 5px;
-        }
-        img {
-          margin-left: 5px;
-          max-width: 40px;
-        }
-      }
-      .share_icon {
-        font-size: 12px;
+  @media only screen and (max-width: 480px) {
+    .page_header_progressbar {
+      .progressbar_wrapper {
+        width: 90%;
       }
     }
   }
