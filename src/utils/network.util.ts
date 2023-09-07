@@ -1,4 +1,5 @@
 
+import { DemonWindow } from "@/lib/WalletAdapter";
 import { PublicKey } from "@solana/web3.js";
 export const MAINNET_RPC_URL = 'https://api-mainnet-beta.renec.foundation:8899'
 export const MAINNET_WSS_URL = 'wss://api-mainnet-beta.renec.foundation:8900'
@@ -58,3 +59,6 @@ export const isValidPublicKey = (address: string) => {
         return false; // The address is not valid
     }
 }
+declare const window: DemonWindow;
+
+export const isDemonWalletDetected = () => window.demon?.sol

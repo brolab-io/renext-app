@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { isDemonWalletDetected } from "@/utils/network.util";
 import {
     BaseMessageSignerWalletAdapter,
     WalletName,
@@ -13,7 +14,7 @@ import {
     WalletPublicKeyError,
     WalletReadyState,
 } from "@solana/wallet-adapter-base";
-import { PublicKey, VersionedTransaction } from "@solana/web3.js";
+import { PublicKey, VersionedTransaction, Connection, Keypair } from "@solana/web3.js";
 import type { Transaction } from "@solana/web3.js";
 import EventEmitter from "eventemitter3";
 
@@ -30,6 +31,12 @@ interface DemonWallet extends EventEmitter {
         publicKey?: PublicKey
     ): Promise<T[]>;
     signMessage(msg: Uint8Array, publicKey?: PublicKey): Promise<Uint8Array>;
+    sendTransaction<T extends Transaction | VersionedTransaction>(
+        tx: T,
+        connection: Connection,
+        signers?: Keypair[],
+        publicKey?: PublicKey
+    ): Promise<string>;
     isConnected: boolean;
 }
 
@@ -69,7 +76,7 @@ export class DemonWalletAdapter extends BaseMessageSignerWalletAdapter {
 
         if (this._readyState !== WalletReadyState.Unsupported) {
             scopePollingDetectionStrategy(() => {
-                if (window.demon?.sol) {
+                if (isDemonWalletDetected()) {
                     this._readyState = WalletReadyState.Installed;
                     this.emit("readyStateChange", this._readyState);
                     return true;
@@ -155,6 +162,22 @@ export class DemonWalletAdapter extends BaseMessageSignerWalletAdapter {
         }
 
         this.emit("disconnect");
+    }
+
+    async sendTransactionWithSigners<T extends Transaction | VersionedTransaction>(
+        transaction: T,
+        connection: Connection,
+        signers?: Keypair[]
+    ): Promise<string> {
+        if (!this._wallet || !this._publicKey) {
+            throw new Error("Please connect app before sign transaction!");
+        }
+        try {
+            return await this._wallet.sendTransaction(transaction, connection, signers, this._publicKey);
+        } catch (error: any) {
+            this.emit("error", new WalletSignTransactionError(error?.message, error));
+            throw error;
+        }
     }
 
     async signTransaction<T extends Transaction | VersionedTransaction>(
