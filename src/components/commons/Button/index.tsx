@@ -2,15 +2,16 @@
 import Link from "next/link";
 
 import { ButtonStyle, LinkStyle, LinkStyleProps } from "./Button.style";
+import clsx from "clsx";
 
 type ButtonProps = {
   children: React.ReactNode;
   href?: string;
 } & LinkStyleProps;
-const Button: React.FC<ButtonProps> = ({ children, href, ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, href, className, ...props }) => {
   if (!href) {
     return (
-      <ButtonStyle {...props} className="btn_wrapper">
+      <ButtonStyle {...props} className={clsx("btn_wrapper", className)}>
         {children}
 
         <div className="hover_shape_wrapper">

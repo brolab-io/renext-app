@@ -5,7 +5,6 @@ import { MdNotes, MdOutlineKeyboardArrowDown } from "react-icons/md";
 import Link from "next/link";
 import MobileMenu from "../MobileMenu";
 import { getMenuData } from "@/utils/data.util";
-import Button from "@/components/commons/Button";
 import Image from "next/image";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
@@ -20,17 +19,16 @@ type MenuProps = {
   className?: string;
 };
 
-const onPagePath = ["/explore", "/project"];
+const onPagePath = ["/explore", "/project", "/apply"];
 
 // const WalletModal = dynamic(
 //   () => import("@/components/commons/Modal/WalletModal"),
 //   { ssr: false }
 // );
 
-const ConnectWalletButton = dynamic(
-  () => import("@/components/commons/WalletButton"),
-  { ssr: false }
-);
+const ConnectWalletButton = dynamic(() => import("@/components/commons/WalletButton"), {
+  ssr: false,
+});
 
 const MainMenu: React.FC<MenuProps> = ({ className }) => {
   const path = usePathname();
@@ -49,11 +47,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
 
   return (
     <>
-      <NavWrapper
-        $onPage={isOnPage}
-        className={clsx("gamfi_header", className)}
-        id="navbar"
-      >
+      <NavWrapper $onPage={isOnPage} className={clsx("gamfi_header", className)} id="navbar">
         <div className="container mx-auto">
           {/* Main Menu Start */}
           <div className="gamfi_menu_sect px-5 md:px-0">
@@ -78,10 +72,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
                     return (
                       <li key={i}>
                         <Link href={menu.url}>
-                          {menu.title}{" "}
-                          {subMenus?.length > 0 && (
-                            <MdOutlineKeyboardArrowDown />
-                          )}
+                          {menu.title} {subMenus?.length > 0 && <MdOutlineKeyboardArrowDown />}
                         </Link>
 
                         {/* if has subMenu and length is greater than 0 */}

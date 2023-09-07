@@ -17,9 +17,9 @@ const ProjectTab: React.FC<ProjectCardProps> = ({ type }) => {
   return (
     <>
       {projects?.map((project, i) => (
-        <div key={i}>
+        <div key={project.launch_pool_pda}>
           {/* {JSON.stringify(project)} */}
-          <ProjectCard key={i} {...project} />
+          <ProjectCard project={project} />
         </div>
       ))}
     </>

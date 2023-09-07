@@ -1,41 +1,49 @@
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { FAKE_PROJECTS } from "./fakeData";
+import { Pagination } from "@/types/pagination.type";
+import { TProject } from "@/types/project.type";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-
-const LIMIT = 10;
+const LIMIT = 9;
 
 const useProjects = (type: string = "On Going") => {
-    return useInfiniteQuery(
-        ['projects', type],
-        async ({ pageParam }) => {
-            const limit = pageParam?.limit || LIMIT;
-            const offset = pageParam?.offset || 0;
+  return useInfiniteQuery(
+    ["projects", type],
+    async ({ pageParam }) => {
+      const limit = pageParam?.limit || LIMIT;
+      const offset = pageParam?.offset || 0;
 
-            const temp = FAKE_PROJECTS.filter((project) => project.projectStatus === type).slice(offset, offset + limit)
-            return {
-                items: temp,
-                total: temp.length,
-                offset,
-                limit,
-            };
-
-        }, {
-        getNextPageParam: (lastPage) => {
-            if (
-                lastPage.items.length < LIMIT ||
-                lastPage.items.length + lastPage.offset >= lastPage.total
-            ) {
-                return undefined;
-            }
-            return {
-                offset: lastPage.offset + LIMIT,
-                limit: LIMIT,
-            };
-        },
-        keepPreviousData: true,
+      // const temp = FAKE_PROJECTS.filter((project) => project.projectStatus === type).slice(offset, offset + limit)
+      // return {
+      //     items: temp,
+      //     total: temp.length,
+      //     offset,
+      //     limit,
+      // };
+      return axios
+        .get<Pagination<TProject>>("/api/launchpads", {
+          params: {
+            offset,
+            limit,
+          },
+        })
+        .then((res) => res.data);
+    },
+    {
+      getNextPageParam: (lastPage) => {
+        if (
+          lastPage.items.length < LIMIT ||
+          lastPage.items.length + lastPage.offset >= lastPage.total
+        ) {
+          return undefined;
+        }
+        return {
+          offset: lastPage.offset + LIMIT,
+          limit: LIMIT,
+        };
+      },
+      keepPreviousData: true,
     }
+  );
+};
 
-    )
-}
-
-export default useProjects
+export default useProjects;
