@@ -5,7 +5,7 @@ export interface Database {
     Tables: {
       launchpads: {
         Row: {
-          affiliate: number;
+          affiliate: number | null;
           campaign_type: string;
           created_at: string;
           created_by: string;
@@ -22,6 +22,7 @@ export interface Database {
           project_description: string;
           project_email: string;
           project_logo_url: string;
+          project_website: string | null;
           slug: string | null;
           token_address: string;
           token_decimals: number;
@@ -29,7 +30,7 @@ export interface Database {
           token_unlock_date: string;
         };
         Insert: {
-          affiliate: number;
+          affiliate?: number | null;
           campaign_type: string;
           created_at?: string;
           created_by: string;
@@ -46,6 +47,7 @@ export interface Database {
           project_description: string;
           project_email: string;
           project_logo_url: string;
+          project_website?: string | null;
           slug?: string | null;
           token_address: string;
           token_decimals?: number;
@@ -53,7 +55,7 @@ export interface Database {
           token_unlock_date: string;
         };
         Update: {
-          affiliate?: number;
+          affiliate?: number | null;
           campaign_type?: string;
           created_at?: string;
           created_by?: string;
@@ -70,6 +72,7 @@ export interface Database {
           project_description?: string;
           project_email?: string;
           project_logo_url?: string;
+          project_website?: string | null;
           slug?: string | null;
           token_address?: string;
           token_decimals?: number;

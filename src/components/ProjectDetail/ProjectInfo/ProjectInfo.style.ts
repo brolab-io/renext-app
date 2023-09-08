@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 const ProjectInfoStyleWrapper = styled.section`
   margin: -60px 0 30px;
   .game-price-item {
@@ -52,10 +51,11 @@ const ProjectInfoStyleWrapper = styled.section`
 
     .price-details {
       h3 {
-        margin-bottom: 15px;
+        margin-bottom: 8px;
       }
       .dsc {
         text-transform: uppercase;
+        margin-bottom: 4px;
       }
     }
   }
@@ -107,7 +107,7 @@ const ProjectInfoStyleWrapper = styled.section`
     justify-content: space-between;
     font-family: "Russo One", sans-serif;
     color: #ffffff;
-    .count{
+    .count {
       font-size: 30px;
     }
   }

@@ -7,33 +7,32 @@ import Sidebar from "./SideBar";
 import Summary from "./Summary";
 import History from "./History";
 import Actions from "./Actions";
+import { TProject } from "@/types/project.type";
 
 type Props = {
-  id: string;
+  project: TProject;
 };
 
-const ProjectDetails: React.FC<Props> = ({ id }) => {
-  const { data } = useProject(id);
-  if (!data) return null;
+const ProjectDetails: React.FC<Props> = ({ project }) => {
   return (
     <ProjectDetailsStyleWrapper>
       <div className="container mx-auto p-3 sm:p-0">
         <div className="flex">
           <div className="w-full">
-            <ProjectInfo project={data} />
-            <Actions id={id} currency={data.currency} />
+            <ProjectInfo project={project} />
+            <Actions project={project} />
           </div>
         </div>
 
         <div className="token_info_row grid grid-cols-1 sm:grid-cols-2 gap-8">
-          {data?.info.map((item, i) => (
+          {/* {data?.info.map((item, i) => (
             <div key={i}>
               <TokenInfo title={item.title} tokenInfo={item.tokenInfo} />
             </div>
-          ))}
+          ))} */}
         </div>
-        <Summary content={data?.summary} />
-        <History id={id} />
+        {/* <Summary content={data?.summary} />
+        <History id={id} /> */}
         {/* <div className="grid grid-cols-12 gap-8">
           <div className="col-span-4">
             <Sidebar />

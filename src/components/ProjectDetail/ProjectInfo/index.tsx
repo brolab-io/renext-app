@@ -10,11 +10,13 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import DisplayNumber from "@/components/commons/DisplayNumber";
+import { TProject } from "@/types/project.type";
+import { formatToken } from "@/utils/format.util";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
 type Props = {
-  project: ReturnType<typeof useProject>["data"];
+  project: TProject;
 };
 
 const ProjectInfo: React.FC<Props> = ({ project }) => {
@@ -63,101 +65,85 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
     );
   };
 
-  const calculateProgress = (
-    remaining: number | undefined,
-    allocation: number
-  ) => {
+  const calculateProgress = (remaining: number | undefined, allocation: number) => {
     if (!remaining || !allocation) return 0;
     const progress = ((allocation - remaining) / allocation) * 100;
     return progress;
   };
-  if (!project) return null;
 
   return (
     <ProjectInfoStyleWrapper className="live_project_wrapper">
       <div className="game-price-item">
         <div className="game-price-inner">
           <div className="total-price">
-            <div className="price-inner flex">
+            <div className="flex price-inner">
               <div className="image-icon">
-                <Image
-                  src={project.thumb}
-                  alt="icon"
-                  width={100}
-                  height={100}
-                />
+                <img src={project.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
               </div>
               <div className="price-details">
                 <h3>
-                  <a>{project?.title}</a>
+                  <a>{project.name}</a>
                 </h3>
                 <div className="dsc">
-                  PRICE (
-                  {
-                    project.info.find((el) => el.title === "Token Info")
-                      ?.tokenInfo[1].text
-                  }
-                  ) = {project.price} {project.currency.toUpperCase()}
+                  PRICE ({0}) = {0} {project.currency_address.toUpperCase()}
+                </div>
+                <div>
+                  Project website:{" "}
+                  {project.project_website ? (
+                    <Link href={project.project_website} target="_blank">
+                      {project.project_website}
+                    </Link>
+                  ) : (
+                    "N/A"
+                  )}
                 </div>
               </div>
             </div>
             <div className="all-raise">
-              Total Raise:{" "}
-              <DisplayNumber
-                value={
-                  project.price *
-                  (project.allocation - (project.remaining || 0))
-                }
-              />{" "}
-              {project.currency.toUpperCase()}
+              Total Raise: <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              {project.currency_address.toUpperCase()}
             </div>
           </div>
-          <div className="allocation-max text-center">
+          <div className="text-center allocation-max">
             <Image
-              src={`/assets/${project.currency}.png`}
+              src={`/assets/${project.currency_address}.png`}
               alt="currency icon"
               width={50}
               height={50}
             />
             <div className="allocation">
-              Allocation: <DisplayNumber value={project.allocation} />{" "}
-              {project.symbol.toUpperCase()}
+              Allocation: <DisplayNumber value={0} /> {project.currency_address.toUpperCase()}
             </div>
           </div>
           <div className="targeted-raise">
             <div className="seles-end-text">Sale End In</div>
             <Countdown
-              date={dayjs(project.saleEnd * 1000).toString()}
+              date={dayjs(project.token_unlock_date).toString()}
               renderer={CountdownRender}
             />
             <div className="targeted-raise-amount">
-              Targeted Raise:{" "}
-              <DisplayNumber value={project.price * project.allocation} />{" "}
-              {project.currency.toUpperCase()}
+              Targeted Raise: <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              {project.currency_address.toUpperCase()}
             </div>
           </div>
         </div>
         <div className="progress-inner">
-          <ProgressBar
-            progress={calculateProgress(project.remaining, project.allocation)}
-          />
+          <ProgressBar progress={calculateProgress(0, 1)} />
         </div>
 
         <div className="project_card_footer">
           <Button $sm $variant="mint">
             Claim Token
           </Button>
-          {project.participants ? (
-            <div className="participants">
-              Participants {project.participants}
-            </div>
-          ) : null}
+          {/* {project.participants ? (
+            <div className="participants">Participants {project.participants}</div>
+          ) : null} */}
           <div className="social_links">
-            {project.socialLinks?.map((profile, i) => (
+            {/* {project.socialLinks?.map((profile, i) => (
               <Link key={i} href={profile.url}>
                 <img src={profile.icon} alt="social icon" />
               </Link>
-            ))}
+            ))} */}
           </div>
         </div>
       </div>

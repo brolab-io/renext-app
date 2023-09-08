@@ -4,7 +4,9 @@ import { supabase } from "@/lib/supabase";
 import { Database } from "@/lib/supabase.type";
 
 const randomString = (length: number) => {
-  return Math.random().toString(36).substring(length);
+  const randomStr =
+    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  return randomStr.substring(0, length);
 };
 
 export const createLaunchPad = async (
@@ -34,4 +36,22 @@ export const createLaunchPad = async (
     return Promise.reject("An error occurred while creating the launchpad, no result was returned");
   }
   return result;
+};
+
+export const getLaunchPad = async (slug: string) => {
+  const { data, error } = await supabase
+    .from("launchpads")
+    .select("*")
+    // or condition
+    .or(`slug.eq.${slug},launch_pool_pda.eq.${slug}`)
+    .maybeSingle();
+
+  if (!data) {
+    return Promise.reject("Project not found");
+  }
+
+  if (error) {
+    return Promise.reject(error);
+  }
+  return data;
 };

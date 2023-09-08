@@ -44,7 +44,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           </div>
         </div>
         <ul className="project-listing">
-          <li>
+          {/* <li>
             Min allocation{" "}
             <span>
               {0} {project.currency_address}
@@ -55,7 +55,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
             <span>
               {0} {project.currency_address}
             </span>
-          </li>
+          </li> */}
           <li>
             Targeted raise{" "}
             <span>
