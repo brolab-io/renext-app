@@ -39,6 +39,7 @@ const ApplyFormProvider: React.FC<PropsWithChildren<Props>> = ({ children }) => 
       // yyyy/mm/ddThh:mm
       token_unlock_date: dayjs().format().substring(0, "yyyy/mm/ddThh:mm".length),
       project_category: "DEFI",
+      project_description: "# Feng",
     },
   });
 

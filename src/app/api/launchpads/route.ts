@@ -8,14 +8,15 @@ export async function GET(request: NextRequest) {
     parseInt(searchParams.get("offset") || "0") || 0,
   ];
 
-  const { data, error } = await supabase
+  const {
+    count = 0,
+    error: error,
+    data,
+  } = await supabase
     .from("launchpads")
-    .select("*")
-    .range(offset, offset + limit);
-
-  const { count = 0, error: countError } = await supabase
-    .from("launchpads")
-    .select("id", { count: "exact", head: true });
+    .select("*", { count: "exact" })
+    .order("created_at", { ascending: false })
+    .range(offset, offset + limit - 1);
 
   if (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
