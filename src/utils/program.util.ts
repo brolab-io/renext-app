@@ -1,5 +1,5 @@
 import { RenextProgram } from "@/artifacts/renext_program";
-import { BN, Program, Wallet } from "@project-serum/anchor";
+import { BN, Program } from "@project-serum/anchor";
 import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { LAMPORTS_PER_SOL, PublicKey, SYSVAR_RENT_PUBKEY, SystemProgram } from "@solana/web3.js";
 import dayjs from "dayjs";
@@ -39,6 +39,7 @@ export async function createNativePool(
     `launch_pool: ${launch_pool.toBase58()} creator: ${creator.toBase58()} with mint: ${mint.toBase58()} creating ....`
   );
   console.log("--------------------------------------");
+  console.log("TOKEN_PROGRAM_ID", TOKEN_PROGRAM_ID);
 
   const [treasurer] = findTreasurerAccount(launch_pool, mint, program.programId);
   const treasury = await findMintTokenAccount(treasurer, mint);

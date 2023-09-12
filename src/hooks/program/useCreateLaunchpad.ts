@@ -50,7 +50,7 @@ const useCreateLaunchpad = () => {
           autoClose: 5000,
           isLoading: false,
         });
-        router.push(`/create-launchpad/created/${result!.id}`);
+        router.push(`/project/${result!.slug || result!.id}`);
       },
       onError: (error) => {
         if (error instanceof Error) {

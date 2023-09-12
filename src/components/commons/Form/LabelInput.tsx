@@ -1,3 +1,4 @@
+"use client";
 import { forwardRef } from "react";
 import LabelInputStyleWrapper from "./LabelInput.style";
 import clsx from "clsx";

@@ -1,4 +1,6 @@
 "use client";
+import useCreateLaunchpad from "@/hooks/program/useCreateLaunchpad";
+import dayjs from "dayjs";
 import { useContext, createContext, PropsWithChildren, useState } from "react";
 
 type ContextState = {
@@ -6,15 +8,58 @@ type ContextState = {
   totalStep: number;
   goToNextStep: () => void;
   goToPrevStep: () => void;
+  setStep: (step: number) => void;
+  formValues: Partial<ApplyFormValues>;
+  updateFormValues: (values: Partial<ApplyFormValues>) => void;
+  onSubmit: (data: ApplyFormValues) => void;
 };
 
 const Context = createContext<ContextState>({} as ContextState);
 
 export const useApplyProjectContext = () => useContext(Context);
 
+export type ApplyFormValues = {
+  // Database data
+  name: string;
+  project_description: string;
+  project_category: string;
+  project_website: string;
+  project_email: string;
+  project_logo_url: string;
+  project_banner_url: string;
+
+  // Onchain data
+  token_address: string;
+  token_sale_amount: string;
+  minimum_token_amount: string;
+  maximum_token_amount: string;
+  presale_rate: string;
+  token_unlock_date: string;
+  token_decimals: number;
+  campaign_type: string;
+  currency: "RENEC" | "REUSD";
+  currency_address: string;
+};
+
 const Provider: React.FC<PropsWithChildren> = ({ children }) => {
   const [step, setStep] = useState(1);
+  const [formValues, setFormValues] = useState<Partial<ApplyFormValues>>({
+    token_decimals: 9,
+    // yyyy/mm/ddThh:mm
+    token_unlock_date: dayjs().format().substring(0, "yyyy/mm/ddThh:mm".length),
+    project_category: "DEFI",
+    project_description: "# PROJECT DESCRIPTION\n",
+    currency_address: "RENEC",
+  });
   const totalStep = 3;
+
+  const { isLoading, mutate } = useCreateLaunchpad();
+
+  const onSubmit = (data: ApplyFormValues) => {
+    console.log("Submit apply project form with data: ", data);
+    mutate(data);
+  };
+
   const goToNextStep = () => {
     if (step < totalStep) {
       setStep(step + 1);
@@ -26,6 +71,13 @@ const Provider: React.FC<PropsWithChildren> = ({ children }) => {
     }
   };
 
+  const updateFormValues = (values: Partial<ApplyFormValues>) => {
+    setFormValues((prevState) => ({
+      ...prevState,
+      ...values,
+    }));
+  };
+
   return (
     <Context.Provider
       value={{
@@ -33,6 +85,10 @@ const Provider: React.FC<PropsWithChildren> = ({ children }) => {
         totalStep,
         goToNextStep,
         goToPrevStep,
+        setStep,
+        formValues,
+        updateFormValues,
+        onSubmit,
       }}
     >
       {children}
