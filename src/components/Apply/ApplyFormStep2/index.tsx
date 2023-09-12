@@ -11,7 +11,7 @@ import { useApplyProjectContext } from "@/app/apply/provider";
 type Props = {};
 
 const ApplyFormStep2: React.FC<Props> = ({}) => {
-  const { goToPrevStep } = useApplyProjectContext();
+  const { goToPrevStep, goToNextStep } = useApplyProjectContext();
   const [isChecked, setChecked] = useState(false);
   const {
     register,
@@ -24,8 +24,8 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
 
   return (
     <div>
-      <div className="kyc_form py-6 lg:py-10">
-        <div className="grid lg:grid-cols-12 gap-4 md:gap-8 lg:gap-12 xl:gap-16">
+      <div className="py-6 kyc_form lg:py-10">
+        <div className="grid gap-4 lg:grid-cols-12 md:gap-8 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
             <h3 className="from_title">LAUNCHPAD INFORMATION</h3>
 
@@ -60,7 +60,7 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                 error={errors.token_sale_amount?.message}
               />
 
-              <div className="form-group w-full">
+              <div className="w-full form-group">
                 <label>Currency* (User will buy your token by)</label>
                 <select
                   className="block"
@@ -198,8 +198,14 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
           >
             BACK
           </Button>
-          <Button type="submit" className="!max-w-[460px]" href="" $variant="blue">
-            CREATE LAUNCHPAD
+          <Button
+            type="button"
+            onClick={goToNextStep}
+            className="!max-w-[200px]"
+            href=""
+            $variant="blue"
+          >
+            CONTINUE
           </Button>
         </div>
       </div>

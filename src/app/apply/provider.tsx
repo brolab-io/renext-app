@@ -14,7 +14,7 @@ export const useApplyProjectContext = () => useContext(Context);
 
 const Provider: React.FC<PropsWithChildren> = ({ children }) => {
   const [step, setStep] = useState(1);
-  const totalStep = 2;
+  const totalStep = 3;
   const goToNextStep = () => {
     if (step < totalStep) {
       setStep(step + 1);
