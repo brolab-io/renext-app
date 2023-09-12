@@ -65,7 +65,10 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
     );
   };
 
-  const calculateProgress = (remaining: number | undefined, allocation: number) => {
+  const calculateProgress = (
+    remaining: number | undefined,
+    allocation: number
+  ) => {
     if (!remaining || !allocation) return 0;
     const progress = ((allocation - remaining) / allocation) * 100;
     return progress;
@@ -78,7 +81,11 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
           <div className="total-price">
             <div className="flex price-inner">
               <div className="image-icon">
-                <img src={project.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
+                <img
+                  src={project.project_logo_url}
+                  alt="icon"
+                  className="h-[100px] w-[100px]"
+                />
               </div>
               <div className="price-details">
                 <h3>
@@ -100,19 +107,21 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               </div>
             </div>
             <div className="all-raise">
-              Total Raise: <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              Total Raise:{" "}
+              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
               {project.currency_address.toUpperCase()}
             </div>
           </div>
           <div className="text-center allocation-max">
             <Image
-              src={`/assets/${project.currency_address}.png`}
+              src={`/assets/${project.currency_address.toLowerCase()}.png`}
               alt="currency icon"
               width={50}
               height={50}
             />
             <div className="allocation">
-              Allocation: <DisplayNumber value={0} /> {project.currency_address.toUpperCase()}
+              Allocation: <DisplayNumber value={0} />{" "}
+              {project.currency_address.toUpperCase()}
             </div>
           </div>
           <div className="targeted-raise">
@@ -122,7 +131,8 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               renderer={CountdownRender}
             />
             <div className="targeted-raise-amount">
-              Targeted Raise: <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              Targeted Raise:{" "}
+              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
               {project.currency_address.toUpperCase()}
             </div>
           </div>

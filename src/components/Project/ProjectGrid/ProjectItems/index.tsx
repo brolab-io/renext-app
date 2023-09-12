@@ -7,7 +7,7 @@ const TABS = ["On Going", "Upcomming", "Ended"];
 const ProjectItems = () => {
   return (
     <ProjectItemsStyleWrapper>
-      <div className="container mx-auto">
+      <div className="container mx-auto p-3 sm:p-0">
         <div className="single-project-row">
           <Tabs>
             <TabList>
