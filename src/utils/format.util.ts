@@ -6,6 +6,14 @@ export const formatPublicKey = (publicKey: PublicKey | string, len = 5) => {
   return `${str.slice(0, len)}...${str.slice(-5)}`;
 };
 
+export const formatNumberToLamport = (num: number | string, decimals = 9) => {
+  return new BN(num).mul(new BN(10 ** decimals)).toString();
+}
+
+export const formatLamportToNumber = (num: number | string, decimals = 9) => {
+  return (new BN(num).div(new BN(10 ** decimals))) * 1;
+}
+
 export const formatToken = (amount: number | string, decimal = 9, decimalsDigits = 2) => {
   // how to amount / lamports = 1.0000000000 using string
   const str: string = new BN(amount)

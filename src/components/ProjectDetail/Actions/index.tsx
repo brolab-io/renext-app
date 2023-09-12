@@ -2,24 +2,39 @@
 /* eslint-disable @next/next/no-img-element */
 import Button from "@/components/commons/Button";
 import ActionsStyleWrapper from "./Actions.style";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TProject } from "@/types/project.type";
-import { formatToken } from "@/utils/format.util";
+import { formatLamportToNumber, formatToken } from "@/utils/format.util";
+import useUserPool from "@/hooks/program/useUserPool";
+import { BN } from "@project-serum/anchor";
+import DisplayNumber from "@/components/commons/DisplayNumber";
+import ButtonBuy from "./ButtonBuy";
+import useLaunchPool from "@/hooks/program/useLaunchPool";
 
 type Props = {
   project: TProject;
 };
 const Actions: React.FC<Props> = ({ project }) => {
   const [amount, setAmount] = useState<string | undefined>();
+  const { data: usePool } = useUserPool(
+    project.launch_pool_pda,
+    project.token_address
+  );
+  const { data: launchPool } = useLaunchPool(project.launch_pool_pda);
 
   const handleBuyMax = () => {
-    console.log("handleBuyMax");
-    setAmount("100");
+    const max = usePool
+      ? new BN(project.maximum_token_amount).sub(usePool.amount).toString()
+      : project.maximum_token_amount;
+    setAmount(formatLamportToNumber(max, project.token_decimals).toString());
   };
 
-  const handleBuy = () => {
-    console.log("handleBuy");
-  };
+  const _buyed = useMemo(() => {
+    return usePool
+      ? formatLamportToNumber(usePool.amount, project.token_decimals)
+      : 0;
+  }, []);
+
   return (
     <ActionsStyleWrapper>
       <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
@@ -38,32 +53,56 @@ const Actions: React.FC<Props> = ({ project }) => {
             <Button $sm className="max" $variant="dark" onClick={handleBuyMax}>
               MAX
             </Button>
-            <Button $xl onClick={handleBuy}>
-              Buy
-            </Button>
+            <ButtonBuy
+              pool={project.launch_pool_pda}
+              value={amount}
+              disabled={!!launchPool?.status.active}
+            />
           </div>
         </div>
         <div className="space-y-5">
           <ul className="info_list">
             <li>
               <span className="info_key">MIN</span>
-              <span className="info_value">
-                {formatToken(project.minimum_token_amount, project.token_decimals)}{" "}
+
+              <DisplayNumber
+                className="info_value"
+                value={formatLamportToNumber(
+                  project.minimum_token_amount,
+                  project.token_decimals
+                )}
+              >
                 {project.currency_address.toUpperCase()}
-              </span>
+              </DisplayNumber>
             </li>
             <li>
               <span className="info_key">MAX</span>
-              <span className="info_value">
-                {formatToken(project.maximum_token_amount, project.token_decimals)}{" "}
+
+              <DisplayNumber
+                className="info_value"
+                value={formatLamportToNumber(
+                  project.maximum_token_amount,
+                  project.token_decimals
+                )}
+              >
                 {project.currency_address.toUpperCase()}
-              </span>
+              </DisplayNumber>
             </li>
             <li>
               <span className="info_key">Buyed</span>
-              <span className="info_value">
-                {0} {project.currency_address.toUpperCase()}
-              </span>
+              <DisplayNumber
+                className="info_value"
+                value={
+                  usePool
+                    ? formatLamportToNumber(
+                        usePool.amount,
+                        project.token_decimals
+                      )
+                    : 0
+                }
+              >
+                {project.currency_address.toUpperCase()}
+              </DisplayNumber>
             </li>
           </ul>
           {/* <div className="flex justify-center">

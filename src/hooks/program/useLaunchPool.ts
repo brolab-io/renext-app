@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useProgramAnonymous } from "../useProgram";
 import { PublicKey } from "@solana/web3.js";
 const useLaunchPool = (pda: string) => {
-    const program = useProgramAnonymous();
+    const { program } = useProgramAnonymous();
 
     return useQuery(
         ["launchpools", pda],

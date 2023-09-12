@@ -11,7 +11,9 @@ import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import DisplayNumber from "@/components/commons/DisplayNumber";
 import { TProject } from "@/types/project.type";
-import { formatToken } from "@/utils/format.util";
+import { formatLamportToNumber, formatToken } from "@/utils/format.util";
+import { useMemo } from "react";
+import { BN } from "@project-serum/anchor";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
@@ -20,6 +22,8 @@ type Props = {
 };
 
 const ProjectInfo: React.FC<Props> = ({ project }) => {
+  const { data: pool } = useProject(project.launch_pool_pda);
+
   const CountdownRender = ({
     days,
     hours,
@@ -65,14 +69,23 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
     );
   };
 
-  const calculateProgress = (
-    remaining: number | undefined,
-    allocation: number
-  ) => {
-    if (!remaining || !allocation) return 0;
-    const progress = ((allocation - remaining) / allocation) * 100;
-    return progress;
-  };
+  const calculateProgress = useMemo(() => {
+    if (!pool) return 0;
+    if (pool.status.pending || pool.status.cancelled) return 0;
+    return (
+      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
+        pool.poolSize.toNumber()) *
+      100
+    );
+  }, [pool]);
+
+  const _price = useMemo(() => {
+    return 1 / Number(project.presale_rate);
+  }, [project.presale_rate]);
+
+  const _targetedRaise = useMemo(() => {
+    return (_price * Number(project.token_sale_amount as any)).toString();
+  }, [_price, project.token_sale_amount]);
 
   return (
     <ProjectInfoStyleWrapper className="live_project_wrapper">
@@ -92,7 +105,8 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
                   <a>{project.name}</a>
                 </h3>
                 <div className="dsc">
-                  PRICE ({0}) = {0} {project.currency_address.toUpperCase()}
+                  PRICE ({"N/A"}) = {_price.toLocaleString()}{" "}
+                  {project.currency_address.toUpperCase()}
                 </div>
                 <div>
                   Project website:{" "}
@@ -108,7 +122,16 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             </div>
             <div className="all-raise">
               Total Raise:{" "}
-              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              <DisplayNumber
+                value={
+                  pool?.status.active || pool?.status.completed
+                    ? formatLamportToNumber(
+                        pool?.poolSize.sub(pool?.poolSizeRemaining).mul(_price),
+                        project.token_decimals
+                      )
+                    : 0
+                }
+              />
               {project.currency_address.toUpperCase()}
             </div>
           </div>
@@ -120,8 +143,13 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               height={50}
             />
             <div className="allocation">
-              Allocation: <DisplayNumber value={0} />{" "}
-              {project.currency_address.toUpperCase()}
+              Allocation:{" "}
+              <DisplayNumber
+                value={formatLamportToNumber(
+                  project.token_sale_amount,
+                  project.token_decimals
+                ).toLocaleString()}
+              />{" "}
             </div>
           </div>
           <div className="targeted-raise">
@@ -132,13 +160,13 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             />
             <div className="targeted-raise-amount">
               Targeted Raise:{" "}
-              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
+              <DisplayNumber value={formatLamportToNumber(_targetedRaise)} />{" "}
               {project.currency_address.toUpperCase()}
             </div>
           </div>
         </div>
         <div className="progress-inner">
-          <ProgressBar progress={calculateProgress(0, 1)} />
+          <ProgressBar progress={calculateProgress} />
         </div>
 
         <div className="project_card_footer">

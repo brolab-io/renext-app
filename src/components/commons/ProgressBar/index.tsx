@@ -10,7 +10,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
       <div className="progress_bar">
         <span
           className="progress_bar_overlay"
-          style={{ width: progress ? `${progress.toFixed(2)}%` : "50%" }}
+          style={{ width: progress ? `${progress.toFixed(2)}%` : "0%" }}
         ></span>
       </div>
     </ProgressBarStyle>
