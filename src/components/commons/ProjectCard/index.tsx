@@ -26,17 +26,13 @@ const ProjectCard: React.FC<Props> = ({ project, key }) => {
     return (_price * Number(project.token_sale_amount as any)).toString();
   }, [_price, project.token_sale_amount]);
   return (
-    <Link href={`/project/${project.launch_pool_pda}`}>
+    <Link href={`/project/${project.slug || project.launch_pool_pda}`}>
       <ProjectCardStyleWrapper className="project_item_wrapper" key={key}>
         <div className="project-info grid grid-cols-3 items-center">
-          <Link href={`/project/${project.launch_pool_pda}`}>
-            <img src={project.project_logo_url} alt="project thumb" className="h-[70px] w-[70px]" />
-          </Link>
+          <img src={project.project_logo_url} alt="project thumb" className="h-[70px] w-[70px]" />
 
           <div className="project-auother col-span-2">
-            <h4 className="mb-10 truncate">
-              <Link href={`/project/${project.launch_pool_pda}`}>{project.name}</Link>
-            </h4>
+            <h4 className="mb-10 truncate">{project.name}</h4>
             <div className="dsc">
               PRICE ({project.currency_address.toUpperCase()}) = {_price.toString()}
             </div>

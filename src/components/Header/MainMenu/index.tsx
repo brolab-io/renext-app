@@ -77,7 +77,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
 
                         {/* if has subMenu and length is greater than 0 */}
                         {subMenus?.length > 0 ? (
-                          <ul className="sub_menu_list">
+                          <ul className="sub_menu_list pt-10">
                             {subMenus?.map((subMenu, i) => {
                               // const subMenuChilds = subMenu.subMenuChilds || [];
                               return (

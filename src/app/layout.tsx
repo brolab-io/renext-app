@@ -9,7 +9,11 @@ import AppProvider from "@/components/providers/AppProvider";
 import MainMenu from "@/components/Header/MainMenu";
 
 export const metadata: Metadata = {
-  title: "Renext App",
+  title: {
+    template: "%s - Renext App",
+    default: "Renext App",
+    absolute: "Renext App",
+  },
   description: "Renext App - Create Launchpad",
 };
 

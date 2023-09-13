@@ -1,5 +1,10 @@
 import ApplyProject from "@/components/Apply";
-import { NextPage } from "next";
+import { Metadata, NextPage } from "next";
+
+export const metadata: Metadata = {
+  title: "Apply Your Project",
+  description: "Apply your project on Renext App",
+};
 
 const ApplyPage: NextPage = () => {
   return (

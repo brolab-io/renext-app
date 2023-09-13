@@ -12,7 +12,10 @@ const Summary: React.FC<Props> = ({ content }) => {
   return (
     <SummaryStyleWrapper id="projectSummary">
       <h4 className="widget_title">Project Summary</h4>
-      <div className="border border-white/25 border-l-4 overflow-hidden p-2 md:p-4 lg:p-6 rounded description">
+      <div
+        className="border border-white/25 border-l-4 overflow-hidden p-2 md:p-4 lg:p-6 rounded description"
+        data-color-mode="dark"
+      >
         <MDEditor.Markdown source={content} className="whitespace-pre-wrap" />
       </div>
 

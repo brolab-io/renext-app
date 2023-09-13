@@ -7,56 +7,55 @@ type NavWrapperProps = {
 const NavWrapper = styled.nav<NavWrapperProps>`
   z-index: 999;
   ${({ $onPage }) => {
-    return $onPage &&
+    return (
+      $onPage &&
       css`
-      position: relative;
-      background: #090a1a;
+        position: relative;
+        background: #090a1a;
 
-      &::before,
-      &::after {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 300px;
-        height: 100%;
-        background: url("/assets/header-shape1.png") center no-repeat;
-        background-size: cover;
-        content: "";
-        opacity: 0.7;
-      }
-      &::after {
-        left: auto;
-        right: 0;
-        background: url("/assets/header-shape2.png") center no-repeat;
-        background-size: cover;
-      }
-    `;
+        &::before,
+        &::after {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 300px;
+          height: 100%;
+          background: url("/assets/header-shape1.png") center no-repeat;
+          background-size: cover;
+          content: "";
+          opacity: 0.7;
+        }
+        &::after {
+          left: auto;
+          right: 0;
+          background: url("/assets/header-shape2.png") center no-repeat;
+          background-size: cover;
+        }
+      `
+    );
   }}
-
 
   &.gamfi_header {
     ${({ $onPage }) => {
-    return $onPage ?
-      css`
-        display: flex;
-        align-items: center;
-        width: 100%; 
-        height: 105px;
-        transition: all 0.3s;
-        z-index: 12;
-      ` :
-      css`
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        margin-top: 1px;
-        height: 100px;
-        transition: all 0.3s;
-      `;
-
-  }}
-    
+      return $onPage
+        ? css`
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 105px;
+            transition: all 0.3s;
+            z-index: 12;
+          `
+        : css`
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin-top: 1px;
+            height: 100px;
+            transition: all 0.3s;
+          `;
+    }}
 
     &.sticky {
       position: fixed;
@@ -70,7 +69,7 @@ const NavWrapper = styled.nav<NavWrapperProps>`
     }
   }
 
-  &.on-page{
+  &.on-page {
     display: flex;
   }
 
@@ -145,7 +144,7 @@ const NavWrapper = styled.nav<NavWrapperProps>`
           width: 240px;
           position: absolute;
           left: 0;
-          top: calc(100% + 40px);
+          top: calc(100%);
           opacity: 0;
           visibility: hidden;
           transition: 0.3s;
