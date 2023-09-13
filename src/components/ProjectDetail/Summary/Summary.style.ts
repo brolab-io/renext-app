@@ -1,8 +1,22 @@
 import styled from "styled-components";
-const SummaryStyleWrapper = styled.div` 
- padding-bottom: 55px;
+const SummaryStyleWrapper = styled.div`
+  padding-bottom: 55px;
   .widget_title {
     margin-bottom: 15px;
+  }
+
+  .description {
+    position: relative;
+    &::before {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.05);
+      height: 50px;
+      width: 100%;
+      left: 0px;
+      bottom: 0px;
+      content: "";
+      z-index: 9;
+    }
   }
 
   .vedio_player {

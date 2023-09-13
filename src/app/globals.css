@@ -1,6 +1,33 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Russo+One&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Russo+One&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.wmde-markdown p[align="center"],
+.wmde-markdown div[align="center"] {
+  align-items: center;
+  justify-content: center;
+  display: flex !important;
+  gap: 4px;
+}
+
+.wmde-markdown h1 {
+  font-size: 1.2rem !important;
+}
+
+.wmde-markdown h2 {
+  font-size: 1.1rem !important;
+}
+
+.wmde-markdown h3 {
+  font-size: 1rem !important;
+}
+
+.wmde-markdown h4 {
+  font-size: 0.95rem !important;
+}
+
+.wmde-markdown h5 {
+  font-size: 0.9rem !important;
+}

@@ -31,8 +31,8 @@ const ProjectDetails: React.FC<Props> = ({ project }) => {
             </div>
           ))} */}
         </div>
-        {/* <Summary content={data?.summary} />
-        <History id={id} /> */}
+        <Summary content={project.project_description} />
+        {/* <History id={id} /> */}
         {/* <div className="grid grid-cols-12 gap-8">
           <div className="col-span-4">
             <Sidebar />

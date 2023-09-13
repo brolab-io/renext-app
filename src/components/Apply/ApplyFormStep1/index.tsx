@@ -1,20 +1,33 @@
 import { FiCheck } from "react-icons/fi";
 import Button from "@/components/commons/Button";
 import LabelInput from "@/components/commons/Form/LabelInput";
-import { useApplyFormContext } from "../FormProvider";
-import { useApplyProjectContext } from "@/app/apply/provider";
+import { ApplyFormValues, useApplyProjectContext } from "@/app/apply/provider";
+import { useForm } from "react-hook-form";
 
 type Props = {};
 
+type Form1 = Pick<
+  ApplyFormValues,
+  "name" | "project_logo_url" | "project_banner_url" | "project_email" | "project_website"
+>;
 const ApplyFormStep1: React.FC<Props> = ({}) => {
-  const { goToNextStep } = useApplyProjectContext();
+  const { goToNextStep, updateFormValues, formValues } = useApplyProjectContext();
+
   const {
     register,
     formState: { errors },
-  } = useApplyFormContext();
+    handleSubmit,
+  } = useForm<Form1>({
+    defaultValues: formValues,
+  });
+
+  const onSubmit = (data: Form1) => {
+    updateFormValues(data);
+    goToNextStep();
+  };
 
   return (
-    <div>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="kyc_form py-6 lg:py-10">
         <div className="grid lg:grid-cols-12 gap-4 md:gap-8 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
@@ -26,8 +39,13 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
                 placeholder="e.g.  The New Renext Project"
                 {...register("name", {
                   required: "Project name is required",
+                  minLength: {
+                    value: 3,
+                    message: "Project name must be at least 3 characters",
+                  },
                 })}
                 error={errors.name?.message}
+                required
               />
 
               <LabelInput
@@ -35,7 +53,13 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
                 placeholder="e.g.  https://renext.xyz/logo.png"
                 {...register("project_logo_url", {
                   required: "Project logo is required",
+                  pattern: {
+                    value: /^https?:\/\/.*\.(?:png|jpg|gif|svg|jpeg)$/i,
+                    message: "Project logo must be a valid image url",
+                  },
                 })}
+                error={errors.project_logo_url?.message}
+                required
               />
 
               <LabelInput
@@ -43,8 +67,13 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
                 placeholder="e.g.  https://renext.xyz/banner.png"
                 {...register("project_banner_url", {
                   required: "Project banner is required",
+                  pattern: {
+                    value: /^https?:\/\/.*\.(?:png|jpg|gif|svg|jpeg)$/i,
+                    message: "Project logo must be a valid image url",
+                  },
                 })}
                 error={errors.project_banner_url?.message}
+                required
               />
 
               <LabelInput
@@ -52,15 +81,27 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
                 placeholder="e.g.  contact@renext.xyz"
                 {...register("project_email", {
                   required: "Project email is required",
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: "Project email must be a valid email",
+                  },
                 })}
                 error={errors.project_email?.message}
+                required
               />
 
               <LabelInput
                 label="Project Website"
                 placeholder="e.g.  https://renext.xyz"
-                {...register("project_website", {})}
+                {...register("project_website", {
+                  pattern: {
+                    // just check if it's a valid domain
+                    value: /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/,
+                    message: "Project website must be a valid url",
+                  },
+                })}
                 error={errors.project_website?.message}
+                required
               />
             </div>
           </div>
@@ -86,18 +127,12 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
 
         <div className="flex justify-between">
           <div />
-          <Button
-            type="button"
-            onClick={goToNextStep}
-            className="!max-w-[460px]"
-            href=""
-            $variant="blue"
-          >
+          <Button type="submit" className="!max-w-[460px]" href="" $variant="blue">
             CONTINUE
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
