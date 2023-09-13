@@ -2,7 +2,6 @@
 'use client';
 import { zeroPad } from 'react-countdown';
 import ProjectInfoStyleWrapper from './ProjectInfo.style';
-import Button from '@/components/commons/Button';
 import ProgressBar from '@/components/commons/ProgressBar';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,14 +10,7 @@ import dayjs from 'dayjs';
 import DisplayNumber from '@/components/commons/DisplayNumber';
 import { TProject } from '@/types/project.type';
 import { formatToken } from '@/utils/format.util';
-import { useCallback, useMemo } from 'react';
-import { useAnchorWallet } from '@solana/wallet-adapter-react';
-import useLaunchPool from '@/hooks/program/useLaunchPool';
-import useUserPool from '@/hooks/program/useUserPool';
-import useStartPool from '@/hooks/program/useStartPool';
-import useCompleteLaunchPool from '@/hooks/program/useCompleteLaunchPool';
-import useClaimToken from '@/hooks/program/useClaimToken';
-import StartButton from './StartButton';
+import OwnerFunction from './OwnerButton';
 // @ts-ignore
 const Countdown = dynamic(() => import('react-countdown'), { ssr: false });
 
@@ -27,71 +19,6 @@ type Props = {
 };
 
 const ProjectInfo: React.FC<Props> = ({ project }) => {
-  const wallet = useAnchorWallet();
-  const {
-    data: pool,
-    isLoading,
-    error,
-  } = useLaunchPool(project.launch_pool_pda);
-  const { data: userPool } = useUserPool(project.launch_pool_pda);
-  const { mutate: startPool, isLoading: isStartingPool } = useStartPool(
-    project.launch_pool_pda
-  );
-  const { mutate: completeLaunchPool, isLoading: isCompleting } =
-    useCompleteLaunchPool(project.launch_pool_pda);
-  const { mutate: clamToken, isLoading: isClamming } = useClaimToken(
-    project.launch_pool_pda
-  );
-
-  const isOwner = useMemo(() => {
-    if (!wallet?.publicKey) return false;
-    return wallet.publicKey.toBase58() === project.created_by;
-  }, [wallet, project]);
-
-  console.log(pool, userPool);
-  const actionName = useMemo(() => {
-    if (!pool) return null;
-
-    if (isOwner) {
-      if (pool.status.pending) {
-        return 'Start project';
-      } else if (pool.status.active) {
-        return 'Complete project';
-      } else if (pool.status.completed) {
-        return 'Completed';
-      } else if (pool.status.cancelled) {
-        return 'Cancelled';
-      }
-    } else {
-      if (!userPool) return null;
-
-      if (userPool.claimed.eq(userPool.amount)) {
-        return 'Claimed';
-      }
-      return 'Claim token';
-    }
-    return null;
-  }, [isOwner, pool, userPool]);
-
-  const actionClicked = useCallback(() => {
-    if (!pool) return null;
-
-    if (isOwner) {
-      if (pool.status.pending) {
-        startPool([]);
-      } else if (pool.status.active) {
-        completeLaunchPool();
-      }
-    } else {
-      if (!userPool) return null;
-      clamToken();
-    }
-  }, [pool, isOwner, startPool, completeLaunchPool, userPool, clamToken]);
-
-  const actionDisabled = useMemo(() => {
-    return true;
-  }, []);
-
   const CountdownRender = ({
     days,
     hours,
@@ -214,7 +141,7 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
         </div>
 
         <div className='project_card_footer'>
-          <StartButton pool_pda={project.launch_pool_pda} />
+          <OwnerFunction pool_pda={project.launch_pool_pda} />
         </div>
       </div>
     </ProjectInfoStyleWrapper>

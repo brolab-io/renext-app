@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-const removeImports = require("next-remove-imports")();
+const removeImports = require('next-remove-imports')();
 
 const nextConfig = {
   reactStrictMode: false,
@@ -16,6 +16,9 @@ const nextConfig = {
   },
   experimental: {
     serverActions: true,
+  },
+  image: {
+    domains: ['https://pbs.twimg.com'],
   },
 };
 

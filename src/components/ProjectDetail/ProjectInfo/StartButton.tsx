@@ -107,11 +107,6 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
                       </span>
                     </Link>
                   </div>
-                  {/* <div className="modal_bottom_text">
-                    By connecting your wallet, you agree to our
-                    <Link href="# ">Terms of Service</Link>
-                    <Link href="#">Privacy Policy</Link>
-                  </div> */}
                 </div>
                 <div className='project_card_footer'>
                   <Button $sm $variant='mint' onClick={handlerStartPool}>
@@ -141,7 +136,6 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
           <Button $sm $variant='mint' onClick={() => setIsOpen(true)}>
             Start with Whitelist
           </Button>
-          <div className='social_links'></div>
         </div>
       </>
     );
@@ -151,7 +145,6 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
       <Button $sm $variant='mint' onClick={() => startPool([])}>
         Start Project
       </Button>
-      <div className='social_links'></div>
     </div>
   );
 };
