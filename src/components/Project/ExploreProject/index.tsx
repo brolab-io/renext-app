@@ -14,7 +14,7 @@ const TABS = ["On Going", "Upcomming", "Ended"];
 const ExploreProjects = () => {
   return (
     <ExploreProjectsStyleWrapper>
-      <div className="container mx-auto">
+      <div className="container mx-auto p-3 sm:p-0">
         <SectionTitleWrapper>
           <SectionTitle title="PROJECT POOLS" subtitle="EXPLORE" />
         </SectionTitleWrapper>

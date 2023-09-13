@@ -18,6 +18,7 @@ import useUserPool from '@/hooks/program/useUserPool';
 import useStartPool from '@/hooks/program/useStartPool';
 import useCompleteLaunchPool from '@/hooks/program/useCompleteLaunchPool';
 import useClaimToken from '@/hooks/program/useClaimToken';
+import StartButton from './StartButton';
 // @ts-ignore
 const Countdown = dynamic(() => import('react-countdown'), { ssr: false });
 
@@ -212,28 +213,29 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
           <ProgressBar progress={calculateProgress(0, 1)} />
         </div>
 
-        {actionName && (
-          <div className='project_card_footer'>
-            <Button
+        {/* {actionName && ( */}
+        <div className='project_card_footer'>
+          <StartButton pool_pda={project.launch_pool_pda} withWhitelist />
+          {/* <Button
               $sm
               $variant='mint'
               onClick={actionClicked}
               disabled={actionDisabled}
             >
               {actionName}
-            </Button>
-            {/* {project.participants ? (
+            </Button> */}
+          {/* {project.participants ? (
     <div className="participants">Participants {project.participants}</div>
   ) : null} */}
-            <div className='social_links'>
-              {/* {project.socialLinks?.map((profile, i) => (
+          <div className='social_links'>
+            {/* {project.socialLinks?.map((profile, i) => (
       <Link key={i} href={profile.url}>
         <img src={profile.icon} alt="social icon" />
       </Link>
     ))} */}
-            </div>
           </div>
-        )}
+        </div>
+        {/* )} */}
       </div>
     </ProjectInfoStyleWrapper>
   );

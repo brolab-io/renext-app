@@ -1,31 +1,48 @@
-import { useState } from "react";
 import { FiCheck } from "react-icons/fi";
 import { FaListCheck, FaTimeline } from "react-icons/fa6";
-import Link from "next/link";
 import Button from "@/components/commons/Button";
-import { useApplyFormContext } from "../FormProvider";
 import LabelInput from "@/components/commons/Form/LabelInput";
-import { Controller } from "react-hook-form";
-import { useApplyProjectContext } from "@/app/apply/provider";
+import { Controller, useForm } from "react-hook-form";
+import { ApplyFormValues, useApplyProjectContext } from "@/app/apply/provider";
 
 type Props = {};
 
+type Form2 = Pick<
+  ApplyFormValues,
+  | "token_address"
+  | "token_decimals"
+  | "token_sale_amount"
+  | "presale_rate"
+  | "currency_address"
+  | "minimum_token_amount"
+  | "maximum_token_amount"
+  | "campaign_type"
+  | "token_unlock_date"
+>;
+
 const ApplyFormStep2: React.FC<Props> = ({}) => {
-  const { goToPrevStep } = useApplyProjectContext();
-  const [isChecked, setChecked] = useState(false);
+  const { goToPrevStep, goToNextStep, formValues, updateFormValues } = useApplyProjectContext();
   const {
     register,
     control,
     watch,
     formState: { errors },
-  } = useApplyFormContext();
+    handleSubmit,
+  } = useForm<Form2>({
+    defaultValues: formValues,
+  });
 
-  const currency = watch("currency");
+  const currency = watch("currency_address");
+
+  const onSubmit = (data: Form2) => {
+    updateFormValues(data);
+    goToNextStep();
+  };
 
   return (
-    <div>
-      <div className="kyc_form py-6 lg:py-10">
-        <div className="grid lg:grid-cols-12 gap-4 md:gap-8 lg:gap-12 xl:gap-16">
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="py-6 kyc_form lg:py-10">
+        <div className="grid gap-4 lg:grid-cols-12 md:gap-8 lg:gap-12 xl:gap-16">
           <div className="lg:col-span-7">
             <h3 className="from_title">LAUNCHPAD INFORMATION</h3>
 
@@ -36,8 +53,17 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                   placeholder="e.g.  GFxaSoaQsrY35DCePxAVFpgeaEeucPGH6rt9j67LtzoS"
                   {...register("token_address", {
                     required: "Token address is required",
+                    minLength: {
+                      value: 32,
+                      message: "Token address is invalid",
+                    },
+                    maxLength: {
+                      value: 44,
+                      message: "Token address is invalid",
+                    },
                   })}
                   error={errors.token_address?.message}
+                  required
                   className="w-full"
                 />
                 <LabelInput
@@ -45,8 +71,22 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                   placeholder="e.g.  9"
                   {...register("token_decimals", {
                     required: "Token decimals is required",
+                    min: {
+                      value: 0,
+                      message: "Token decimals must be greater than or equal to 0",
+                    },
+                    max: {
+                      value: 32,
+                      message: "Token decimals must be less than or equal to 32",
+                    },
+                    pattern: {
+                      // ONY NUMBER
+                      value: /^[0-9]+$/,
+                      message: "Token pre-sale amount must be a valid number",
+                    },
                   })}
                   error={errors.token_address?.message}
+                  required
                   className="max-w-[120px]"
                 />
               </div>
@@ -56,11 +96,17 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                 placeholder="e.g.  1000000"
                 {...register("token_sale_amount", {
                   required: "Token pre-sale amount is required",
+                  pattern: {
+                    // ONY NUMBER AND DOT
+                    value: /^[0-9.]+$/,
+                    message: "Token pre-sale amount must be a valid number",
+                  },
                 })}
                 error={errors.token_sale_amount?.message}
+                required
               />
 
-              <div className="form-group w-full">
+              <div className="w-full form-group">
                 <label>Currency* (User will buy your token by)</label>
                 <select
                   className="block"
@@ -68,6 +114,7 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                   {...register("currency_address", {
                     required: "Currency is required",
                   })}
+                  required
                 >
                   <option value="RENEC">RENEC</option>
                   <option value="REUSD">REUSD</option>
@@ -79,8 +126,14 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                 placeholder={`e.g.  100 (1 ${currency} = 100 your tokens)`}
                 {...register("presale_rate", {
                   required: "Pre-sale rate is required",
+                  pattern: {
+                    // ONY NUMBER AND DOT
+                    value: /^[0-9.]+$/,
+                    message: "Token pre-sale amount must be a valid number",
+                  },
                 })}
                 error={errors.presale_rate?.message}
+                required
               />
 
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
@@ -89,8 +142,14 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                   placeholder="e.g.  1"
                   {...register("minimum_token_amount", {
                     required: "Minimum token buy is required",
+                    pattern: {
+                      // ONY NUMBER AND DOT
+                      value: /^[0-9.]+$/,
+                      message: "Token pre-sale amount must be a valid number",
+                    },
                   })}
                   error={errors.minimum_token_amount?.message}
+                  required
                 />
 
                 <LabelInput
@@ -98,23 +157,15 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                   placeholder="e.g.  1000"
                   {...register("maximum_token_amount", {
                     required: "Maximum token buy is required",
+                    pattern: {
+                      // ONY NUMBER AND DOT
+                      value: /^[0-9.]+$/,
+                      message: "Token pre-sale amount must be a valid number",
+                    },
                   })}
                   error={errors.maximum_token_amount?.message}
+                  required
                 />
-              </div>
-
-              <div className={`kyc_trems_condition ${isChecked ? "active" : ""}`}>
-                <span className="checkmark" onClick={() => setChecked(!isChecked)}>
-                  {" "}
-                  <FiCheck />{" "}
-                </span>
-                <input type="checkbox" id="agrredCheck" onChange={() => setChecked(!isChecked)} />
-                <span>
-                  I accept the
-                  <Link href="#">Term of Conditions</Link>
-                  and
-                  <Link href="#">Privacy Policy</Link>
-                </span>
               </div>
             </div>
           </div>
@@ -198,12 +249,12 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
           >
             BACK
           </Button>
-          <Button type="submit" className="!max-w-[460px]" href="" $variant="blue">
-            CREATE LAUNCHPAD
+          <Button type="submit" className="!max-w-[200px]" href="" $variant="blue">
+            CONTINUE
           </Button>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 

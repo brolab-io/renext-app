@@ -7,6 +7,7 @@ import MetamaskModalStyleWrapper from './Modal.style';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 import Link from 'next/link';
 import { useModal } from '@/hooks/useModal';
+import Image from 'next/image';
 
 type Props = {
   pool_pda: string;
@@ -78,35 +79,38 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
   if (withWhitelist) {
     return (
       <>
-        <MetamaskModalStyleWrapper className='modal_overlay'>
-          <div className='mint_modal_box'>
-            <div className='mint_modal_content'>
-              <div className='modal_header'>
-                <h2>CONNECT WALLET</h2>
-                <p>Please download & install metamask!</p>
-                <button onClick={() => handleMetamaskModal()}>
-                  <FiX />
-                </button>
-              </div>
-              <div className='modal_body text-center'>
-                <div className='wallet_list'>
-                  <Link href='https://metamask.io/download/' target='_blank'>
-                    <img src={metamaskIcon.src} alt='Meta-mask-Image' />
-                    MetaMask
-                    <span>
-                      <FiChevronRight />
-                    </span>
-                  </Link>
+        {isOpen && (
+          <MetamaskModalStyleWrapper className='modal_overlay'>
+            <div className='mint_modal_box'>
+              <div className='mint_modal_content'>
+                <div className='modal_header'>
+                  <h2>CONNECT WALLET</h2>
+                  <p>Please download & install metamask!</p>
+                  <button onClick={() => setIsOpen(false)}>
+                    <FiX />
+                  </button>
                 </div>
-                <div className='modal_bottom_text'>
-                  By connecting your wallet, you agree to our
-                  <Link href='# '>Terms of Service</Link>
-                  <Link href='#'>Privacy Policy</Link>
+                <div className='modal_body text-center'>
+                  <div className='wallet_list'>
+                    <Link href='https://metamask.io/download/' target='_blank'>
+                      {/* <Image src={metamaskIcon.src} alt='Meta-mask-Image' /> */}
+                      MetaMask
+                      <span>
+                        <FiChevronRight />
+                      </span>
+                    </Link>
+                  </div>
+                  <div className='modal_bottom_text'>
+                    By connecting your wallet, you agree to our
+                    <Link href='# '>Terms of Service</Link>
+                    <Link href='#'>Privacy Policy</Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </MetamaskModalStyleWrapper>
+          </MetamaskModalStyleWrapper>
+        )}
+
         <div className='project_card_footer'>
           <Button $sm $variant='mint' onClick={() => setIsOpen(true)}>
             Start Pool with Whitelist

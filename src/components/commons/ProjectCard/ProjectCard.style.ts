@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 
 const ProjectCardStyleWrapper = styled.div`
@@ -99,11 +98,7 @@ const ProjectCardStyleWrapper = styled.div`
   }
 
   &:hover {
-    background-image: radial-gradient(
-      circle,
-      rgba(137, 120, 211, 0.4) 0%,
-      #1e1f35 100%
-    );
+    background-image: radial-gradient(circle, rgba(137, 120, 211, 0.4) 0%, #1e1f35 100%);
 
     .card-hover-wrapper {
       opacity: 1;

@@ -270,6 +270,21 @@ const ApplyFormWrapperStyle = styled.div`
     }
   }
 
+  .w-md-editor-toolbar {
+    svg {
+      height: 16px;
+      width: 16px;
+    }
+  }
+
+  textarea::-moz-selection {
+    background: #6d4afe80 !important;
+  }
+
+  textarea::selection {
+    background: #6d4afe80 !important;
+  }
+
   .kyc_country_dropList {
     position: absolute;
     width: 100%;
