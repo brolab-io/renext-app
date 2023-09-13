@@ -1,24 +1,22 @@
 import Button from '@/components/commons/Button';
 import useStartPool from '@/hooks/program/useStartPool';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { isValidPublicKey } from '@/utils/network.util';
 import MetamaskModalStyleWrapper from './Modal.style';
 import { FiChevronRight, FiX } from 'react-icons/fi';
 import Link from 'next/link';
-import { useModal } from '@/hooks/useModal';
-import Image from 'next/image';
 
 type Props = {
   pool_pda: string;
   withWhitelist?: boolean;
 };
 const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
-  const { walletModalHandle } = useModal();
   const { mutate: startPool, isLoading: isStartingPool } =
     useStartPool(pool_pda);
   const [isOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const ref_input = useRef<HTMLInputElement>(null);
 
   const processCsvFile = async (file: File) => {
     return toast.promise(
@@ -84,28 +82,56 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
             <div className='mint_modal_box'>
               <div className='mint_modal_content'>
                 <div className='modal_header'>
-                  <h2>CONNECT WALLET</h2>
-                  <p>Please download & install metamask!</p>
+                  <h2>Upload Whitelist File</h2>
+                  <p>
+                    Choose your whitelist file to upload (.csv). <br /> Your
+                    whitelist file must contain the &quot;Address&quot; columns
+                    as headers of first collumn:
+                  </p>
                   <button onClick={() => setIsOpen(false)}>
                     <FiX />
                   </button>
                 </div>
                 <div className='modal_body text-center'>
-                  <div className='wallet_list'>
-                    <Link href='https://metamask.io/download/' target='_blank'>
-                      {/* <Image src={metamaskIcon.src} alt='Meta-mask-Image' /> */}
-                      MetaMask
+                  <div
+                    className='wallet_list'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      ref_input.current?.click();
+                    }}
+                  >
+                    <Link href='null' target='_blank'>
+                      Upload a file
                       <span>
                         <FiChevronRight />
                       </span>
                     </Link>
                   </div>
-                  <div className='modal_bottom_text'>
+                  {/* <div className="modal_bottom_text">
                     By connecting your wallet, you agree to our
-                    <Link href='# '>Terms of Service</Link>
-                    <Link href='#'>Privacy Policy</Link>
-                  </div>
+                    <Link href="# ">Terms of Service</Link>
+                    <Link href="#">Privacy Policy</Link>
+                  </div> */}
                 </div>
+                <div className='project_card_footer'>
+                  <Button $sm $variant='mint' onClick={handlerStartPool}>
+                    Start Project
+                  </Button>
+                  <div className='social_links'></div>
+                </div>
+                <input
+                  ref={ref_input}
+                  id='file-upload'
+                  name='file-upload'
+                  type='file'
+                  className='sr-only'
+                  accept='.csv'
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setFile(e.target.files[0]);
+                    }
+                  }}
+                />
               </div>
             </div>
           </MetamaskModalStyleWrapper>
@@ -113,7 +139,7 @@ const StartButton: React.FC<Props> = ({ pool_pda, withWhitelist }) => {
 
         <div className='project_card_footer'>
           <Button $sm $variant='mint' onClick={() => setIsOpen(true)}>
-            Start Pool with Whitelist
+            Start with Whitelist
           </Button>
           <div className='social_links'></div>
         </div>
