@@ -10,19 +10,18 @@ import { BN } from "@project-serum/anchor";
 import DisplayNumber from "@/components/commons/DisplayNumber";
 import ButtonBuy from "./ButtonBuy";
 import useLaunchPool from "@/hooks/program/useLaunchPool";
-import ButtonStart from "./ButtonStart";
 
 type Props = {
   project: TProject;
+  launchPool: ReturnType<typeof useLaunchPool>["data"] | undefined;
 };
-const Actions: React.FC<Props> = ({ project }) => {
+const Actions: React.FC<Props> = ({ project, launchPool }) => {
   const [amount, setAmount] = useState<string | undefined>();
   const { data: usePool } = useUserPool(
     project.launch_pool_pda,
     project.token_address
   );
-  const { data: launchPool } = useLaunchPool(project.launch_pool_pda);
-  console.log({ launchPool });
+
   const handleBuyMax = () => {
     const max = usePool
       ? new BN(project.maximum_token_amount).sub(usePool.amount).toString()
@@ -59,7 +58,6 @@ const Actions: React.FC<Props> = ({ project }) => {
               value={amount}
               disabled={!launchPool?.status.active}
             />
-            <ButtonStart pool={project.launch_pool_pda} />
           </div>
         </div>
         <div className="space-y-5">

@@ -14,15 +14,19 @@ import { TProject } from "@/types/project.type";
 import { formatLamportToNumber, formatToken } from "@/utils/format.util";
 import { useMemo } from "react";
 import { BN } from "@project-serum/anchor";
+import ButtonStart from "../Actions/ButtonStart";
+import useLaunchPool from "@/hooks/program/useLaunchPool";
+import { useDemonAdapter } from "@/hooks/useDemonAdapter";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
 type Props = {
   project: TProject;
+  launchPool: ReturnType<typeof useLaunchPool>["data"] | undefined;
 };
 
-const ProjectInfo: React.FC<Props> = ({ project }) => {
-  const { data: pool } = useProject(project.launch_pool_pda);
+const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
+  const { anchorWallet } = useDemonAdapter();
 
   const CountdownRender = ({
     days,
@@ -86,7 +90,26 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
 
   const _targetedRaise = useMemo(() => {
     if (!pool) return 0;
-    return pool?.poolSize.div(pool.rate.mul(new BN(100))).toString();
+    return formatLamportToNumber(
+      pool?.poolSize.div(pool.rate.mul(new BN(100)))
+    );
+  }, [pool]);
+
+  const _totalRaise = useMemo(() => {
+    if (!pool) return 0;
+    return pool?.status.active || pool?.status.completed
+      ? formatLamportToNumber(
+          pool?.poolSize
+            .sub(pool?.poolSizeRemaining)
+            .div(pool.rate.mul(new BN(100))),
+          pool.tokenMintDecimals
+        )
+      : 0;
+  }, [pool]);
+
+  const _allocation = useMemo(() => {
+    if (!pool) return 0;
+    return formatLamportToNumber(pool?.poolSize, pool.tokenMintDecimals);
   }, [pool]);
 
   return (
@@ -125,18 +148,7 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             <div className="all-raise">
               Total Raise:{" "}
               {pool ? (
-                <DisplayNumber
-                  value={
-                    pool?.status.active || pool?.status.completed
-                      ? formatLamportToNumber(
-                          pool?.poolSize
-                            .sub(pool?.poolSizeRemaining)
-                            .div(pool.rate),
-                          project.token_decimals
-                        )
-                      : 0
-                  }
-                >
+                <DisplayNumber value={_totalRaise}>
                   {project.currency_address.toUpperCase()}
                 </DisplayNumber>
               ) : null}
@@ -150,13 +162,7 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               height={50}
             />
             <div className="allocation">
-              Allocation:{" "}
-              <DisplayNumber
-                value={formatLamportToNumber(
-                  project.token_sale_amount,
-                  project.token_decimals
-                ).toLocaleString()}
-              />{" "}
+              Allocation: <DisplayNumber value={_allocation} />
             </div>
           </div>
           <div className="targeted-raise">
@@ -167,8 +173,9 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             />
             <div className="targeted-raise-amount">
               Targeted Raise:{" "}
-              <DisplayNumber value={formatLamportToNumber(_targetedRaise)} />{" "}
-              {project.currency_address.toUpperCase()}
+              <DisplayNumber value={_targetedRaise}>
+                {project.currency_address.toUpperCase()}
+              </DisplayNumber>
             </div>
           </div>
         </div>
@@ -180,10 +187,17 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
           <Button $sm $variant="mint">
             Claim Token
           </Button>
+
           {/* {project.participants ? (
             <div className="participants">Participants {project.participants}</div>
           ) : null} */}
           <div className="social_links">
+            {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
+              <ButtonStart
+                pool={project.launch_pool_pda}
+                withWhitelist={true}
+              />
+            ) : null}
             {/* {project.socialLinks?.map((profile, i) => (
               <Link key={i} href={profile.url}>
                 <img src={profile.icon} alt="social icon" />

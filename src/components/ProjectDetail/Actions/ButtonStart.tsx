@@ -100,7 +100,6 @@ const ButtonStart: React.FC<Props> = ({
                       <Button
                         disabled={!file || isLoading}
                         onClick={handleStart}
-                        className="bg-[#21D969] text-black text-center !w-full"
                       >
                         Start Pool
                       </Button>
@@ -111,10 +110,7 @@ const ButtonStart: React.FC<Props> = ({
             </div>
           </Dialog>
         </Transition.Root>
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="bg-[#21D969] text-black text-center !w-full"
-        >
+        <Button $xl onClick={() => setIsOpen(true)} className="!h-[50px]">
           Start Pool with Whitelist
         </Button>
       </>
@@ -122,7 +118,12 @@ const ButtonStart: React.FC<Props> = ({
   }
 
   return (
-    <Button $xl onClick={handleStart} disabled={disabled || isLoading}>
+    <Button
+      $xl
+      onClick={handleStart}
+      disabled={disabled || isLoading}
+      className="!h-[50px]"
+    >
       Start Pool
     </Button>
   );

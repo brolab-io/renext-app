@@ -1,26 +1,24 @@
 "use client";
-import useProject from "@/hooks/useProject";
 import ProjectDetailsStyleWrapper from "./ProjectDetails.style";
 import ProjectInfo from "./ProjectInfo";
-import TokenInfo from "./TokenInfo";
-import Sidebar from "./SideBar";
 import Summary from "./Summary";
-import History from "./History";
 import Actions from "./Actions";
 import { TProject } from "@/types/project.type";
+import useLaunchPool from "@/hooks/program/useLaunchPool";
 
 type Props = {
   project: TProject;
 };
 
 const ProjectDetails: React.FC<Props> = ({ project }) => {
+  const { data: launchPool } = useLaunchPool(project.launch_pool_pda);
   return (
     <ProjectDetailsStyleWrapper>
       <div className="container mx-auto p-3 sm:p-0">
         <div className="flex">
           <div className="w-full">
-            <ProjectInfo project={project} />
-            <Actions project={project} />
+            <ProjectInfo project={project} launchPool={launchPool} />
+            <Actions project={project} launchPool={launchPool} />
           </div>
         </div>
 
