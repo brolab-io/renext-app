@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ModalProvider } from "./ModalProvider";
 import RenecWalletProvider from "./RenecWalletProvider";
 import { ToastContainer } from "react-toastify";
+
 export const queryClient = new QueryClient();
 
 const AppProvider: React.FC<React.PropsWithChildren> = ({ children }) => {

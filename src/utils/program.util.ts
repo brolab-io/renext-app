@@ -25,6 +25,10 @@ export async function createNativePool(
   payload: any
 ) {
   const mint = new PublicKey(payload.token_address);
+  // Check token_unlock_date is valid
+  if (dayjs(payload.token_unlock_date).isBefore(dayjs())) {
+    return Promise.reject(new Error("Token unlock date must be greater than current date"));
+  }
   const unlock_date = new BN(dayjs(payload.token_unlock_date).unix());
   const decimals = new BN(payload.token_decimals || 9);
   const rate = new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));

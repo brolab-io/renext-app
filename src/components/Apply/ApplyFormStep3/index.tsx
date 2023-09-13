@@ -72,7 +72,7 @@ const ApplyFormStep3: React.FC<Props> = ({}) => {
           <Controller
             name="project_description"
             render={({ field: { onChange, value } }) => (
-              <div className="relative">
+              <div data-color-mode="dark" className="relative">
                 <div className="absolute -bottom-5 right-4 z-50">
                   <p className="text-xs text-gray-400">
                     <span
@@ -85,6 +85,7 @@ const ApplyFormStep3: React.FC<Props> = ({}) => {
                     / 10000
                   </p>
                 </div>
+                <div className="wmde-markdown-var"> </div>
                 <MDEditor height={300} value={value} onChange={onChange} preview="edit" />
               </div>
             )}
