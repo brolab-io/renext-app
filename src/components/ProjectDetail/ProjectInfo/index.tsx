@@ -80,12 +80,14 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
   }, [pool]);
 
   const _price = useMemo(() => {
-    return 1 / Number(project.presale_rate);
-  }, [project.presale_rate]);
+    if (!pool) return 0;
+    return 1 / Number(pool.rate.mul(new BN(100)));
+  }, [pool]);
 
   const _targetedRaise = useMemo(() => {
-    return (_price * Number(project.token_sale_amount as any)).toString();
-  }, [_price, project.token_sale_amount]);
+    if (!pool) return 0;
+    return pool?.poolSize.div(pool.rate.mul(new BN(100))).toString();
+  }, [pool]);
 
   return (
     <ProjectInfoStyleWrapper className="live_project_wrapper">
@@ -122,17 +124,22 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             </div>
             <div className="all-raise">
               Total Raise:{" "}
-              <DisplayNumber
-                value={
-                  pool?.status.active || pool?.status.completed
-                    ? formatLamportToNumber(
-                        pool?.poolSize.sub(pool?.poolSizeRemaining).mul(_price),
-                        project.token_decimals
-                      )
-                    : 0
-                }
-              />
-              {project.currency_address.toUpperCase()}
+              {pool ? (
+                <DisplayNumber
+                  value={
+                    pool?.status.active || pool?.status.completed
+                      ? formatLamportToNumber(
+                          pool?.poolSize
+                            .sub(pool?.poolSizeRemaining)
+                            .div(pool.rate),
+                          project.token_decimals
+                        )
+                      : 0
+                  }
+                >
+                  {project.currency_address.toUpperCase()}
+                </DisplayNumber>
+              ) : null}
             </div>
           </div>
           <div className="text-center allocation-max">
