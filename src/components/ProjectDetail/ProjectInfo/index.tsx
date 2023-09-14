@@ -19,6 +19,7 @@ import { useDemonAdapter } from "@/hooks/useDemonAdapter";
 import ButtonComplete from "../Actions/ButtonComplete";
 import ButtonClaim from "../Actions/ButtonClaim";
 import ButtonWithdraw from "../Actions/ButtonWithdraw";
+import ButtonUpdateVestingPlan from "../Actions/ButtonUpdateVestingPlan";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
@@ -79,21 +80,16 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   const calculateProgress = useMemo(() => {
     if (!pool) return 0;
     if (pool.status.pending || pool.status.cancelled) return 0;
-    return (
-      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
-        pool.poolSize.toNumber()) *
-      100
-    );
+    return (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() / pool.poolSize.toNumber()) * 100;
   }, [pool]);
 
   const _price = useMemo(() => {
     if (!pool) return 0;
-    return 1 / Number(pool.rate.mul(new BN(100)));
-  }, [pool]);
+    return 1 / (Number(project.presale_rate) * 100);
+  }, [pool, project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
     if (!pool || pool.rate.eq(0)) return 0;
-
     return formatLamportToNumber(pool.poolSize.div(pool.rate.mul(new BN(100))));
   }, [pool]);
 
@@ -101,7 +97,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
       ? formatLamportToNumber(
-          pool.poolSize
+            pool.poolSize
             .sub(pool.poolSizeRemaining)
             .div(pool.rate.mul(new BN(100))),
           pool.tokenMintDecimals
@@ -111,7 +107,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
 
   const _allocation = useMemo(() => {
     if (!pool) return 0;
-    return formatLamportToNumber(pool?.poolSize, pool.tokenMintDecimals);
+    return formatLamportToNumber(pool?.poolSize.toString(), pool.tokenMintDecimals);
   }, [pool]);
 
   return (
@@ -121,28 +117,30 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
           <div className="total-price">
             <div className="flex price-inner">
               <div className="image-icon">
-                <img
-                  src={project.project_logo_url}
-                  alt="icon"
-                  className="h-[100px] w-[100px]"
-                />
+                <img src={project.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
               </div>
               <div className="price-details">
                 <h3>
                   <a>{project.name}</a>
                 </h3>
                 <div className="dsc">
-                  PRICE ({"N/A"}) = {_price.toLocaleString()}{" "}
-                  {project.currency_address.toUpperCase()}
+                  PRICE 1 {project.token_symbol} = {_price} {project.currency_address.toUpperCase()}
                 </div>
                 <div>
                   Project website:{" "}
                   {project.project_website ? (
-                    <Link href={project.project_website} target="_blank">
+                    <Link
+                      href={
+                        project.project_website.startsWith("http")
+                          ? project.project_website
+                          : `//${project.project_website}`
+                      }
+                      target="_blank"
+                    >
                       {project.project_website}
                     </Link>
                   ) : (
-                    "N/A"
+                    project.token_symbol
                   )}
                 </div>
               </div>
@@ -168,7 +166,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             </div>
           </div>
           <div className="targeted-raise">
-            <div className="seles-end-text">Sale End In</div>
+            <div className="seles-end-text">Token Unlocked In</div>
             <Countdown
               date={dayjs(project.token_unlock_date).toString()}
               renderer={CountdownRender}
@@ -190,9 +188,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             <ButtonClaim
               pool={project.launch_pool_pda}
               tokenMint={pool.tokenMint.toString()}
-              disabled={dayjs().isBefore(
-                dayjs(Number(pool?.unlockDate) * 1000)
-              )}
+              disabled={dayjs().isBefore(dayjs(Number(pool?.unlockDate) * 1000))}
             />
           ) : null}
 
@@ -202,10 +198,13 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
           <div className="social_links">
             {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
               !!pool.status.pending ? (
-                <ButtonStart
-                  pool={project.launch_pool_pda}
-                  withWhitelist={!!pool.poolType.whiteList}
-                />
+                <>
+                  <ButtonUpdateVestingPlan pool={project.launch_pool_pda} />
+                  <ButtonStart
+                    pool={project.launch_pool_pda}
+                    withWhitelist={!!pool.poolType.whiteList}
+                  />
+                </>
               ) : !!pool.status.active ? (
                 <ButtonComplete pool={project.launch_pool_pda} />
               ) : !!pool.status.completed ? (

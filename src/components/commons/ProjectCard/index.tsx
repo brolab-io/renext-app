@@ -11,7 +11,8 @@ import dayjs from "dayjs";
 import { BN } from "@project-serum/anchor";
 import { formatToken } from "@/utils/format.util";
 import DisplayNumber from "../DisplayNumber";
-import { MdAttachMoney } from "react-icons/md";
+import { CgWebsite } from "react-icons/cg";
+import { MdEmail, MdAttachMoney } from "react-icons/md";
 
 type Props = {
   project: TProject;
@@ -31,14 +32,10 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
   return (
     <Link href={`/project/${project.slug || project.launch_pool_pda}`}>
       <ProjectCardStyleWrapper className="project_item_wrapper">
-        <div className="project-info grid grid-cols-3 items-center">
-          <img
-            src={project.project_logo_url}
-            alt="project thumb"
-            className="h-[70px] w-[70px]"
-          />
+        <div className="project-info grid grid-cols-[70px,1fr] items-center">
+          <img src={project.project_logo_url} alt="project thumb" className="h-[70px] w-[70px]" />
 
-          <div className="project-auother col-span-2">
+          <div className="project-auother">
             <h4 className="mb-10 truncate">{project.name}</h4>
             <div className="dsc truncate flex items-center gap-1">
               {/* <MdAttachMoney /> */}
@@ -55,9 +52,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
         <div className="project-content">
           <div className="project-header flex justify-between items-center">
             <div className="heading-title">
-              <DisplayDayLeft
-                timestamp={dayjs(project.token_unlock_date).unix()}
-              />
+              <DisplayDayLeft timestamp={dayjs(project.token_unlock_date).unix()} />
             </div>
             <div className="project-icon">
               <Image
@@ -91,7 +86,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
               <DisplayNumber
                 value={
                   (formatToken(
-                    _targetedRaise,
+                    _targetedRaise.toNumber(),
                     project.token_decimals as number
                   ) as unknown as number) * 1
                 }
@@ -105,6 +100,15 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
             </li>
           </ul>
           <div className="social-links">
+            {project.project_website ? (
+              <Link href={project.project_website}>
+                <CgWebsite />
+              </Link>
+            ) : null}
+            <Link href={`mailto:${project.project_email}`}>
+              <MdEmail />
+            </Link>
+
             {/* {socialLinks?.map((profile, i) => (
             <Link key={i} href={profile.url}>
               <img src={profile.icon} alt="social icon" />
