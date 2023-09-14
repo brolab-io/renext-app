@@ -24,10 +24,8 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
   }, [project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
-    if (new BN(project.presale_rate).eq(0)) return new BN(0);
-    return new BN(project.token_sale_amount).div(
-      new BN(project.presale_rate).mul(new BN(100))
-    );
+    if (new BN(project.presale_rate).eq(new BN(0))) return new BN(0);
+    return new BN(project.token_sale_amount).div(new BN(project.presale_rate).mul(new BN(100)));
   }, [project.presale_rate, project.token_sale_amount]);
   return (
     <Link href={`/project/${project.slug || project.launch_pool_pda}`}>
@@ -37,7 +35,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 
           <div className="project-auother">
             <h4 className="mb-10 truncate">{project.name}</h4>
-            <div className="dsc truncate flex items-center gap-1">
+            <div className="flex items-center gap-1 truncate dsc">
               {/* <MdAttachMoney /> */}
               {_price.toString()}
               <Image
@@ -50,7 +48,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
           </div>
         </div>
         <div className="project-content">
-          <div className="project-header flex justify-between items-center">
+          <div className="flex items-center justify-between project-header">
             <div className="heading-title">
               <DisplayDayLeft timestamp={dayjs(project.token_unlock_date).unix()} />
             </div>
