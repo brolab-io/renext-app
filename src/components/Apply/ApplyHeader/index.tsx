@@ -21,7 +21,7 @@ const ApplyHeader: React.FC<Props> = ({ currentPage }) => {
           <div className="lg:col-span-5">
             <div className="breadcrumb_area">
               <div className="breadcrumb_menu">
-                <Link href="# ">Home</Link>
+                <Link href="/">Home</Link>
                 <Image
                   className="heading_shape"
                   src={"/assets/steps.png"}

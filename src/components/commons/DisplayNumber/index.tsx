@@ -3,23 +3,22 @@ import React from "react";
 type Props = {
   value: number | string | undefined;
   children?: React.ReactNode;
+  className?: string;
 };
 
-const DisplayNumber: React.FC<Props> = ({ value, children }) => {
-  if (!value) return null;
+const DisplayNumber: React.FC<Props> = ({ value, children, className }) => {
+  if (value === undefined) return null;
   if (typeof value === "number") {
     return (
-      <span>
-        {value.toLocaleString()}
-        {children}
+      <span className={className}>
+        {value.toLocaleString()} {children}
       </span>
     );
   }
 
   return (
-    <span>
-      {value}
-      {children}
+    <span className={className}>
+      {value} {children}
     </span>
   );
 };

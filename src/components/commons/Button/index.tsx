@@ -8,10 +8,18 @@ type ButtonProps = {
   children: React.ReactNode;
   href?: string;
 } & LinkStyleProps;
-const Button: React.FC<ButtonProps> = ({ children, href, className, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  href,
+  className,
+  ...props
+}) => {
   if (!href) {
     return (
-      <ButtonStyle {...props} className={clsx("btn_wrapper", className)}>
+      <ButtonStyle
+        {...props}
+        className={clsx("btn_wrapper disabled:bg-gray-500", className)}
+      >
         {children}
 
         <div className="hover_shape_wrapper">

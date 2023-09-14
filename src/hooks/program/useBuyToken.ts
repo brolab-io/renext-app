@@ -92,7 +92,7 @@ const useBuyToken = (launch_pool_pda: string) => {
                     autoClose: 5000,
                     isLoading: false,
                 });
-                queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
+                queryClient.invalidateQueries(["project", launch_pool_pda]);
                 queryClient.invalidateQueries([
                     "user-pool",
                     launch_pool_pda,

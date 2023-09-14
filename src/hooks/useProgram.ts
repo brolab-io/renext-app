@@ -49,11 +49,13 @@ export const useProgramAnonymous = () => {
             preflightCommitment: "confirmed",
             commitment: "confirmed",
         });
-        return new anchor.Program(
-            idl as unknown as RenextProgram,
-            programID,
-            provider
-        );
+        return {
+            program: new anchor.Program(
+                idl as unknown as RenextProgram,
+                programID,
+                provider
+            )
+        };
     }, [connection, programID]);
 };
 

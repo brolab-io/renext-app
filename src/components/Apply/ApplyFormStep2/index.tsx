@@ -11,6 +11,7 @@ type Form2 = Pick<
   ApplyFormValues,
   | "token_address"
   | "token_decimals"
+  | "token_symbol"
   | "token_sale_amount"
   | "presale_rate"
   | "currency_address"
@@ -33,10 +34,18 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
   });
 
   const currency = watch("currency_address");
+  const symbol = watch("token_symbol");
 
   const onSubmit = (data: Form2) => {
     updateFormValues(data);
     goToNextStep();
+  };
+
+  const renderTokenSymbol = () => {
+    if (symbol) {
+      return <span className="text-[#6d4afe]">{symbol}</span>;
+    }
+    return "token";
   };
 
   return (
@@ -82,9 +91,21 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                     pattern: {
                       // ONY NUMBER
                       value: /^[0-9]+$/,
-                      message: "Token pre-sale amount must be a valid number",
+                      message: "Token decimal must be a valid number",
                     },
                   })}
+                  error={errors.token_address?.message}
+                  required
+                  className="max-w-[120px]"
+                />
+                <LabelInput
+                  label="Symbol *"
+                  placeholder="e.g.  REX"
+                  {...register("token_symbol", {
+                    required: "Token symbol is required",
+                  })}
+                  minLength={1}
+                  maxLength={6}
                   error={errors.token_address?.message}
                   required
                   className="max-w-[120px]"
@@ -92,7 +113,7 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
               </div>
 
               <LabelInput
-                label="Token Pre-sale Amount *"
+                label={<>{renderTokenSymbol()} Pre-sale Amount *</>}
                 placeholder="e.g.  1000000"
                 {...register("token_sale_amount", {
                   required: "Token pre-sale amount is required",
@@ -107,7 +128,7 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
               />
 
               <div className="w-full form-group">
-                <label>Currency* (User will buy your token by)</label>
+                <label>Currency* (User will buy {renderTokenSymbol()} by)</label>
                 <select
                   className="block"
                   defaultValue="RENEC"
@@ -122,14 +143,18 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
               </div>
 
               <LabelInput
-                label={`Pre-sale Rate * (How many tokens per ${currency})`}
-                placeholder={`e.g.  100 (1 ${currency} = 100 your tokens)`}
+                label={
+                  <>
+                    PRE-SALE RATE * (How many {renderTokenSymbol()} per {currency})
+                  </>
+                }
+                placeholder={`e.g.  100 (1 ${currency} = 100 ${symbol || "your tokens"})`}
                 {...register("presale_rate", {
                   required: "Pre-sale rate is required",
                   pattern: {
                     // ONY NUMBER AND DOT
                     value: /^[0-9.]+$/,
-                    message: "Token pre-sale amount must be a valid number",
+                    message: "Token pre-sale rate must be a valid number",
                   },
                 })}
                 error={errors.presale_rate?.message}
@@ -138,14 +163,14 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
 
               <div className="grid grid-cols-2 gap-4 lg:gap-6">
                 <LabelInput
-                  label="Minimum Token Buy *"
+                  label={<>Minimum {renderTokenSymbol()} Buy *</>}
                   placeholder="e.g.  1"
                   {...register("minimum_token_amount", {
                     required: "Minimum token buy is required",
                     pattern: {
                       // ONY NUMBER AND DOT
                       value: /^[0-9.]+$/,
-                      message: "Token pre-sale amount must be a valid number",
+                      message: "Token minimum amount must be a valid number",
                     },
                   })}
                   error={errors.minimum_token_amount?.message}
@@ -153,14 +178,14 @@ const ApplyFormStep2: React.FC<Props> = ({}) => {
                 />
 
                 <LabelInput
-                  label="Maximum Token Buy *"
+                  label={<>Maximum {renderTokenSymbol()} Buy *</>}
                   placeholder="e.g.  1000"
                   {...register("maximum_token_amount", {
                     required: "Maximum token buy is required",
                     pattern: {
                       // ONY NUMBER AND DOT
                       value: /^[0-9.]+$/,
-                      message: "Token pre-sale amount must be a valid number",
+                      message: "Token minimum amount must be a valid number",
                     },
                   })}
                   error={errors.maximum_token_amount?.message}

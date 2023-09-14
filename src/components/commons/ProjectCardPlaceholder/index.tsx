@@ -2,20 +2,17 @@
 /* eslint-disable @next/next/no-img-element */
 import ProjectCardStyleWrapper from "./ProjectCardPlaceholder.style";
 import CardHover from "../CardHover";
-import dayjs from "dayjs";
 
-type Props = {
-  key?: string;
-};
-const now = dayjs().unix();
-const ProjectCardPlaceholder: React.FC<Props> = ({ key }) => {
+const ProjectCardPlaceholder = () => {
   return (
-    <ProjectCardStyleWrapper className="project_item_wrapper" key={key}>
+    <ProjectCardStyleWrapper className="project_item_wrapper">
       <div className="project-info grid grid-cols-3 items-center">
         <div className="h-[70px] w-[70px] bg-placeholder animate-pulse" />
 
         <div className="project-auother col-span-2">
-          <h4 className="mb-10 truncate text-placeholder bg-placeholder">PROJECT NAME</h4>
+          <h4 className="mb-10 truncate text-placeholder bg-placeholder">
+            PROJECT NAME
+          </h4>
           <div className="dsc text-placeholder bg-placeholder">PRICE</div>
         </div>
       </div>

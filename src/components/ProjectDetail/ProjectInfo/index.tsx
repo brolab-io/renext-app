@@ -2,24 +2,33 @@
 "use client";
 import { zeroPad } from "react-countdown";
 import ProjectInfoStyleWrapper from "./ProjectInfo.style";
-import Button from "@/components/commons/Button";
 import ProgressBar from "@/components/commons/ProgressBar";
 import Link from "next/link";
-import useProject from "@/hooks/useProject";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import DisplayNumber from "@/components/commons/DisplayNumber";
 import { TProject } from "@/types/project.type";
-import { formatToken } from "@/utils/format.util";
+import { formatLamportToNumber } from "@/utils/format.util";
+import { useMemo } from "react";
+import { BN } from "@project-serum/anchor";
+import ButtonStart from "../Actions/ButtonStart";
+import useLaunchPool from "@/hooks/program/useLaunchPool";
+import { useDemonAdapter } from "@/hooks/useDemonAdapter";
+import ButtonComplete from "../Actions/ButtonComplete";
+import ButtonClaim from "../Actions/ButtonClaim";
+import ButtonWithdraw from "../Actions/ButtonWithdraw";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
 type Props = {
   project: TProject;
+  launchPool: ReturnType<typeof useLaunchPool>["data"] | undefined;
 };
 
-const ProjectInfo: React.FC<Props> = ({ project }) => {
+const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
+  const { anchorWallet } = useDemonAdapter();
+
   const CountdownRender = ({
     days,
     hours,
@@ -65,14 +74,44 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
     );
   };
 
-  const calculateProgress = (
-    remaining: number | undefined,
-    allocation: number
-  ) => {
-    if (!remaining || !allocation) return 0;
-    const progress = ((allocation - remaining) / allocation) * 100;
-    return progress;
-  };
+  const calculateProgress = useMemo(() => {
+    if (!pool) return 0;
+    if (pool.status.pending || pool.status.cancelled) return 0;
+    return (
+      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
+        pool.poolSize.toNumber()) *
+      100
+    );
+  }, [pool]);
+
+  const _price = useMemo(() => {
+    if (!pool) return 0;
+    return 1 / Number(pool.rate.mul(new BN(100)));
+  }, [pool]);
+
+  const _targetedRaise = useMemo(() => {
+    if (!pool) return 0;
+    return formatLamportToNumber(
+      pool?.poolSize.div(pool.rate.mul(new BN(100)))
+    );
+  }, [pool]);
+
+  const _totalRaise = useMemo(() => {
+    if (!pool) return 0;
+    return pool?.status.active || pool?.status.completed
+      ? formatLamportToNumber(
+          pool?.poolSize
+            .sub(pool?.poolSizeRemaining)
+            .div(pool.rate.mul(new BN(100))),
+          pool.tokenMintDecimals
+        )
+      : 0;
+  }, [pool]);
+
+  const _allocation = useMemo(() => {
+    if (!pool) return 0;
+    return formatLamportToNumber(pool?.poolSize, pool.tokenMintDecimals);
+  }, [pool]);
 
   return (
     <ProjectInfoStyleWrapper className="live_project_wrapper">
@@ -92,7 +131,8 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
                   <a>{project.name}</a>
                 </h3>
                 <div className="dsc">
-                  PRICE ({0}) = {0} {project.currency_address.toUpperCase()}
+                  PRICE ({"N/A"}) = {_price.toLocaleString()}{" "}
+                  {project.currency_address.toUpperCase()}
                 </div>
                 <div>
                   Project website:{" "}
@@ -108,8 +148,11 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             </div>
             <div className="all-raise">
               Total Raise:{" "}
-              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
-              {project.currency_address.toUpperCase()}
+              {pool ? (
+                <DisplayNumber value={_totalRaise}>
+                  {project.currency_address.toUpperCase()}
+                </DisplayNumber>
+              ) : null}
             </div>
           </div>
           <div className="text-center allocation-max">
@@ -120,8 +163,7 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
               height={50}
             />
             <div className="allocation">
-              Allocation: <DisplayNumber value={0} />{" "}
-              {project.currency_address.toUpperCase()}
+              Allocation: <DisplayNumber value={_allocation} />
             </div>
           </div>
           <div className="targeted-raise">
@@ -132,23 +174,47 @@ const ProjectInfo: React.FC<Props> = ({ project }) => {
             />
             <div className="targeted-raise-amount">
               Targeted Raise:{" "}
-              <DisplayNumber value={formatToken(project.token_sale_amount)} />{" "}
-              {project.currency_address.toUpperCase()}
+              <DisplayNumber value={_targetedRaise}>
+                {project.currency_address.toUpperCase()}
+              </DisplayNumber>
             </div>
           </div>
         </div>
         <div className="progress-inner">
-          <ProgressBar progress={calculateProgress(0, 1)} />
+          <ProgressBar progress={calculateProgress} />
         </div>
 
         <div className="project_card_footer">
-          <Button $sm $variant="mint">
-            Claim Token
-          </Button>
+          {pool && !!pool.status.completed ? (
+            <ButtonClaim
+              pool={project.launch_pool_pda}
+              tokenMint={pool.tokenMint.toString()}
+              disabled={dayjs().isBefore(
+                dayjs(Number(pool?.unlockDate) * 1000)
+              )}
+            />
+          ) : null}
+
           {/* {project.participants ? (
             <div className="participants">Participants {project.participants}</div>
           ) : null} */}
           <div className="social_links">
+            {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
+              !!pool.status.pending ? (
+                <ButtonStart
+                  pool={project.launch_pool_pda}
+                  withWhitelist={!!pool.poolType.whiteList}
+                />
+              ) : !!pool.status.active ? (
+                <ButtonComplete pool={project.launch_pool_pda} />
+              ) : !!pool.status.completed ? (
+                <ButtonWithdraw
+                  pool={project.launch_pool_pda}
+                  currency={Object.keys(pool.currency)[0]}
+                />
+              ) : null
+            ) : null}
+
             {/* {project.socialLinks?.map((profile, i) => (
               <Link key={i} href={profile.url}>
                 <img src={profile.icon} alt="social icon" />

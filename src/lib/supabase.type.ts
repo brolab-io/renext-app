@@ -27,6 +27,7 @@ export interface Database {
           token_address: string;
           token_decimals: number;
           token_sale_amount: string;
+          token_symbol: string;
           token_unlock_date: string;
         };
         Insert: {
@@ -52,6 +53,7 @@ export interface Database {
           token_address: string;
           token_decimals?: number;
           token_sale_amount: string;
+          token_symbol: string;
           token_unlock_date: string;
         };
         Update: {
@@ -77,6 +79,7 @@ export interface Database {
           token_address?: string;
           token_decimals?: number;
           token_sale_amount?: string;
+          token_symbol?: string;
           token_unlock_date?: string;
         };
         Relationships: [];

@@ -3,7 +3,7 @@ import { PublicKey } from "@solana/web3.js";
 import { useQuery } from "@tanstack/react-query";
 
 const useWhiteList = (pda: string | PublicKey) => {
-    const program = useProgramAnonymous();
+    const { program } = useProgramAnonymous();
     return useQuery(
         ["whitelist-pool", pda],
         async () => {
