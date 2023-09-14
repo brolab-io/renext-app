@@ -12,7 +12,7 @@ import { BN } from "@project-serum/anchor";
 import { formatToken } from "@/utils/format.util";
 import DisplayNumber from "../DisplayNumber";
 import { CgWebsite } from "react-icons/cg";
-import { MdEmail } from "react-icons/md";
+import { MdEmail, MdAttachMoney } from "react-icons/md";
 
 type Props = {
   project: TProject;
@@ -24,7 +24,10 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
   }, [project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
-    return new BN(project.token_sale_amount).div(new BN(project.presale_rate).mul(new BN(100)));
+    if (new BN(project.presale_rate).eq(0)) return new BN(0);
+    return new BN(project.token_sale_amount).div(
+      new BN(project.presale_rate).mul(new BN(100))
+    );
   }, [project.presale_rate, project.token_sale_amount]);
   return (
     <Link href={`/project/${project.slug || project.launch_pool_pda}`}>
@@ -34,8 +37,15 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 
           <div className="project-auother">
             <h4 className="mb-10 truncate">{project.name}</h4>
-            <div className="dsc">
-              PRICE ({project.currency_address.toUpperCase()}) = {_price.toString()}
+            <div className="dsc truncate flex items-center gap-1">
+              {/* <MdAttachMoney /> */}
+              {_price.toString()}
+              <Image
+                src={`/assets/${project.currency_address.toLocaleLowerCase()}.png`}
+                alt="coin icon"
+                width={20}
+                height={20}
+              />
             </div>
           </div>
         </div>
