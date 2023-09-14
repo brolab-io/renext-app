@@ -1,15 +1,12 @@
 "use client";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import {
-  SectionTitle,
-  SectionTitleWrapper,
-} from "@/components/commons/SectionTitle";
+import { SectionTitle, SectionTitleWrapper } from "@/components/commons/SectionTitle";
 import ExploreProjectsStyleWrapper from "./ExploreProjects.style";
 
 import Button from "@/components/commons/Button";
 import ProjectTab from "./ProjectTab";
 
-const TABS = ["On Going", "Upcomming", "Ended"];
+const TABS = ["On Going", "Ended"];
 
 const ExploreProjects = () => {
   return (
@@ -23,23 +20,16 @@ const ExploreProjects = () => {
             <TabList>
               {TABS.map((child, i) => (
                 <Tab key={i}>
-                  <Button
-                    $variant="outline"
-                    $sm
-                    onClick={(e) => e.preventDefault()}
-                  >
+                  <Button $variant="outline" $sm onClick={(e) => e.preventDefault()}>
                     {child}
                   </Button>
                 </Tab>
               ))}
             </TabList>
 
-            {TABS.map((items, i) => (
-              <TabPanel
-                key={i}
-                className="tabs-row grid grid-cols-1 sm:grid-cols-3 gap-[30px]"
-              >
-                <ProjectTab type={items} />
+            {TABS.map((tabItem, i) => (
+              <TabPanel key={i} className="tabs-row grid grid-cols-1 sm:grid-cols-3 gap-[30px]">
+                <ProjectTab type={tabItem} />
               </TabPanel>
             ))}
           </Tabs>

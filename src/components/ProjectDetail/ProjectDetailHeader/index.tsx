@@ -17,10 +17,10 @@ const ProjectDetailHeader: React.FC<Props> = ({ currentPage }) => {
         <div>
           <div className="breadcrumb_area">
             <div className="breadcrumb_menu">
-              <Link href="# ">
+              <Link href="/">
                 Home <span>.</span>
               </Link>
-              <Link href="# ">
+              <Link href="/explore">
                 Projects <span>.</span>
               </Link>
               <p>{currentPage && currentPage}</p>

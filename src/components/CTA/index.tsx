@@ -15,7 +15,7 @@ const CTA = () => {
           <div className="dsc">
             If you want to lanuch an IGO/IDO, It will be your perfect choice
           </div>
-          <Button $variant="mint" $md href="/project-apply">
+          <Button $variant="mint" $md href="/apply">
             Apply now
           </Button>
           <CardHover />

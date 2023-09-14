@@ -7,31 +7,23 @@ import {
   MdOutlineContentCopy,
   MdOutlinePublishedWithChanges,
   MdMoneyOff,
+  MdArticle,
 } from "react-icons/md";
 import { useWallet } from "@solana/wallet-adapter-react";
-import React, {
-  MouseEventHandler,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import React, { MouseEventHandler, PropsWithChildren, useCallback, useMemo, useState } from "react";
 import Button from "../Button";
 import Image from "next/image";
 import { useModal } from "@/hooks/useModal";
+import { useRouter } from "next/navigation";
 
-type Props = {} & PropsWithChildren<{}> &
-  React.ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = {} & PropsWithChildren<{}> & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const ConnectWalletButton: React.FC<Props> = ({
-  children,
-  className,
-  ...props
-}) => {
+const ConnectWalletButton: React.FC<Props> = ({ children, className, ...props }) => {
   const { wallet, connecting, connected, publicKey, disconnect } = useWallet();
   const { data: balance = 0 } = useBalance(publicKey);
   const [copied, setCopied] = useState(false);
   const { walletModalHandle } = useModal();
+  const router = useRouter();
 
   const handleClick: MouseEventHandler<HTMLButtonElement> = useCallback(
     (event) => {
@@ -64,6 +56,10 @@ const ConnectWalletButton: React.FC<Props> = ({
     walletModalHandle();
   }, [disconnect, walletModalHandle]);
 
+  const handleGoToMyProjects = useCallback(() => {
+    router.push("/my-projects");
+  }, [router]);
+
   if (connected && publicKey)
     return (
       <div className="wallet_btn">
@@ -82,6 +78,10 @@ const ConnectWalletButton: React.FC<Props> = ({
           <button onClick={handleChangeWallet}>
             <MdOutlinePublishedWithChanges />
             Change wallet
+          </button>
+          <button onClick={handleGoToMyProjects}>
+            <MdArticle />
+            My Projects
           </button>
           <button onClick={disconnect}>
             <MdMoneyOff />

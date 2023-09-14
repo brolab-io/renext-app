@@ -12,8 +12,8 @@ import { usePathname } from "next/navigation";
 import { useModal } from "@/hooks/useModal";
 import WalletModal from "@/components/commons/Modal/WalletModal";
 import dynamic from "next/dynamic";
+import { useAnchorWallet } from "@solana/wallet-adapter-react";
 // import ConnectWalletButton from "@/components/commons/WalletButton";
-const data = getMenuData();
 
 type MenuProps = {
   className?: string;
@@ -32,6 +32,8 @@ const ConnectWalletButton = dynamic(() => import("@/components/commons/WalletBut
 
 const MainMenu: React.FC<MenuProps> = ({ className }) => {
   const path = usePathname();
+  const wallet = useAnchorWallet();
+  const menuData = useMemo(() => getMenuData(!!wallet?.publicKey), [wallet?.publicKey]);
 
   const isOnPage = useMemo(() => {
     return onPagePath.findIndex((item) => path.includes(item)) > -1;
@@ -67,7 +69,7 @@ const MainMenu: React.FC<MenuProps> = ({ className }) => {
               <div className="gamfi_menu_list">
                 <ul>
                   {/* menu  */}
-                  {data?.map((menu, i) => {
+                  {menuData?.map((menu, i) => {
                     const subMenus = menu.subMenus || [];
                     return (
                       <li key={i}>

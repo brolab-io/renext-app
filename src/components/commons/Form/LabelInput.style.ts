@@ -13,7 +13,7 @@ const LabelInputStyleWrapper = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 45px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9) !important;
     margin-bottom: 23px;
     border-radius: 0;
 

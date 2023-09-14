@@ -36,6 +36,7 @@ export type ApplyFormValues = {
   presale_rate: string;
   token_unlock_date: string;
   token_decimals: number;
+  token_symbol: string;
   campaign_type: string;
   currency: "RENEC" | "REUSD";
   currency_address: string;
@@ -46,7 +47,7 @@ const Provider: React.FC<PropsWithChildren> = ({ children }) => {
   const [formValues, setFormValues] = useState<Partial<ApplyFormValues>>({
     token_decimals: 9,
     // yyyy/mm/ddThh:mm
-    token_unlock_date: dayjs().format().substring(0, "yyyy/mm/ddThh:mm".length),
+    token_unlock_date: "",
     project_category: "DEFI",
     project_description: "# PROJECT DESCRIPTION\n",
     currency_address: "RENEC",
