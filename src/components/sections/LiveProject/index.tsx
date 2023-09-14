@@ -151,7 +151,7 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
             </div>
             <div className="text-center allocation-max">
               <Image
-                src={`/assets/${item.currency_address}.png`}
+                src={`/assets/${item.currency_address.toLowerCase()}.png`}
                 alt="icon"
                 width={50}
                 height={50}
