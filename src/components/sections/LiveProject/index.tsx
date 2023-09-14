@@ -37,7 +37,10 @@ const LiveProject = () => {
     slidesToScroll: 1,
   };
 
-  const calculateProgress = (remaining: number | undefined, allocation: number) => {
+  const calculateProgress = (
+    remaining: number | undefined,
+    allocation: number
+  ) => {
     if (!remaining || !allocation) return 0;
     const progress = ((allocation - remaining) / allocation) * 100;
     return progress;
@@ -101,7 +104,11 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
   const calculatedProgress = useMemo(() => {
     if (!pool) return 0;
     if (pool.status.pending || pool.status.cancelled) return 0;
-    return (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() / pool.poolSize.toNumber()) * 100;
+    return (
+      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
+        pool.poolSize.toNumber()) *
+      100
+    );
   }, [pool]);
 
   const _price = useMemo(() => {
@@ -111,7 +118,9 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
 
   const _targetedRaise = useMemo(() => {
     if (!pool) return 0;
-    return formatLamportToNumber(pool?.poolSize.div(pool.rate.mul(new BN(100))).toString());
+    return formatLamportToNumber(
+      pool?.poolSize.div(pool.rate.mul(new BN(100))).toString()
+    );
   }, [pool]);
 
   const _totalRaise = useMemo(() => {
@@ -127,6 +136,14 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
       : 0;
   }, [pool]);
 
+  const _allocation = useMemo(() => {
+    if (!pool) return 0;
+    return formatLamportToNumber(
+      pool?.poolSize.toString(),
+      pool.tokenMintDecimals
+    );
+  }, [pool]);
+
   return (
     <SliderItem>
       <Link href={`/project/${item.slug || item.launch_pool_pda}`}>
@@ -135,7 +152,11 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
             <div className="total-price">
               <div className="flex price-inner mb-11 md:mb-5">
                 <div className="image-icon">
-                  <img src={item.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
+                  <img
+                    src={item.project_logo_url}
+                    alt="icon"
+                    className="h-[100px] w-[100px]"
+                  />
                 </div>
                 <div className="price-details">
                   <h3 className="mb-4">{item.name}</h3>
@@ -146,7 +167,12 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
                 </div>
               </div>
               <div className="all-raise">
-                Total Raise: <DisplayNumber value={0} /> {item.currency_address.toUpperCase()}
+                Total Raise:{" "}
+                {pool ? (
+                  <DisplayNumber value={_totalRaise}>
+                    {item.currency_address.toUpperCase()}
+                  </DisplayNumber>
+                ) : null}
               </div>
             </div>
             <div className="text-center allocation-max">
@@ -157,26 +183,20 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
                 height={50}
               />
               <div className="allocation">
-                {/* Allocation: <DisplayNumber value={item.allocation} />{" "} */}
-                {item.token_symbol.toUpperCase()}
+                Allocation: <DisplayNumber value={_allocation} />
               </div>
             </div>
             <div className="targeted-raise">
               <div className="seles-end-text">Token Unlocked In</div>
-              <Countdown date={item.token_unlock_date.toString()} renderer={CountdownRender} />
+              <Countdown
+                date={item.token_unlock_date.toString()}
+                renderer={CountdownRender}
+              />
 
               <div className="targeted-raise-amount">
                 Targeted Raise:{" "}
-                <DisplayNumber
-                  value={
-                    (formatToken(
-                      _targetedRaise,
-                      item.token_decimals as number
-                    ) as unknown as number) * 1
-                  }
-                >
-                  {" "}
-                  {item.currency_address}
+                <DisplayNumber value={_targetedRaise}>
+                  {item.currency_address.toUpperCase()}
                 </DisplayNumber>
               </div>
             </div>
