@@ -2,6 +2,7 @@
 import Button from "@/components/commons/Button";
 import useClaimToken from "@/hooks/program/useClaimToken";
 import useUserPool from "@/hooks/program/useUserPool";
+import { BN } from "bn.js";
 import { useMemo } from "react";
 
 type Props = {
@@ -14,8 +15,8 @@ const ButtonClaim: React.FC<Props> = ({ pool, tokenMint, disabled }) => {
   const { data } = useUserPool(pool, tokenMint);
 
   const _disabled = useMemo(() => {
-    if (disabled || isLoading || !data || data.amount.eq(0)) return true;
-    return data.amount.sub(data.claimed).eq(0);
+    if (disabled || isLoading || !data || data.amount.eq(new BN(0))) return true;
+    return data.amount.sub(data.claimed).eq(new BN(0));
   }, [data, disabled, isLoading]);
 
   return (

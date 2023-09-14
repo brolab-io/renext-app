@@ -89,17 +89,18 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   }, [pool, project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
-    if (!pool || pool.rate.eq(0)) return 0;
-    return formatLamportToNumber(pool.poolSize.div(pool.rate.mul(new BN(100))));
+    if (!pool || pool.rate.eq(new BN(0))) return 0;
+    return formatLamportToNumber(pool.poolSize.div(pool.rate.mul(new BN(100))).toString());
   }, [pool]);
 
   const _totalRaise = useMemo(() => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
       ? formatLamportToNumber(
-            pool.poolSize
+          pool.poolSize
             .sub(pool.poolSizeRemaining)
-            .div(pool.rate.mul(new BN(100))),
+            .div(pool.rate.mul(new BN(100)))
+            .toString(),
           pool.tokenMintDecimals
         )
       : 0;

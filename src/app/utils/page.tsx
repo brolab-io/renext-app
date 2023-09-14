@@ -75,7 +75,7 @@ const UtilPage = () => {
           associatedTokenAccount,
           publicKey,
           [],
-          quantity.toString()
+          new BN(quantity)
         );
         const recentBlockhash = await connection.getLatestBlockhash();
 
@@ -139,7 +139,7 @@ const UtilPage = () => {
           destATA,
           publicKey,
           [],
-          new BN(amount.toString()).mul(new BN(10).pow(new BN(decimals.toString()))).toString()
+          new BN(amount.toString()).mul(new BN(10).pow(new BN(decimals.toString())))
         );
 
         const recentBlockhash = await connection.getLatestBlockhash();
@@ -173,7 +173,7 @@ const UtilPage = () => {
   return (
     <div>
       <h1>Util Page</h1>
-      <div className="p-3 grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-2 gap-5 p-3">
         <input
           className="text-black"
           type="number"
@@ -193,14 +193,14 @@ const UtilPage = () => {
         </div>
         <div>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
             onClick={createTokenMint}
           >
             Create Token
           </button>
         </div>
       </div>
-      <div className="p-3 grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-5 p-3">
         <div>
           <label htmlFor="">Token mint</label>
           <input
@@ -222,7 +222,7 @@ const UtilPage = () => {
 
         <div>
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
             onClick={transferToken}
           >
             Transfer
