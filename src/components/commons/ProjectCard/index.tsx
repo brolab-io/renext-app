@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import { BN } from "@project-serum/anchor";
 import { formatToken } from "@/utils/format.util";
 import DisplayNumber from "../DisplayNumber";
+import { MdAttachMoney } from "react-icons/md";
 
 type Props = {
   project: TProject;
@@ -22,6 +23,7 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
   }, [project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
+    if (new BN(project.presale_rate).eq(0)) return new BN(0);
     return new BN(project.token_sale_amount).div(
       new BN(project.presale_rate).mul(new BN(100))
     );
@@ -38,9 +40,15 @@ const ProjectCard: React.FC<Props> = ({ project }) => {
 
           <div className="project-auother col-span-2">
             <h4 className="mb-10 truncate">{project.name}</h4>
-            <div className="dsc">
-              PRICE ({project.currency_address.toUpperCase()}) ={" "}
+            <div className="dsc truncate flex items-center gap-1">
+              {/* <MdAttachMoney /> */}
               {_price.toString()}
+              <Image
+                src={`/assets/${project.currency_address.toLocaleLowerCase()}.png`}
+                alt="coin icon"
+                width={20}
+                height={20}
+              />
             </div>
           </div>
         </div>

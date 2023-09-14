@@ -1,5 +1,6 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+
+/* eslint-disable @next/next/no-img-element */
 import { zeroPad } from "react-countdown";
 import ProjectInfoStyleWrapper from "./ProjectInfo.style";
 import ProgressBar from "@/components/commons/ProgressBar";
@@ -27,6 +28,7 @@ type Props = {
 };
 
 const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
+  console.log({ pool });
   const { anchorWallet } = useDemonAdapter();
 
   const CountdownRender = ({
@@ -90,18 +92,17 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   }, [pool]);
 
   const _targetedRaise = useMemo(() => {
-    if (!pool) return 0;
-    return formatLamportToNumber(
-      pool?.poolSize.div(pool.rate.mul(new BN(100)))
-    );
+    if (!pool || pool.rate.eq(0)) return 0;
+
+    return formatLamportToNumber(pool.poolSize.div(pool.rate.mul(new BN(100))));
   }, [pool]);
 
   const _totalRaise = useMemo(() => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
       ? formatLamportToNumber(
-          pool?.poolSize
-            .sub(pool?.poolSizeRemaining)
+          pool.poolSize
+            .sub(pool.poolSizeRemaining)
             .div(pool.rate.mul(new BN(100))),
           pool.tokenMintDecimals
         )
