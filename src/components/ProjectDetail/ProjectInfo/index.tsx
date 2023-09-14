@@ -165,7 +165,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             </div>
           </div>
           <div className="targeted-raise">
-            <div className="seles-end-text">Sale End In</div>
+            <div className="seles-end-text">Token Unlocked In</div>
             <Countdown
               date={dayjs(project.token_unlock_date).toString()}
               renderer={CountdownRender}

@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
 import AppProvider from "@/components/providers/AppProvider";
 import MainMenu from "@/components/Header/MainMenu";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
