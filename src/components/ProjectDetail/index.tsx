@@ -1,10 +1,11 @@
 "use client";
 import ProjectDetailsStyleWrapper from "./ProjectDetails.style";
-import ProjectInfo from "./ProjectInfo";
+
 import Summary from "./Summary";
 import Actions from "./Actions";
 import { TProject } from "@/types/project.type";
 import useLaunchPool from "@/hooks/program/useLaunchPool";
+import ProjectInfo from "./ProjectInfo";
 
 type Props = {
   project: TProject;

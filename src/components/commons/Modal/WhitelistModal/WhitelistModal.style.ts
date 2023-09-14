@@ -120,7 +120,7 @@ const WhitelistModalStyleWrapper = styled.div`
   }
 
   .wallet_list {
-    a {
+    div {
       display: flex;
       align-items: center;
       column-gap: 25px;

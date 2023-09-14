@@ -2,27 +2,17 @@
 import { FiChevronRight, FiX } from "react-icons/fi";
 import Button from "../../Button";
 import WhitelistModalStyleWrapper from "./WhitelistModal.style";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { isValidPublicKey } from "@/utils/network.util";
-import { useQuery } from "@tanstack/react-query";
-import useAsync from "@/hooks/useAsync";
-import useStartPool from "@/hooks/program/useStartPool";
+import { WhitelistModalProps } from ".";
 
-type WhitelistModalProps = {
-  setIsOpen: (isOpen: boolean) => void;
-  pool_pda: string;
-};
-
-const WhitelistModal: React.FC<WhitelistModalProps> = ({
+export const WhitelistModal: React.FC<WhitelistModalProps> = ({
   setIsOpen,
-  pool_pda,
 }) => {
   const ref_input = useRef<HTMLInputElement>(null);
   const [csvFile, setFile] = useState<File | null>(null);
   const [whitelist, setWhitelist] = useState<string[]>([]);
-  const { mutate, isLoading: isStartingPool } = useStartPool(pool_pda);
 
   const processCsvFile = useCallback(async () => {
     if (!csvFile) {
@@ -69,13 +59,13 @@ const WhitelistModal: React.FC<WhitelistModalProps> = ({
     }
     try {
       console.log({ whitelist });
-      mutate(whitelist);
+      //   startPool(csv);
     } catch (error) {
       toast.error((error as Error).message);
     } finally {
       setIsOpen(false);
     }
-  }, [csvFile, mutate, setIsOpen, whitelist]);
+  }, [csvFile, setIsOpen]);
 
   return (
     <WhitelistModalStyleWrapper className="modal_overlay">
@@ -137,5 +127,3 @@ const WhitelistModal: React.FC<WhitelistModalProps> = ({
     </WhitelistModalStyleWrapper>
   );
 };
-
-export default WhitelistModal;

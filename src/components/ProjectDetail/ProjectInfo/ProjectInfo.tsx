@@ -5,30 +5,18 @@ import ProjectInfoStyleWrapper from "./ProjectInfo.style";
 import Button from "@/components/commons/Button";
 import ProgressBar from "@/components/commons/ProgressBar";
 import Link from "next/link";
-import useProject from "@/hooks/useProject";
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import DisplayNumber from "@/components/commons/DisplayNumber";
-import { TProject } from "@/types/project.type";
-import { formatLamportToNumber, formatToken } from "@/utils/format.util";
+import { formatLamportToNumber } from "@/utils/format.util";
 import { useMemo } from "react";
 import { BN } from "@project-serum/anchor";
 import ButtonStart from "../Actions/ButtonStart";
-import useLaunchPool from "@/hooks/program/useLaunchPool";
 import { useDemonAdapter } from "@/hooks/useDemonAdapter";
 import ButtonComplete from "../Actions/ButtonComplete";
-import ButtonClaim from "../Actions/ButtonClaim";
-import ButtonWithdraw from "../Actions/ButtonWithdraw";
-// @ts-ignore
-const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
+import { Props, Countdown } from ".";
 
-type Props = {
-  project: TProject;
-  launchPool: ReturnType<typeof useLaunchPool>["data"] | undefined;
-};
-
-const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
+export const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   const { anchorWallet } = useDemonAdapter();
 
   const CountdownRender = ({
@@ -187,36 +175,24 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
         </div>
 
         <div className="project_card_footer">
-          {pool && !!pool.status.completed ? (
-            <ButtonClaim
-              pool={project.launch_pool_pda}
-              tokenMint={pool.tokenMint.toString()}
-              disabled={dayjs().isBefore(
-                dayjs(Number(pool?.unlockDate) * 1000)
-              )}
-            />
-          ) : null}
+          <Button $sm $variant="mint">
+            Claim Token
+          </Button>
 
           {/* {project.participants ? (
-            <div className="participants">Participants {project.participants}</div>
-          ) : null} */}
+              <div className="participants">Participants {project.participants}</div>
+            ) : null} */}
           <div className="social_links">
-            {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
-              !!pool.status.pending ? (
-                <ButtonStart
-                  pool={project.launch_pool_pda}
-                  withWhitelist={true}
-                />
-              ) : !!pool.status.active ? (
-                <ButtonComplete pool={project.launch_pool_pda} />
-              ) : !!pool.status.completed ? (
-                <ButtonWithdraw
-                  pool={project.launch_pool_pda}
-                  currency={Object.keys(pool.currency)[0]}
-                />
-              ) : null
+            {pool &&
+            anchorWallet?.publicKey.equals(pool?.authority) &&
+            !!pool.status.pending ? (
+              <ButtonStart
+                pool={project.launch_pool_pda}
+                withWhitelist={true}
+              />
+            ) : !!pool?.status.active ? (
+              <ButtonComplete />
             ) : null}
-
             {/* {project.socialLinks?.map((profile, i) => (
               <Link key={i} href={profile.url}>
                 <img src={profile.icon} alt="social icon" />
@@ -228,5 +204,3 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
     </ProjectInfoStyleWrapper>
   );
 };
-
-export default ProjectInfo;

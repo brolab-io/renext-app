@@ -95,11 +95,6 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
               </DisplayNumber>
             </li>
           </ul>
-          {/* <div className="flex justify-center">
-            <Button $xxl $variant="mint" onClick={handleBuy}>
-              Claim
-            </Button>
-          </div> */}
         </div>
       </div>
     </ActionsStyleWrapper>
