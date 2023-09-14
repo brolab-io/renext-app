@@ -2,16 +2,14 @@
 "use client";
 import { zeroPad } from "react-countdown";
 import ProjectInfoStyleWrapper from "./ProjectInfo.style";
-import Button from "@/components/commons/Button";
 import ProgressBar from "@/components/commons/ProgressBar";
 import Link from "next/link";
-import useProject from "@/hooks/useProject";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import DisplayNumber from "@/components/commons/DisplayNumber";
 import { TProject } from "@/types/project.type";
-import { formatLamportToNumber, formatToken } from "@/utils/format.util";
+import { formatLamportToNumber } from "@/utils/format.util";
 import { useMemo } from "react";
 import { BN } from "@project-serum/anchor";
 import ButtonStart from "../Actions/ButtonStart";
@@ -205,7 +203,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
               !!pool.status.pending ? (
                 <ButtonStart
                   pool={project.launch_pool_pda}
-                  withWhitelist={true}
+                  withWhitelist={!!pool.poolType.whiteList}
                 />
               ) : !!pool.status.active ? (
                 <ButtonComplete pool={project.launch_pool_pda} />

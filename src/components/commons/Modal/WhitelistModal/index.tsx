@@ -2,12 +2,9 @@
 import { FiChevronRight, FiX } from "react-icons/fi";
 import Button from "../../Button";
 import WhitelistModalStyleWrapper from "./WhitelistModal.style";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { isValidPublicKey } from "@/utils/network.util";
-import { useQuery } from "@tanstack/react-query";
-import useAsync from "@/hooks/useAsync";
 import useStartPool from "@/hooks/program/useStartPool";
 
 type WhitelistModalProps = {
