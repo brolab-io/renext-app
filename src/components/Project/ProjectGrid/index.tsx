@@ -1,10 +1,14 @@
 import ProjectItems from "./ProjectItems";
 import ProjectsGridStyleWrapper from "./ProjectsGrid.style";
 
-const ProjectsGrid = () => {
+type Props = {
+  owner?: string;
+};
+
+const ProjectsGrid: React.FC<Props> = ({ owner }) => {
   return (
     <ProjectsGridStyleWrapper>
-      <ProjectItems />
+      <ProjectItems owner={owner} />
     </ProjectsGridStyleWrapper>
   );
 };

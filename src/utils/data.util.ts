@@ -1,48 +1,57 @@
-export const getMenuData = () => {
-    return [
+export const getMenuData = (isLoggedIn = false) => {
+  return [
+    {
+      id: "1W6WV",
+      title: "Home",
+      url: "/",
+    },
+    {
+      id: "2ZYYU",
+      title: "Projects",
+      url: "#",
+      subMenus: [
         {
-            id: "1W6WV",
-            title: "Home",
-            url: "/",
+          id: "0300T",
+          title: "Explore",
+          url: "/explore",
         },
         {
-            id: "2ZYYU",
-            title: "Projects",
-            url: "#",
-            subMenus: [
-                {
-                    id: "0300T",
-                    title: "Explore",
-                    url: "/explore",
-                },
-                {
-                    id: "4XZ00",
-                    title: "Featured Projects",
-                    url: "/featured-projects",
-                },
-            ],
+          id: "4XZ00",
+          title: "Feature Projects",
+          url: "/feature-projects",
+        },
+      ],
+    },
+    {
+      id: "ZZUVV",
+      title: "About",
+      url: "#",
+      subMenus: [
+        {
+          id: "PMQ60",
+          title: "Roadmap Details",
+          url: "/roadmap-details",
         },
         {
-            id: "ZZUVV",
-            title: "About",
-            url: "#",
-            subMenus: [
-                {
-                    id: "PMQ60",
-                    title: "Roadmap Details",
-                    url: "/roadmap-details",
-                },
-                {
-                    id: "39X8V",
-                    title: "Team Details",
-                    url: "/team-details",
-                },
-                {
-                    id: "LTM20",
-                    title: "Contact",
-                    url: "/contact",
-                },
-            ],
+          id: "39X8V",
+          title: "Team Details",
+          url: "/team-details",
         },
-    ];
-}
+        {
+          id: "LTM20",
+          title: "Contact",
+          url: "/contact",
+        },
+      ],
+    },
+    ...(isLoggedIn
+      ? [
+          {
+            id: "4XZ00",
+            title: "My Profile",
+            url: "/user",
+          },
+        ]
+      : []),
+  ];
+};

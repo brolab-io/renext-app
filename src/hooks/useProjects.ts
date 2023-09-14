@@ -5,9 +5,13 @@ import axios from "axios";
 
 const LIMIT = 9;
 
-const useProjects = (type: string = "On Going") => {
+const useProjects = (type: string = "On Going", owner?: string, currency?: string) => {
+  const status = {
+    "On Going": "on-going",
+    Ended: "ended",
+  }[type];
   return useInfiniteQuery(
-    ["projects", type],
+    ["projects", status, owner, currency],
     async ({ pageParam }) => {
       const limit = pageParam?.limit || LIMIT;
       const offset = pageParam?.offset || 0;
@@ -24,6 +28,9 @@ const useProjects = (type: string = "On Going") => {
           params: {
             offset,
             limit,
+            owner,
+            status,
+            currency,
           },
         })
         .then((res) => res.data);

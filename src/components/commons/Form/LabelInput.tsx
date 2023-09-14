@@ -4,7 +4,7 @@ import LabelInputStyleWrapper from "./LabelInput.style";
 import clsx from "clsx";
 
 type Props = {
-  label: string;
+  label: string | React.ReactNode;
   name: string;
   error?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
