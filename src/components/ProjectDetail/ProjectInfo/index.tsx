@@ -80,35 +80,39 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   const calculateProgress = useMemo(() => {
     if (!pool) return 0;
     if (pool.status.pending || pool.status.cancelled) return 0;
-    return (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() / pool.poolSize.toNumber()) * 100;
+    return (
+      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
+        pool.poolSize.toNumber()) *
+      100
+    );
   }, [pool]);
 
   const _price = useMemo(() => {
     if (!pool) return 0;
-    return 1 / (Number(project.presale_rate) * 100);
+    return Number(project.presale_rate) / 10000;
   }, [pool, project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
     if (!pool || pool.rate.eq(new BN(0))) return 0;
-    return formatLamportToNumber(pool.poolSize.div(pool.rate.mul(new BN(100))).toString());
-  }, [pool]);
+
+    return formatLamportToNumber(pool.poolSize.toString()) * _price;
+  }, [_price, pool]);
 
   const _totalRaise = useMemo(() => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
       ? formatLamportToNumber(
-          pool.poolSize
-            .sub(pool.poolSizeRemaining)
-            .div(pool.rate.mul(new BN(100)))
-            .toString(),
-          pool.tokenMintDecimals
-        )
+          pool.poolSize.sub(pool.poolSizeRemaining).toString()
+        ) * _price
       : 0;
-  }, [pool]);
+  }, [_price, pool]);
 
   const _allocation = useMemo(() => {
     if (!pool) return 0;
-    return formatLamportToNumber(pool?.poolSize.toString(), pool.tokenMintDecimals);
+    return formatLamportToNumber(
+      pool?.poolSize.toString(),
+      pool.tokenMintDecimals
+    );
   }, [pool]);
 
   return (
@@ -118,14 +122,19 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
           <div className="total-price">
             <div className="flex price-inner">
               <div className="image-icon">
-                <img src={project.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
+                <img
+                  src={project.project_logo_url}
+                  alt="icon"
+                  className="h-[100px] w-[100px]"
+                />
               </div>
               <div className="price-details">
                 <h3>
                   <a>{project.name}</a>
                 </h3>
                 <div className="dsc">
-                  PRICE 1 {project.token_symbol} = {_price} {project.currency_address.toUpperCase()}
+                  PRICE 1 {project.token_symbol} = {_price}{" "}
+                  {project.currency_address.toUpperCase()}
                 </div>
                 <div>
                   Project website:{" "}
@@ -189,14 +198,16 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             <ButtonClaim
               pool={project.launch_pool_pda}
               tokenMint={pool.tokenMint.toString()}
-              disabled={dayjs().isBefore(dayjs(Number(pool?.unlockDate) * 1000))}
+              disabled={dayjs().isBefore(
+                dayjs(Number(pool?.unlockDate) * 1000)
+              )}
             />
           ) : null}
 
           {/* {project.participants ? (
             <div className="participants">Participants {project.participants}</div>
           ) : null} */}
-          <div className="social_links">
+          <div className="social_links self-end">
             {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
               !!pool.status.pending ? (
                 <>

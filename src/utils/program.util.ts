@@ -1,7 +1,15 @@
 import { RenextProgram } from "@/artifacts/renext_program";
 import { BN, Program } from "@project-serum/anchor";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { LAMPORTS_PER_SOL, PublicKey, SYSVAR_RENT_PUBKEY, SystemProgram } from "@solana/web3.js";
+import {
+  ASSOCIATED_TOKEN_PROGRAM_ID,
+  TOKEN_PROGRAM_ID,
+} from "@solana/spl-token";
+import {
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  SYSVAR_RENT_PUBKEY,
+  SystemProgram,
+} from "@solana/web3.js";
 import dayjs from "dayjs";
 import {
   findLaunchPoolAccount,
@@ -9,6 +17,7 @@ import {
   findTreasurerAccount,
   findUserPoolAccount,
   findVaultAccount,
+  findVestingPlanAccount,
   findWhitelistAccount,
 } from "./account.util";
 import { getExplorerUrl } from "./network.util";
@@ -17,8 +26,14 @@ import { parseToken } from "./format.util";
 export const CURRENCY = { RENEC: "RENEC", REUSD: "REUSD" };
 export const CURRENCY_POOL = { RENEC: "renec", REUSD: "reUsd" };
 
-export const CAMPAIGN_TYPE = { FairLaunch: "Fair Launch", Whitelist: "WhiteList" };
-export const CAMPAIGN_TYPE_POOL = { FairLaunch: "fairLaunch", Whitelist: "whiteList" };
+export const CAMPAIGN_TYPE = {
+  FairLaunch: "Fair Launch",
+  Whitelist: "WhiteList",
+};
+export const CAMPAIGN_TYPE_POOL = {
+  FairLaunch: "fairLaunch",
+  Whitelist: "whiteList",
+};
 
 export async function createNativePool(
   program: Program<RenextProgram>,
@@ -28,16 +43,24 @@ export async function createNativePool(
   const mint = new PublicKey(payload.token_address);
   // Check token_unlock_date is valid
   if (dayjs(payload.token_unlock_date).isBefore(dayjs())) {
-    return Promise.reject(new Error("Token unlock date must be greater than current date"));
+    return Promise.reject(
+      new Error("Token unlock date must be greater than current date")
+    );
   }
   const unlock_date = new BN(dayjs(payload.token_unlock_date).unix());
   const decimals = Number(payload.token_decimals) || 9;
   const rate = new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
   const pool_size = parseToken(payload.token_sale_amount, decimals);
-  const minimum_token_amount = parseToken(payload.minimum_token_amount, decimals);
-  const maximum_token_amount = parseToken(payload.maximum_token_amount, decimals);
+  const minimum_token_amount = parseToken(
+    payload.minimum_token_amount,
+    decimals
+  );
+  const maximum_token_amount = parseToken(
+    payload.maximum_token_amount,
+    decimals
+  );
 
-  const isWhitelist = payload.campaign_type === CAMPAIGN_TYPE.Whitelist;
+  const isWhitelist = payload.campaign_type === "whitelist";
 
   const [launch_pool] = findLaunchPoolAccount(creator, mint, program.programId);
   console.log(
@@ -46,7 +69,11 @@ export async function createNativePool(
   console.log("--------------------------------------");
   console.log("TOKEN_PROGRAM_ID", TOKEN_PROGRAM_ID);
 
-  const [treasurer] = findTreasurerAccount(launch_pool, mint, program.programId);
+  const [treasurer] = findTreasurerAccount(
+    launch_pool,
+    mint,
+    program.programId
+  );
   const treasury = await findMintTokenAccount(treasurer, mint);
 
   console.log({
@@ -109,17 +136,30 @@ export async function createTokenPool(
   const decimals = Number(payload.token_decimals) || 9;
   const rate = new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
   const pool_size = parseToken(payload.token_sale_amount, decimals);
-  const minimum_token_amount = parseToken(payload.minimum_token_amount, decimals);
-  const maximum_token_amount = parseToken(payload.maximum_token_amount, decimals);
-  const isWhitelist = payload.campaign_type === CAMPAIGN_TYPE.Whitelist;
+  const minimum_token_amount = parseToken(
+    payload.minimum_token_amount,
+    decimals
+  );
+  const maximum_token_amount = parseToken(
+    payload.maximum_token_amount,
+    decimals
+  );
+  const isWhitelist = payload.campaign_type === "whitelist";
   const [launch_pool] = findLaunchPoolAccount(creator, mint, program.programId);
-  const launchPoolTokenAccount = await findMintTokenAccount(launch_pool, reusd_mint);
+  const launchPoolTokenAccount = await findMintTokenAccount(
+    launch_pool,
+    reusd_mint
+  );
   console.log(
     `launch_pool: ${launch_pool.toBase58()} creator: ${creator.toBase58()} with mint: ${mint.toBase58()} creating ....`
   );
   console.log("--------------------------------------");
 
-  const [treasurer] = findTreasurerAccount(launch_pool, mint, program.programId);
+  const [treasurer] = findTreasurerAccount(
+    launch_pool,
+    mint,
+    program.programId
+  );
   const treasury = await findMintTokenAccount(treasurer, mint);
 
   const tx = await program.methods
@@ -172,7 +212,11 @@ export async function startLaunchPool(
   const poolData = await program.account.launchPool.fetch(launch_pool);
   const mint = new PublicKey(poolData.tokenMint);
   const source_token_account = await findMintTokenAccount(creator, mint);
-  const [treasurer] = findTreasurerAccount(launch_pool, mint, program.programId);
+  const [treasurer] = findTreasurerAccount(
+    launch_pool,
+    mint,
+    program.programId
+  );
   const treasury = await findMintTokenAccount(treasurer, mint);
 
   console.log(
@@ -211,7 +255,11 @@ export async function startLaunchPoolWithWhitelist(
   const mint = new PublicKey(poolData.tokenMint);
 
   const source_token_account = await findMintTokenAccount(creator, mint);
-  const [treasurer] = findTreasurerAccount(launch_pool, mint, program.programId);
+  const [treasurer] = findTreasurerAccount(
+    launch_pool,
+    mint,
+    program.programId
+  );
   const treasury = await findMintTokenAccount(treasurer, mint);
   const [whitelist] = findWhitelistAccount(launch_pool, program.programId);
 
@@ -254,16 +302,27 @@ export async function buyWithRenec(
   const launch_pool = new PublicKey(pool);
   const poolData = await program.account.launchPool.fetch(launch_pool);
   const mint = new PublicKey(poolData.tokenMint);
-  const [user_pool] = findUserPoolAccount(buyer, launch_pool, mint, program.programId);
+  const [user_pool] = findUserPoolAccount(
+    buyer,
+    launch_pool,
+    mint,
+    program.programId
+  );
 
-  const [vault] = findVaultAccount(launch_pool, poolData.authority, program.programId);
+  const [vault] = findVaultAccount(
+    launch_pool,
+    poolData.authority,
+    program.programId
+  );
 
   console.log(
     `buyer ${buyer.toBase58()} want buy ${amount} token with renec at launch pool ${launch_pool.toBase58()}`
   );
   console.log("--------------------------------------");
   const tx = await program.methods
-    .buyTokenWithNative(new BN(amount).mul(new BN(10).pow(new BN(poolData.tokenMintDecimals))))
+    .buyTokenWithNative(
+      new BN(amount).mul(new BN(10).pow(new BN(poolData.tokenMintDecimals)))
+    )
     .accounts({
       launchPool: launch_pool,
       userPool: user_pool,
@@ -322,7 +381,10 @@ export async function buyWithReUSD(
     throw new Error("You don't have enough token to buy");
   }
 
-  const launchPoolTokenAccount = await findMintTokenAccount(launch_pool, reusd_mint);
+  const launchPoolTokenAccount = await findMintTokenAccount(
+    launch_pool,
+    reusd_mint
+  );
 
   console.log(
     `buyer ${buyer.toBase58()} want buy ${amount} token with ReUSD ${reusd_mint} at launch pool ${launch_pool.toBase58()}`
@@ -374,7 +436,11 @@ export async function buyWithRenecAndWhitelist(
     program.programId
   );
 
-  const [vault] = findVaultAccount(launch_pool, poolData.authority, program.programId);
+  const [vault] = findVaultAccount(
+    launch_pool,
+    poolData.authority,
+    program.programId
+  );
   const [whitelist] = findWhitelistAccount(launch_pool, program.programId);
 
   const wl_data = await program.account.whitelist.fetch(whitelist);
@@ -437,7 +503,10 @@ export async function buyWithReUSDAnWhitelist(
 
   const userTokenAccount = await findMintTokenAccount(buyer, reusd_mint);
 
-  const launchPoolTokenAccount = await findMintTokenAccount(launch_pool, reusd_mint);
+  const launchPoolTokenAccount = await findMintTokenAccount(
+    launch_pool,
+    reusd_mint
+  );
 
   const [whitelist] = findWhitelistAccount(launch_pool, program.programId);
 
@@ -521,7 +590,11 @@ export async function claimToken(
   const launch_pool = new PublicKey(pool);
   const poolData = await program.account.launchPool.fetch(launch_pool);
 
-  const [treasurer] = findTreasurerAccount(launch_pool, poolData.tokenMint, program.programId);
+  const [treasurer] = findTreasurerAccount(
+    launch_pool,
+    poolData.tokenMint,
+    program.programId
+  );
   const treasury = await findMintTokenAccount(treasurer, poolData.tokenMint);
   const [user_pool] = findUserPoolAccount(
     buyer,
@@ -530,7 +603,10 @@ export async function claimToken(
     program.programId
   );
 
-  const userTokenAccount = await findMintTokenAccount(buyer, poolData.tokenMint);
+  const userTokenAccount = await findMintTokenAccount(
+    buyer,
+    poolData.tokenMint
+  );
 
   const data = await program.account.userPool.fetch(user_pool);
   console.log("User pool account: ", data.amount.toNumber());
@@ -615,17 +691,24 @@ export async function withdrawTokenPool(
 ) {
   const poolData = await program.account.launchPool.fetch(launch_pool);
   const REUSD_MINT = new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!);
-  const launchPoolTokenAccount = await findMintTokenAccount(launch_pool, REUSD_MINT);
-
-  const { value } = await await program.provider.connection.getTokenAccountBalance(
-    launchPoolTokenAccount
+  const launchPoolTokenAccount = await findMintTokenAccount(
+    launch_pool,
+    REUSD_MINT
   );
+
+  const { value } =
+    await await program.provider.connection.getTokenAccountBalance(
+      launchPoolTokenAccount
+    );
 
   if (!value || (value && new BN(value.amount).eq(new BN(0)))) {
     throw new Error("You already withdraw all token from this pool");
   }
 
-  const beneficiaryTokenAccount = await findMintTokenAccount(beneficiary, REUSD_MINT);
+  const beneficiaryTokenAccount = await findMintTokenAccount(
+    beneficiary,
+    REUSD_MINT
+  );
 
   console.log(
     `User ${program.provider?.publicKey?.toBase58()} want withdraw ${
@@ -654,4 +737,33 @@ export async function withdrawTokenPool(
   return {
     tx,
   };
+}
+
+export async function updateVestingPlan(
+  program: Program<RenextProgram>,
+  creator: PublicKey,
+  launch_pool: PublicKey,
+  schedules: {
+    releaseTime: BN;
+    amount: BN;
+  }[]
+) {
+  const [vesting_plan] = findVestingPlanAccount(launch_pool, program.programId);
+
+  console.log("--------------------------------------");
+
+  const tx = await program.methods
+    .setVestingPlan(schedules.length, schedules)
+    .accounts({
+      vestingPlan: vesting_plan,
+      launchPool: launch_pool,
+      authority: creator,
+      systemProgram: SystemProgram.programId,
+      rent: SYSVAR_RENT_PUBKEY,
+    })
+
+    .rpc();
+
+  console.log("Update vesting plan in tx: ", "\n", getExplorerUrl(tx));
+  console.log("********************************");
 }

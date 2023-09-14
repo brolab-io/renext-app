@@ -19,7 +19,9 @@ const UtilPage = () => {
   const [decimals, setDecimals] = useState<number>(9);
   const [amount, setAmount] = useState<number>(1000000);
   const [mint, setMint] = useState<PublicKey | null>(null);
-  const [token, setToken] = useState<string>(process.env.NEXT_PUBLIC_REUSD_MINT || "");
+  const [token, setToken] = useState<string>(
+    process.env.NEXT_PUBLIC_REUSD_MINT || ""
+  );
   const [ata, setATA] = useState<string>("");
   const { publicKey, sendTransaction } = useWallet();
   const createTokenMint = async () => {
@@ -27,16 +29,20 @@ const UtilPage = () => {
 
     console.log({ decimals, amount });
 
-    const quantity = new BN(amount.toString())
-      .mul(new BN(10).pow(new BN(decimals.toString())))
-      .toString();
-    if (quantity.length > 20) return toast.error("Quantity too large");
+    const quantity = new BN(amount.toString()).mul(
+      new BN(10).pow(new BN(decimals.toString()))
+    );
 
+    if (quantity.toString().length > 20)
+      return toast.error("Quantity too large");
+    console.log(quantity.toString());
     const mint_account = Keypair.generate();
 
     toast.promise(
       new Promise(async (resolve, reject) => {
-        const mint_rent = await Token.getMinBalanceRentForExemptMint(connection);
+        const mint_rent = await Token.getMinBalanceRentForExemptMint(
+          connection
+        );
         const createMintAccountInstruction = await SystemProgram.createAccount({
           fromPubkey: publicKey,
           newAccountPubkey: mint_account.publicKey,
@@ -60,14 +66,15 @@ const UtilPage = () => {
           publicKey
         );
 
-        const createATAInstruction = Token.createAssociatedTokenAccountInstruction(
-          ASSOCIATED_TOKEN_PROGRAM_ID,
-          TOKEN_PROGRAM_ID,
-          mint_account.publicKey,
-          associatedTokenAccount,
-          publicKey,
-          publicKey
-        );
+        const createATAInstruction =
+          Token.createAssociatedTokenAccountInstruction(
+            ASSOCIATED_TOKEN_PROGRAM_ID,
+            TOKEN_PROGRAM_ID,
+            mint_account.publicKey,
+            associatedTokenAccount,
+            publicKey,
+            publicKey
+          );
 
         const mintInstruction = Token.createMintToInstruction(
           TOKEN_PROGRAM_ID,
@@ -75,7 +82,7 @@ const UtilPage = () => {
           associatedTokenAccount,
           publicKey,
           [],
-          new BN(quantity)
+          Number(quantity)
         );
         const recentBlockhash = await connection.getLatestBlockhash();
 
@@ -124,14 +131,15 @@ const UtilPage = () => {
           new PublicKey(ata)
         );
 
-        const createATAInstruction = await Token.createAssociatedTokenAccountInstruction(
-          ASSOCIATED_TOKEN_PROGRAM_ID,
-          TOKEN_PROGRAM_ID,
-          new PublicKey(token),
-          destATA,
-          new PublicKey(ata),
-          publicKey
-        );
+        const createATAInstruction =
+          await Token.createAssociatedTokenAccountInstruction(
+            ASSOCIATED_TOKEN_PROGRAM_ID,
+            TOKEN_PROGRAM_ID,
+            new PublicKey(token),
+            destATA,
+            new PublicKey(ata),
+            publicKey
+          );
 
         const transferInstruction = Token.createTransferInstruction(
           TOKEN_PROGRAM_ID,
@@ -139,7 +147,11 @@ const UtilPage = () => {
           destATA,
           publicKey,
           [],
-          new BN(amount.toString()).mul(new BN(10).pow(new BN(decimals.toString())))
+          Number(
+            new BN(amount.toString()).mul(
+              new BN(10).pow(new BN(decimals.toString()))
+            )
+          )
         );
 
         const recentBlockhash = await connection.getLatestBlockhash();

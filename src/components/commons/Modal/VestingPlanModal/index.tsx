@@ -9,6 +9,7 @@ import useStartPool from "@/hooks/program/useStartPool";
 import { useFieldArray, useForm, useFormContext } from "react-hook-form";
 import LabelInput from "../../Form/LabelInput";
 import { FaPlus } from "react-icons/fa6";
+import useUpdateVestingPlan from "@/hooks/program/useUpdateVestingPlan";
 
 type WhitelistModalProps = {
   setIsOpen: (isOpen: boolean) => void;
@@ -22,7 +23,10 @@ type FormValues = {
   }[];
 };
 
-const VestingPlanModel: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }) => {
+const VestingPlanModal: React.FC<WhitelistModalProps> = ({
+  setIsOpen,
+  pool_pda,
+}) => {
   const {
     register,
     handleSubmit,
@@ -41,7 +45,7 @@ const VestingPlanModel: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }
 
   const vestingPlan = watch("vestingPlan");
 
-  const { mutate, isLoading: isStartingPool } = useStartPool(pool_pda);
+  const { mutate, isLoading } = useUpdateVestingPlan(pool_pda);
 
   const addRound = useCallback(() => {
     append({
@@ -56,27 +60,42 @@ const VestingPlanModel: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }
     }
   }, [addRound, vestingPlan]);
 
-  const handleUpdateVestingPlan = useCallback(async (data: FormValues) => {
-    console.log(data);
-  }, []);
+  const handleUpdateVestingPlan = useCallback(
+    async (data: FormValues) => {
+      mutate(data.vestingPlan);
+      setIsOpen(false);
+    },
+    [mutate, setIsOpen]
+  );
 
   return (
     <VestingPlanModalStyleWrapper className="modal_overlay">
       <div className="mint_modal_box">
         <div className="mint_modal_content">
-          <form className="h-full flex flex-col" onSubmit={handleSubmit(handleUpdateVestingPlan)}>
+          <form
+            className="h-full flex flex-col"
+            onSubmit={handleSubmit(handleUpdateVestingPlan)}
+          >
             <div className="modal_header">
               <h2>
-                Update Vesting Plan - {vestingPlan.length} <span className="lowercase">rounds</span>
+                Update Vesting Plan - {vestingPlan.length}{" "}
+                <span className="lowercase">rounds</span>
               </h2>
-              <button type="button" className="modal_close" onClick={() => setIsOpen(false)}>
+              <button
+                type="button"
+                className="modal_close"
+                onClick={() => setIsOpen(false)}
+              >
                 <FiX />
               </button>
             </div>
             <div className="modal_body">
               <ul className="space-y-2">
                 {fields.map((item, index) => (
-                  <div key={index} className="flex gap-2 md:gap-3 lg:gap-4 relative">
+                  <div
+                    key={index}
+                    className="flex gap-2 md:gap-3 lg:gap-4 relative"
+                  >
                     <button
                       type="button"
                       className="absolute right-0 top-3 z-50"
@@ -105,7 +124,11 @@ const VestingPlanModel: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }
                 ))}
               </ul>
               <div className="flex -mt-2 pb-4">
-                <button type="button" className="flex items-center gap-2" onClick={addRound}>
+                <button
+                  type="button"
+                  className="flex items-center gap-2"
+                  onClick={addRound}
+                >
                   <FaPlus />
                   Add Round
                 </button>
@@ -124,4 +147,4 @@ const VestingPlanModel: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }
   );
 };
 
-export default VestingPlanModel;
+export default VestingPlanModal;

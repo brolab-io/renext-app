@@ -43,7 +43,9 @@ const useBuyToken = (launch_pool_pda: string) => {
       );
 
       if (new BN(amount).lt(minCanBuy) || new BN(amount).gt(maxCanBuy)) {
-        return Promise.reject(new Error(`Amount should be between ${minCanBuy} and ${maxCanBuy}`));
+        return Promise.reject(
+          new Error(`Amount should be between ${minCanBuy} and ${maxCanBuy}`)
+        );
       }
 
       if (
@@ -113,8 +115,12 @@ const useBuyToken = (launch_pool_pda: string) => {
           autoClose: 5000,
           isLoading: false,
         });
-        queryClient.invalidateQueries(["project", launch_pool_pda]);
-        queryClient.invalidateQueries(["user-pool", launch_pool_pda, wallet?.publicKey || ""]);
+        queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
+        queryClient.invalidateQueries([
+          "user-pool",
+          launch_pool_pda,
+          wallet?.publicKey || "",
+        ]);
       },
       onError: (error) => {
         toast.update(toastRef.current!, {

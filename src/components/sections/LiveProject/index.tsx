@@ -113,28 +113,22 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
 
   const _price = useMemo(() => {
     if (!pool) return 0;
-    return 1 / (Number(item.presale_rate) * 100);
+    return Number(item.presale_rate) / 10000;
   }, [item.presale_rate, pool]);
 
   const _targetedRaise = useMemo(() => {
     if (!pool) return 0;
-    return formatLamportToNumber(
-      pool?.poolSize.div(pool.rate.mul(new BN(100))).toString()
-    );
-  }, [pool]);
+    return formatLamportToNumber(pool.poolSize.toString()) * _price;
+  }, [_price, pool]);
 
   const _totalRaise = useMemo(() => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
       ? formatLamportToNumber(
-          pool?.poolSize
-            .sub(pool?.poolSizeRemaining)
-            .div(pool.rate.mul(new BN(100)))
-            .toString(),
-          pool.tokenMintDecimals
-        )
+          pool.poolSize.sub(pool.poolSizeRemaining).toString()
+        ) * _price
       : 0;
-  }, [pool]);
+  }, [_price, pool]);
 
   const _allocation = useMemo(() => {
     if (!pool) return 0;
