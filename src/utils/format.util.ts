@@ -8,11 +8,11 @@ export const formatPublicKey = (publicKey: PublicKey | string, len = 5) => {
 
 export const formatNumberToLamport = (num: number | string, decimals = 9) => {
   return new BN(num).mul(new BN(10 ** decimals)).toString();
-}
+};
 
 export const formatLamportToNumber = (num: number | string, decimals = 9) => {
-  return (new BN(num).div(new BN(10 ** decimals))) * 1;
-}
+  return new BN(num).div(new BN(10 ** decimals)).toNumber() * 1;
+};
 
 export const formatToken = (amount: number | string, decimal = 9, decimalsDigits = 2) => {
   // how to amount / lamports = 1.0000000000 using string
@@ -54,4 +54,27 @@ export const getProgramErrorMessage = (error: unknown) => {
 export const getTokenRate = (rate: number, decimals: number = 9) => {
   const BASE = 10000;
   return ((((1 * rate) / BASE) * 10 ** 9) / 10 ** decimals).toFixed(4).toString();
+};
+
+export const parseToken = (valueCanContainDecimals: string | number, decimals: number = 9): BN => {
+  if (typeof valueCanContainDecimals === "number") {
+    valueCanContainDecimals = valueCanContainDecimals.toString();
+  }
+  if (typeof decimals === "string") {
+    decimals = parseInt(decimals, 10);
+  }
+  const decimalArray = new Array(decimals).fill("0");
+  const decimalIndex = valueCanContainDecimals.indexOf(".");
+  if (decimalIndex > -1) {
+    if (decimals <= 0) {
+      throw new Error("Invalid token input value");
+    }
+    const [inc, dec] = valueCanContainDecimals.split(".");
+    const min = Math.min(dec.length, decimals);
+    for (let i = 0; i < min; i++) {
+      decimalArray[i] = dec[i];
+    }
+    return new BN(inc + decimalArray.join(""));
+  }
+  return new BN(valueCanContainDecimals + decimalArray.join(""));
 };
