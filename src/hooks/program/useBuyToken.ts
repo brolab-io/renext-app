@@ -13,11 +13,16 @@ import {
   buyWithRenecAndWhitelist,
 } from "@/utils/program.util";
 import { BN } from "@project-serum/anchor";
-import { getProgramErrorMessage } from "@/utils/format.util";
+import { formatLamportToNumber, formatToken, getProgramErrorMessage } from "@/utils/format.util";
+import { findMintTokenAccount } from "@/utils/account.util";
+
+
+
+
 const useBuyToken = (launch_pool_pda: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
 
-  const { anchorWallet: wallet } = useDemonAdapter();
+  const { anchorWallet: wallet, connectionContext: { connection } } = useDemonAdapter();
 
   const { program } = useProgram();
   const queryClient = useQueryClient();
@@ -48,10 +53,23 @@ const useBuyToken = (launch_pool_pda: string) => {
         );
       }
 
+      // const _price = new BN(10).pow(new BN(9)).div(new BN(poolData.rate))
+      const _mustPay = new BN(Number(amount)).mul(
+        new BN(10).pow(new BN(9))
+      ).div(poolData.rate)
+      console.log({ _mustPay: _mustPay.toString() })
+
+
       if (
         CURRENCY_POOL.RENEC in poolData.currency &&
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
       ) {
+        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
+        if (_balance.gt(_mustPay)) {
+          return Promise.reject(
+            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+          );
+        }
         console.log("renec in FairLaunch");
         const tx = await buyWithRenec(
           program,
@@ -66,6 +84,21 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
       ) {
+
+        const userTokenAccount = await findMintTokenAccount(
+          wallet.publicKey,
+          new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!)
+        );
+
+        const { value: usdBalance } = await connection.getTokenAccountBalance(userTokenAccount);
+        console.log({ usdBalance });
+
+        if (new BN(usdBalance.amount).lt(_mustPay)) {
+          return Promise.reject(
+            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+          );
+        }
+
         console.log("usd in FairLaunch");
         const tx = await buyWithReUSD(
           program,
@@ -80,6 +113,12 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.RENEC in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
       ) {
+        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
+        if (_balance.gt(_mustPay)) {
+          return Promise.reject(
+            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+          );
+        }
         console.log("renec in whitelist");
         const tx = await buyWithRenecAndWhitelist(
           program,
@@ -94,6 +133,23 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
       ) {
+
+        const userTokenAccount = await findMintTokenAccount(
+          wallet.publicKey,
+          new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!)
+        );
+
+        const { value: usdBalance } = await connection.getTokenAccountBalance(userTokenAccount);
+        console.log({ usdBalance });
+
+        if (new BN(usdBalance.amount).lt(_mustPay)) {
+          return Promise.reject(
+            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+          );
+        }
+
+
+
         console.log("usd in whitelist");
         const tx = await buyWithReUSDAnWhitelist(
           program,
