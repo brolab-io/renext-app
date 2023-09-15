@@ -58,8 +58,13 @@ const ApplyFormStep3: React.FC<Props> = ({}) => {
       return;
     }
 
-    updateFormValues(data);
-    onSubmit(formValues as ApplyFormValues);
+    updateFormValues({
+      project_description: data.project_description,
+    });
+    onSubmit({
+      ...formValues,
+      ...data,
+    } as ApplyFormValues);
   };
 
   const projectDescription = watch("project_description");

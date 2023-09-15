@@ -112,7 +112,6 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
                   },
                 })}
                 error={errors.project_website?.message}
-                required
               />
             </div>
           </div>

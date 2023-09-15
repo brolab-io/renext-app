@@ -57,7 +57,7 @@ const ConnectWalletButton: React.FC<Props> = ({ children, className, ...props })
   }, [disconnect, walletModalHandle]);
 
   const handleGoToMyProjects = useCallback(() => {
-    router.push("/my-projects");
+    router.push("/user");
   }, [router]);
 
   if (connected && publicKey)

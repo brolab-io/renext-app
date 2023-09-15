@@ -58,6 +58,7 @@ const Provider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const onSubmit = (data: ApplyFormValues) => {
     console.log("Submit apply project form with data: ", data);
+    return;
     mutate(data);
   };
 
