@@ -65,7 +65,7 @@ const useBuyToken = (launch_pool_pda: string) => {
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
       ) {
         const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
-        if (_balance.gt(_mustPay)) {
+        if (_balance.lt(_mustPay)) {
           return Promise.reject(
             new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
           );
@@ -114,7 +114,7 @@ const useBuyToken = (launch_pool_pda: string) => {
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
       ) {
         const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
-        if (_balance.gt(_mustPay)) {
+        if (_balance.lt(_mustPay)) {
           return Promise.reject(
             new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
           );
