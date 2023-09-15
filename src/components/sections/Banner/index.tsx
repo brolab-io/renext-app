@@ -29,22 +29,12 @@ const Banner = () => {
             <div className="gamfi_v2_hero_right">
               <div className="gamfi_v2_hero_thumb">
                 <span className="rocket_thumb">
-                  <Image
-                    src={"/assets/rocket-front-color.png"}
-                    alt="Rocket thumb"
-                    width={450}
-                    height={450}
-                  />
+                  <Image src={"/assets/rocket.png"} alt="Rocket thumb" width={450} height={450} />
                 </span>
 
                 {particles?.map((particle, i) => (
                   <span key={i} className={`rocket_particle particle_${i + 1}`}>
-                    <Image
-                      src={particle}
-                      alt="rocket particle"
-                      width={4}
-                      height={75}
-                    />
+                    <Image src={particle} alt="rocket particle" width={4} height={75} />
                   </span>
                 ))}
               </div>

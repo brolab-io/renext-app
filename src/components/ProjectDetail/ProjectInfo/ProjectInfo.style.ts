@@ -84,7 +84,7 @@ const ProjectInfoStyleWrapper = styled.section`
       font-family: "Inter", sans-serif;
       color: rgba(255, 255, 255, 0.7);
       text-transform: uppercase;
-      margin-bottom: 10px;
+      margin-bottom: 24px;
     }
 
     .targeted-raise-amount {
@@ -92,6 +92,7 @@ const ProjectInfoStyleWrapper = styled.section`
       font-family: "Russo One", sans-serif;
       text-align: right;
       font-weight: 500;
+      margin-bottom: 6px;
     }
   }
 
