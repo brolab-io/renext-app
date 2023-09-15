@@ -2,14 +2,24 @@ import { FiCheck } from "react-icons/fi";
 import Button from "@/components/commons/Button";
 import LabelInput from "@/components/commons/Form/LabelInput";
 import { ApplyFormValues, useApplyProjectContext } from "@/app/apply/provider";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
+import { getProjectCategories } from "@/utils/data.util";
+import clsx from "clsx";
 
 type Props = {};
 
 type Form1 = Pick<
   ApplyFormValues,
-  "name" | "project_logo_url" | "project_banner_url" | "project_email" | "project_website"
+  | "name"
+  | "project_logo_url"
+  | "project_banner_url"
+  | "project_email"
+  | "project_website"
+  | "project_category"
 >;
+
+const categories = getProjectCategories();
+
 const ApplyFormStep1: React.FC<Props> = ({}) => {
   const { goToNextStep, updateFormValues, formValues } = useApplyProjectContext();
 
@@ -17,6 +27,7 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
     register,
     formState: { errors },
     handleSubmit,
+    control,
   } = useForm<Form1>({
     defaultValues: formValues,
   });
@@ -107,21 +118,37 @@ const ApplyFormStep1: React.FC<Props> = ({}) => {
           </div>
           <div className="lg:col-span-5 lg:pt-[68px]">
             <div className="custom_label">Select Your Project Type *</div>
-            <div className="kyc_radio_sect">
-              <div className={`kyc_radio_btn active`} id="DEFI">
-                <label>
-                  DEFI
-                  <input type="radio" name="radio" id="whitelist" />
-                  <span className="checkmark">
-                    <FiCheck />
-                  </span>
-                </label>
-                <div className="kyc_icon">
-                  {/* <FaListCheck /> */}
-                  {/* <img src={nidIcon.src} alt="icon" className="imf-fluid" /> */}
+            <Controller
+              control={control}
+              name="project_category"
+              render={({ field: { onChange, value } }) => (
+                <div className="grid grid-cols-2 gap-2 md:gap-3 lg:gap-4 mt-2">
+                  {categories.map((category) => (
+                    <div className="kyc_radio_sect" key={category}>
+                      <div
+                        className={clsx(`kyc_radio_btn`, value === category && "active")}
+                        id={category}
+                        onClick={() => {
+                          onChange(category);
+                        }}
+                      >
+                        <label>
+                          {category}
+                          <input type="radio" name="radio" id="whitelist" />
+                          <span className="checkmark">
+                            <FiCheck />
+                          </span>
+                        </label>
+                        <div className="kyc_icon">
+                          {/* <FaListCheck /> */}
+                          {/* <img src={nidIcon.src} alt="icon" className="imf-fluid" /> */}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              </div>
-            </div>
+              )}
+            />
           </div>
         </div>
 

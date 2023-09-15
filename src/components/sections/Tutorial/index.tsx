@@ -1,8 +1,5 @@
 "use client";
-import {
-  SectionTitle,
-  SectionTitleWrapper,
-} from "@/components/commons/SectionTitle";
+import { SectionTitle, SectionTitleWrapper } from "@/components/commons/SectionTitle";
 import TutorialStyleWrapper from "./Tutorial.style";
 import Button from "@/components/commons/Button";
 import { FiChevronRight } from "react-icons/fi";
@@ -39,8 +36,14 @@ const Tutorial = () => {
         <SectionTitleWrapper>
           <SectionTitle title="HOW TO PARTICIPATE" subtitle="3 EASY STEPS" />
 
-          <Button href="/kyc" $sm $variant="outline">
-            {" "}
+          <Button
+            onClick={() => {
+              window.open("https://fbff1h5dwf5.typeform.com/to/WkAeieJn", "_blank");
+            }}
+            $sm
+            $variant="outline"
+            target="_blank"
+          >
             Verify KYC <FiChevronRight />
           </Button>
         </SectionTitleWrapper>

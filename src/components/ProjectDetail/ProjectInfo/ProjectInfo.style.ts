@@ -69,14 +69,13 @@ const ProjectInfoStyleWrapper = styled.section`
   .allocation-max {
     width: 24%;
     img {
-      margin-top: 10px;
       margin: 0 auto;
     }
 
     .allocation {
       font-family: "Russo One", sans-serif;
       color: #ffffff;
-      margin-top: 73px;
+      margin-top: 44px;
     }
   }
 

@@ -48,7 +48,7 @@ const Provider: React.FC<PropsWithChildren> = ({ children }) => {
     token_decimals: 9,
     // yyyy/mm/ddThh:mm
     token_unlock_date: "",
-    project_category: "DEFI",
+    project_category: "Others",
     project_description: "# PROJECT DESCRIPTION\n",
     currency_address: "RENEC",
   });
