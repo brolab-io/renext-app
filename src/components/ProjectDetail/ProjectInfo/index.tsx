@@ -80,7 +80,11 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   const calculateProgress = useMemo(() => {
     if (!pool) return 0;
     if (pool.status.pending || pool.status.cancelled) return 0;
-    return (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() / pool.poolSize.toNumber()) * 100;
+    return (
+      (pool.poolSize.sub(pool.poolSizeRemaining).toNumber() /
+        pool.poolSize.toNumber()) *
+      100
+    );
   }, [pool]);
 
   const _price = useMemo(() => {
@@ -97,13 +101,18 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
   const _totalRaise = useMemo(() => {
     if (!pool) return 0;
     return pool?.status.active || pool?.status.completed
-      ? formatLamportToNumber(pool.poolSize.sub(pool.poolSizeRemaining).toString()) * _price
+      ? formatLamportToNumber(
+          pool.poolSize.sub(pool.poolSizeRemaining).toString()
+        ) * _price
       : 0;
   }, [_price, pool]);
 
   const _allocation = useMemo(() => {
     if (!pool) return 0;
-    return formatLamportToNumber(pool?.poolSize.toString(), pool.tokenMintDecimals);
+    return formatLamportToNumber(
+      pool?.poolSize.toString(),
+      pool.tokenMintDecimals
+    );
   }, [pool]);
 
   return (
@@ -113,7 +122,11 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
           <div className="total-price">
             <div className="flex price-inner">
               <div className="image-icon !min-w-[100px]">
-                <img src={project.project_logo_url} alt="icon" className="h-[100px] w-[100px]" />
+                <img
+                  src={project.project_logo_url}
+                  alt="icon"
+                  className="h-[100px] w-[100px]"
+                />
               </div>
               <div className="price-details w-full truncate">
                 <h3>{project.name}</h3>
@@ -184,7 +197,10 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             <ButtonClaim
               pool={project.launch_pool_pda}
               tokenMint={pool.tokenMint.toString()}
-              disabled={dayjs().isBefore(dayjs(Number(pool?.unlockDate) * 1000))}
+              disabled={dayjs().isBefore(
+                dayjs(Number(pool?.unlockDate) * 1000)
+              )}
+              isVesting={!!pool.isVesting}
             />
           ) : null}
 

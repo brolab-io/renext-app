@@ -7,7 +7,7 @@ import { useProgram } from "../useProgram";
 import { PublicKey } from "@solana/web3.js";
 import { claimToken } from "@/utils/program.util";
 
-const useClaimToken = (launch_pool_pda: string) => {
+const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
     const toastRef = useRef<ReturnType<typeof toast>>();
 
     const { anchorWallet: wallet } = useDemonAdapter();

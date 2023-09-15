@@ -9,13 +9,20 @@ type Props = {
   pool: string;
   tokenMint: string;
   disabled?: boolean;
+  isVesting?: boolean;
 };
-const ButtonClaim: React.FC<Props> = ({ pool, tokenMint, disabled }) => {
-  const { mutate, isLoading } = useClaimToken(pool);
+const ButtonClaim: React.FC<Props> = ({
+  pool,
+  tokenMint,
+  disabled,
+  isVesting,
+}) => {
+  const { mutate, isLoading } = useClaimToken(pool, isVesting);
   const { data } = useUserPool(pool, tokenMint);
 
   const _disabled = useMemo(() => {
-    if (disabled || isLoading || !data || data.amount.eq(new BN(0))) return true;
+    if (disabled || isLoading || !data || data.amount.eq(new BN(0)))
+      return true;
     return data.amount.sub(data.claimed).eq(new BN(0));
   }, [data, disabled, isLoading]);
 
