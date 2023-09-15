@@ -20,7 +20,7 @@ type Props = {
 
 const ProjectCard: React.FC<Props> = ({ project }) => {
   const _price = useMemo(() => {
-    return Number(project.presale_rate) / 10000;
+    return 1 / Number(project.presale_rate);
   }, [project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {

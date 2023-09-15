@@ -89,7 +89,7 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
 
   const _price = useMemo(() => {
     if (!pool) return 0;
-    return Number(project.presale_rate) / 10000;
+    return 1 / Number(project.presale_rate);
   }, [pool, project.presale_rate]);
 
   const _targetedRaise = useMemo(() => {
@@ -211,7 +211,10 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
             {pool && anchorWallet?.publicKey.equals(pool?.authority) ? (
               !!pool.status.pending ? (
                 <>
-                  <ButtonUpdateVestingPlan pool={project.launch_pool_pda} />
+                  <ButtonUpdateVestingPlan
+                    pool={project.launch_pool_pda}
+                    decimals={pool.tokenMintDecimals}
+                  />
                   <ButtonStart
                     pool={project.launch_pool_pda}
                     withWhitelist={!!pool.poolType.whiteList}

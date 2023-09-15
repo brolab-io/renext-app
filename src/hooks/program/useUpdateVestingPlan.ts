@@ -9,7 +9,7 @@ import { updateVestingPlan } from "@/utils/program.util";
 import { BN } from "bn.js";
 import dayjs from "dayjs";
 
-const useUpdateVestingPlan = (launch_pool_pda: string) => {
+const useUpdateVestingPlan = (launch_pool_pda: string, decimals: number) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
 
   const { anchorWallet: wallet } = useDemonAdapter();
@@ -36,7 +36,7 @@ const useUpdateVestingPlan = (launch_pool_pda: string) => {
       }
       const launch_pool = new PublicKey(launch_pool_pda);
       const _scheduleTranformed = schedules.map((x) => ({
-        amount: new BN(x.amount),
+        amount: new BN(x.amount).mul(new BN(10).pow(new BN(decimals))),
         releaseTime: new BN(dayjs(x.releaseTime).unix()),
       }));
       const tx = await updateVestingPlan(

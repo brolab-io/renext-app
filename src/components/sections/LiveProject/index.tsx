@@ -113,7 +113,7 @@ const LiveProjectItem: React.FC<ItemProps> = ({ item }) => {
 
   const _price = useMemo(() => {
     if (!pool) return 0;
-    return Number(item.presale_rate) / 10000;
+    return 1 / Number(item.presale_rate);
   }, [item.presale_rate, pool]);
 
   const _targetedRaise = useMemo(() => {

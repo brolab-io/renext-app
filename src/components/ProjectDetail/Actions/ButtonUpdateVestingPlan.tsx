@@ -5,14 +5,19 @@ import VestingPlanModal from "@/components/commons/Modal/VestingPlanModal";
 
 type Props = {
   pool: string;
+  decimals: number;
 };
-const ButtonUpdateVestingPlan: React.FC<Props> = ({ pool }) => {
+const ButtonUpdateVestingPlan: React.FC<Props> = ({ pool, decimals }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
       {isOpen ? (
-        <VestingPlanModal setIsOpen={setIsOpen} pool_pda={pool} />
+        <VestingPlanModal
+          setIsOpen={setIsOpen}
+          pool_pda={pool}
+          decimals={decimals}
+        />
       ) : null}
       <Button
         $xl

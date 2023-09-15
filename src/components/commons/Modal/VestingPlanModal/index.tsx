@@ -1,12 +1,9 @@
 "use client";
-import { FiChevronRight, FiX } from "react-icons/fi";
+import { FiX } from "react-icons/fi";
 import Button from "../../Button";
 import VestingPlanModalStyleWrapper from "./VestingPlanModal";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { isValidPublicKey } from "@/utils/network.util";
-import useStartPool from "@/hooks/program/useStartPool";
-import { useFieldArray, useForm, useFormContext } from "react-hook-form";
+import { useCallback, useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import LabelInput from "../../Form/LabelInput";
 import { FaPlus } from "react-icons/fa6";
 import useUpdateVestingPlan from "@/hooks/program/useUpdateVestingPlan";
@@ -14,6 +11,7 @@ import useUpdateVestingPlan from "@/hooks/program/useUpdateVestingPlan";
 type WhitelistModalProps = {
   setIsOpen: (isOpen: boolean) => void;
   pool_pda: string;
+  decimals: number;
 };
 
 type FormValues = {
@@ -26,6 +24,7 @@ type FormValues = {
 const VestingPlanModal: React.FC<WhitelistModalProps> = ({
   setIsOpen,
   pool_pda,
+  decimals,
 }) => {
   const {
     register,
@@ -45,7 +44,7 @@ const VestingPlanModal: React.FC<WhitelistModalProps> = ({
 
   const vestingPlan = watch("vestingPlan");
 
-  const { mutate, isLoading } = useUpdateVestingPlan(pool_pda);
+  const { mutate, isLoading } = useUpdateVestingPlan(pool_pda, decimals);
 
   const addRound = useCallback(() => {
     append({

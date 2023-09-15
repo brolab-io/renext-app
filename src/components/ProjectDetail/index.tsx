@@ -6,6 +6,7 @@ import Actions from "./Actions";
 import { TProject } from "@/types/project.type";
 import useLaunchPool from "@/hooks/program/useLaunchPool";
 import ProjectInfo from "./ProjectInfo";
+import VestingPlan from "./VestingPlan";
 
 type Props = {
   project: TProject;
@@ -22,13 +23,19 @@ const ProjectDetails: React.FC<Props> = ({ project }) => {
             <Actions project={project} launchPool={launchPool} />
           </div>
         </div>
-
+        {!!launchPool?.isVesting ? (
+          <VestingPlan
+            pool={project.launch_pool_pda}
+            decimals={project.token_decimals}
+          />
+        ) : null}
         <div className="token_info_row grid grid-cols-1 sm:grid-cols-2 gap-8">
           {/* {data?.info.map((item, i) => (
             <div key={i}>
               <TokenInfo title={item.title} tokenInfo={item.tokenInfo} />
             </div>
           ))} */}
+          {launchPool?.isVesting ? <div>{launchPool?.isVesting}</div> : null}
         </div>
         <Summary content={project.project_description} />
         {/* <History id={id} /> */}
