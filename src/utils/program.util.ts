@@ -86,7 +86,7 @@ export async function createNativePool(
       minimum_token_amount,
       maximum_token_amount,
       rate,
-      decimals,
+      decimals.toNumber(),
       isWhitelist ? 1 : 0
     )
     .accounts({
@@ -157,7 +157,7 @@ export async function createTokenPool(
       minimum_token_amount,
       maximum_token_amount,
       rate,
-      decimals,
+      decimals.toNumber(),
       isWhitelist ? 1 : 0
     )
     .accounts({
