@@ -4,7 +4,7 @@ import Button from "@/components/commons/Button";
 import ActionsStyleWrapper from "./Actions.style";
 import { useMemo, useState } from "react";
 import { TProject } from "@/types/project.type";
-import { formatLamportToNumber, formatToken, parseToken } from "@/utils/format.util";
+import { formatLamportToNumber } from "@/utils/format.util";
 import useUserPool from "@/hooks/program/useUserPool";
 import { BN } from "@project-serum/anchor";
 import DisplayNumber from "@/components/commons/DisplayNumber";
@@ -17,7 +17,10 @@ type Props = {
 };
 const Actions: React.FC<Props> = ({ project, launchPool }) => {
   const [amount, setAmount] = useState<string | undefined>();
-  const { data: usePool } = useUserPool(project.launch_pool_pda, project.token_address);
+  const { data: usePool } = useUserPool(
+    project.launch_pool_pda,
+    project.token_address
+  );
 
   const handleBuyMax = () => {
     const max = usePool
@@ -27,7 +30,9 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
   };
 
   const _buyed = useMemo(() => {
-    return usePool ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals) : 0;
+    return usePool
+      ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals)
+      : 0;
   }, [project.token_decimals, usePool]);
 
   return (
@@ -62,7 +67,10 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(project.minimum_token_amount, project.token_decimals)}
+                value={formatLamportToNumber(
+                  project.minimum_token_amount,
+                  project.token_decimals
+                )}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>
@@ -72,7 +80,10 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(project.maximum_token_amount, project.token_decimals)}
+                value={formatLamportToNumber(
+                  project.maximum_token_amount,
+                  project.token_decimals
+                )}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>

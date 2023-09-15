@@ -12,6 +12,11 @@ export const getExplorerUrl = (txHash: string | undefined) => {
     return `https://explorer.renec.foundation/tx/${txHash}?cluster=${process.env.NEXT_PUBLIC_NETWORK}`;
 };
 
+export const getExplorerAddressUrl = (address: string | undefined) => {
+    if (!address) return '#';
+    return `https://explorer.renec.foundation/address/${address}?cluster=${process.env.NEXT_PUBLIC_NETWORK}`;
+};
+
 
 export const getNetworkUrls = (isMainnet: boolean) => isMainnet
     ? { rpc: MAINNET_RPC_URL, wss: MAINNET_WSS_URL }

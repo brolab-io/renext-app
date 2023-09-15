@@ -7,6 +7,7 @@ import { TProject } from "@/types/project.type";
 import useLaunchPool from "@/hooks/program/useLaunchPool";
 import ProjectInfo from "./ProjectInfo";
 import VestingPlan from "./VestingPlan";
+import Whitelist from "./Whitelist";
 
 type Props = {
   project: TProject;
@@ -28,6 +29,9 @@ const ProjectDetails: React.FC<Props> = ({ project }) => {
             pool={project.launch_pool_pda}
             decimals={project.token_decimals}
           />
+        ) : null}
+        {!!launchPool?.poolType.whiteList ? (
+          <Whitelist pool={project.launch_pool_pda} />
         ) : null}
         <div className="token_info_row grid grid-cols-1 sm:grid-cols-2 gap-8">
           {/* {data?.info.map((item, i) => (
