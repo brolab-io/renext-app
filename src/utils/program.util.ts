@@ -48,17 +48,11 @@ export async function createNativePool(
     );
   }
   const unlock_date = new BN(dayjs(payload.token_unlock_date).unix());
-  const decimals = Number(payload.token_decimals) || 9;
-  const rate = new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
-  const pool_size = parseToken(payload.token_sale_amount, decimals);
-  const minimum_token_amount = parseToken(
-    payload.minimum_token_amount,
-    decimals
-  );
-  const maximum_token_amount = parseToken(
-    payload.maximum_token_amount,
-    decimals
-  );
+  const decimals = new BN(payload.token_decimals || 9);
+  const rate = new BN(payload.presale_rate) //new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
+  const pool_size = new BN(payload.token_sale_amount).mul(new BN(10).pow(new BN(decimals)));
+  const minimum_token_amount = new BN(payload.minimum_token_amount).mul(new BN(10).pow(decimals));
+  const maximum_token_amount = new BN(payload.maximum_token_amount).mul(new BN(10).pow(decimals));
 
   const isWhitelist = payload.campaign_type === "whitelist";
 
@@ -133,18 +127,12 @@ export async function createTokenPool(
   const mint = new PublicKey(payload.token_address);
   const reusd_mint = new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!);
   const unlock_date = new BN(dayjs(payload.token_unlock_date).unix());
-  const decimals = Number(payload.token_decimals) || 9;
-  const rate = new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
-  const pool_size = parseToken(payload.token_sale_amount, decimals);
-  const minimum_token_amount = parseToken(
-    payload.minimum_token_amount,
-    decimals
-  );
-  const maximum_token_amount = parseToken(
-    payload.maximum_token_amount,
-    decimals
-  );
-  const isWhitelist = payload.campaign_type === "whitelist";
+  const decimals = new BN(payload.token_decimals || 9);
+  const rate = new BN(payload.presale_rate) //new BN("1").mul(new BN(10000)).div(new BN(payload.presale_rate));
+  const pool_size = new BN(payload.token_sale_amount).mul(new BN(10).pow(new BN(decimals)));
+  const minimum_token_amount = new BN(payload.minimum_token_amount).mul(new BN(10).pow(decimals));
+  const maximum_token_amount = new BN(payload.maximum_token_amount).mul(new BN(10).pow(decimals));
+  const isWhitelist = payload.campaign_type === CAMPAIGN_TYPE.Whitelist;
   const [launch_pool] = findLaunchPoolAccount(creator, mint, program.programId);
   const launchPoolTokenAccount = await findMintTokenAccount(
     launch_pool,
@@ -658,8 +646,7 @@ export async function withdrawNativePool(
   }
 
   console.log(
-    `User ${program.provider?.publicKey?.toBase58()} want withdraw ${
-      accountInfo && accountInfo.lamports / LAMPORTS_PER_SOL
+    `User ${program.provider?.publicKey?.toBase58()} want withdraw ${accountInfo && accountInfo.lamports / LAMPORTS_PER_SOL
     } RENEC of launch pool ${launch_pool.toBase58()} with mint ${poolData.tokenMint.toBase58()} from vault ${vault.toBase58()} to beneficiary ${beneficiary.toBase58()}`
   );
   console.log("--------------------------------------");
@@ -711,8 +698,7 @@ export async function withdrawTokenPool(
   );
 
   console.log(
-    `User ${program.provider?.publicKey?.toBase58()} want withdraw ${
-      value.uiAmountString
+    `User ${program.provider?.publicKey?.toBase58()} want withdraw ${value.uiAmountString
     } ReUSD of launch pool ${launch_pool.toBase58()} with mint ${poolData.tokenMint.toBase58()} from vault ${launchPoolTokenAccount.toBase58()} to beneficiary ${beneficiary.toBase58()}`
   );
   console.log("--------------------------------------");
