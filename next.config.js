@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const removeImports = require("next-remove-imports")();
+
 const nextConfig = {
   reactStrictMode: false,
   // swcMinify: true,
@@ -11,6 +14,9 @@ const nextConfig = {
     // ssr and displayName are configured by default
     styledComponents: true,
   },
+  experimental: {
+    serverActions: true,
+  },
 };
 
-module.exports = nextConfig;
+module.exports = removeImports(nextConfig);
