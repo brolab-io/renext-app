@@ -45,7 +45,7 @@ create table
     created_by text not null,
     launch_pool_pda text not null,
     name text null,
-    network text null default 'solana'::text,
+    network text null default 'renec'::text,
     token_decimals numeric not null default '9'::numeric,
     slug text null,
     project_website text null,
