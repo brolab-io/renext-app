@@ -13,10 +13,14 @@ const nextConfig = {
   compiler: {
     // ssr and displayName are configured by default
     styledComponents: true,
+    removeConsole: {
+      exclude: ["error"],
+    },
   },
   experimental: {
     serverActions: true,
   },
+  transpilePackages: ["@renec-foundation/wallet-adapter-react"],
 };
 
-module.exports = removeImports(nextConfig);
+module.exports = nextConfig;

@@ -2,7 +2,7 @@
 
 import PageHeader from "@/components/Project/ProjectHeader";
 import { formatPublicKey } from "@/utils/format.util";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet } from "@renec-foundation/wallet-adapter-react";
 
 type Props = {
   publicKey: string;

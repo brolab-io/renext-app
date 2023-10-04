@@ -1,21 +1,19 @@
 "use client";
-import { FiChevronRight, FiX } from "react-icons/fi";
+import { FiChevronRight, FiX, FiDownload } from "react-icons/fi";
 import Button from "../../Button";
 import WhitelistModalStyleWrapper from "./WhitelistModal.style";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { isValidPublicKey } from "@/utils/network.util";
 import useStartPool from "@/hooks/program/useStartPool";
+import Link from "next/link";
 
 type WhitelistModalProps = {
   setIsOpen: (isOpen: boolean) => void;
   pool_pda: string;
 };
 
-const WhitelistModal: React.FC<WhitelistModalProps> = ({
-  setIsOpen,
-  pool_pda,
-}) => {
+const WhitelistModal: React.FC<WhitelistModalProps> = ({ setIsOpen, pool_pda }) => {
   const ref_input = useRef<HTMLInputElement>(null);
   const [csvFile, setFile] = useState<File | null>(null);
   const [whitelist, setWhitelist] = useState<string[]>([]);
@@ -36,9 +34,7 @@ const WhitelistModal: React.FC<WhitelistModalProps> = ({
 
     // 6. Since first row contains headers, we will remove the first row from data.
     _data.shift();
-    const temp = _data
-      .filter((item) => item[0].length > 36)
-      .map((item) => item[0]);
+    const temp = _data.filter((item) => item[0].length > 36).map((item) => item[0]);
     console.log({ address: temp });
     // check array include valid address
     const validAddress = temp.every((item) => {
@@ -81,9 +77,16 @@ const WhitelistModal: React.FC<WhitelistModalProps> = ({
           <div className="modal_header">
             <h2>Upload Whitelist File</h2>
             <p>
-              Choose your whitelist file to upload (.csv). <br /> Your whitelist
-              file must contain the &quot;Address&quot; columns as headers of
-              first collumn:
+              Choose your whitelist file to upload (.csv). <br /> Your whitelist file must contain
+              the &quot;Address&quot; columns as headers of first collumn.
+              <br />
+              <Link
+                className="flex items-center gap-2 text-blue-600 mt-2"
+                href="/assets/launchpad/whitelist-template.csv"
+              >
+                <FiDownload className="inline" />
+                Download <pre>whitelist-template.csv</pre>
+              </Link>
             </p>
             <button onClick={() => setIsOpen(false)}>
               <FiX />

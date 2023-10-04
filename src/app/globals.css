@@ -4,6 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overflow: overlay;
+}
+
+.wallet-adapter-button-wrap > button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem !important;
+}
+
 .wmde-markdown p[align="center"],
 .wmde-markdown div[align="center"] {
   align-items: center;
