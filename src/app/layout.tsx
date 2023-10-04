@@ -3,11 +3,12 @@ import "./globals.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@uiw/react-markdown-preview/markdown.css";
+import "@renec-foundation/wallet-adapter-react/src/style.css";
+
 import type { Metadata } from "next";
 import StyledComponentsRegistry from "@/lib/registry";
 import AppProvider from "@/components/providers/AppProvider";
 import MainMenu from "@/components/Header/MainMenu";
-import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {

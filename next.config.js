@@ -17,6 +17,7 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  transpilePackages: ["@renec-foundation/wallet-adapter-react"],
 };
 
-module.exports = removeImports(nextConfig);
+module.exports = nextConfig;

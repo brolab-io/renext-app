@@ -17,10 +17,7 @@ type Props = {
 };
 const Actions: React.FC<Props> = ({ project, launchPool }) => {
   const [amount, setAmount] = useState<string | undefined>();
-  const { data: usePool } = useUserPool(
-    project.launch_pool_pda,
-    project.token_address
-  );
+  const { data: usePool } = useUserPool(project.launch_pool_pda, project.token_address);
 
   const handleBuyMax = () => {
     const max = usePool
@@ -30,9 +27,7 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
   };
 
   const _buyed = useMemo(() => {
-    return usePool
-      ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals)
-      : 0;
+    return usePool ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals) : 0;
   }, [project.token_decimals, usePool]);
 
   return (
@@ -42,7 +37,12 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
           <h3 className="widget_title">
             Join with us <img src={"/assets/steps.png"} alt="shape" />
           </h3>
-          <h4>Amount to buy</h4>
+          <div className="flex justify-between items-center">
+            <h4>Amount to buy</h4>
+            {launchPool?.status.active ? null : (
+              <span className="font-medium text-red-600">Pool not active</span>
+            )}
+          </div>
           <div className="gap-2 form-group-area">
             <input
               type="number"
@@ -67,10 +67,7 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(
-                  project.minimum_token_amount,
-                  project.token_decimals
-                )}
+                value={formatLamportToNumber(project.minimum_token_amount, project.token_decimals)}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>
@@ -80,10 +77,7 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(
-                  project.maximum_token_amount,
-                  project.token_decimals
-                )}
+                value={formatLamportToNumber(project.maximum_token_amount, project.token_decimals)}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>
