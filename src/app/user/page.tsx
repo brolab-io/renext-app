@@ -1,5 +1,5 @@
 "use client";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet } from "@renec-foundation/wallet-adapter-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 

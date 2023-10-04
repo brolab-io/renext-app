@@ -12,7 +12,7 @@ import { usePathname } from "next/navigation";
 import { useModal } from "@/hooks/useModal";
 import WalletModal from "@/components/commons/Modal/WalletModal";
 import dynamic from "next/dynamic";
-import { useAnchorWallet } from "@solana/wallet-adapter-react";
+import { useAnchorWallet } from "@renec-foundation/wallet-adapter-react";
 // import ConnectWalletButton from "@/components/commons/WalletButton";
 
 type MenuProps = {
