@@ -29,5 +29,11 @@
     ".next/types/**/*.ts",
     "src/components/providers/AppProvider.tss"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "ESNext",
+      "moduleResolution": "Node"
+    }
+  }
 }
