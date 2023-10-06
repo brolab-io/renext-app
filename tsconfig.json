@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/providers/AppProvider.tss"
+    "src/components/providers/AppProvider.tss",
+    "src/hooks/program/useCompleteLaunchPool.txs"
   ],
   "exclude": ["node_modules"],
   "ts-node": {

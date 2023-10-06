@@ -6,6 +6,7 @@ import { useProgram } from "../useProgram";
 import { useDemonAdapter } from "../useDemonAdapter";
 import { CURRENCY, createNativePool, createTokenPool } from "@/utils/program";
 import { getProgramErrorMessage } from "@/utils/format.util";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useCreateLaunchpad = () => {
   const router = useRouter();
@@ -26,7 +27,6 @@ const useCreateLaunchpad = () => {
         return Promise.reject(new Error("Program not found"));
       }
       toastRef.current = toast.loading("Creating launchpad...");
-      console.log("Payload", payload);
 
       if (payload.currency_address === CURRENCY.RENEC) {
         const { tx, result } = await createNativePool(program, wallet.publicKey, payload);
@@ -47,9 +47,9 @@ const useCreateLaunchpad = () => {
     {
       onSuccess: (result) => {
         toast.update(toastRef.current!, {
-          render: "Launchpad created successfully",
+          render: <TxSubmitted message="Launchpad created successfully" txHash={result!.tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         router.push(`/project/${result!.slug || result!.id}`);
@@ -58,7 +58,7 @@ const useCreateLaunchpad = () => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

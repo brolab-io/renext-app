@@ -6,6 +6,7 @@ import { useDemonAdapter } from "../useDemonAdapter";
 import { useProgram } from "../useProgram";
 import { PublicKey } from "@solana/web3.js";
 import { completeLaunchPool } from "@/utils/program";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useCompleteLaunchPool = (launch_pool_pda: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -25,21 +26,14 @@ const useCompleteLaunchPool = (launch_pool_pda: string) => {
       if (!program) {
         return Promise.reject(new Error("Program has not been initialized"));
       }
-      const { tx } = await completeLaunchPool(
-        program,
-        new PublicKey(launch_pool_pda),
-        wallet.publicKey
-      );
-      return {
-        tx,
-      };
+      return await completeLaunchPool(program, new PublicKey(launch_pool_pda), wallet.publicKey);
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Launch pool completed successfully",
+          render: <TxSubmitted message="Launch pool completed successfully" txHash={tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -48,7 +42,7 @@ const useCompleteLaunchPool = (launch_pool_pda: string) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

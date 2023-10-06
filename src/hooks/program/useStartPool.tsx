@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PublicKey } from "@solana/web3.js";
 import { CAMPAIGN_TYPE_POOL, startLaunchPool, startLaunchPoolWithWhitelist } from "@/utils/program";
 import { getProgramErrorMessage } from "@/utils/format.util";
+import TxSubmitted from "@/components/TxSubmitted";
 const useStartPool = (launch_pool_pda: string, wallets?: string[]) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
 
@@ -28,35 +29,27 @@ const useStartPool = (launch_pool_pda: string, wallets?: string[]) => {
       const poolData = await program.account.launchPool.fetch(launch_pool);
 
       if (CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType) {
-        const tx = await startLaunchPool(program, wallet.publicKey, launch_pool);
-        console.log("startLaunchPool in tx: ", tx);
-        return {
-          tx,
-        };
+        return await startLaunchPool(program, wallet.publicKey, launch_pool);
       } else {
         if (!wallets) return Promise.reject(new Error("Please add whitelist"));
 
         const _wallets = wallets?.map((w) => new PublicKey(w));
 
-        const tx = await startLaunchPoolWithWhitelist(
+        return await startLaunchPoolWithWhitelist(
           program,
           wallet.publicKey,
           launch_pool,
           _wallets,
           _wallets.length
         );
-        console.log("startLaunchPoolWithWhitelist in tx: ", tx);
-        return {
-          tx,
-        };
       }
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Launch Pool started successfully",
+          render: <TxSubmitted message="Launch pool started successfully" txHash={tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -65,7 +58,7 @@ const useStartPool = (launch_pool_pda: string, wallets?: string[]) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

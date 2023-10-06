@@ -6,6 +6,7 @@ import { useDemonAdapter } from "../useDemonAdapter";
 import { useProgram } from "../useProgram";
 import { PublicKey } from "@solana/web3.js";
 import { claimToken } from "@/utils/program";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -25,17 +26,14 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
       if (!program) {
         return Promise.reject(new Error("Program has not been initialized"));
       }
-      const { tx } = await claimToken(program, new PublicKey(launch_pool_pda), wallet.publicKey);
-      return {
-        tx,
-      };
+      return await claimToken(program, new PublicKey(launch_pool_pda), wallet.publicKey);
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Claimed tokens successfully",
+          render: <TxSubmitted message="Claimed tokens successfully" txHash={tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -44,7 +42,7 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

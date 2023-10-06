@@ -6,6 +6,7 @@ import { useProgram } from "../useProgram";
 import { useDemonAdapter } from "../useDemonAdapter";
 import { PublicKey } from "@solana/web3.js";
 import { withdrawNativePool, withdrawTokenPool } from "@/utils/program";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useWithdrawLaunchPool = (launch_pool_pda: string, currency: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -26,35 +27,29 @@ const useWithdrawLaunchPool = (launch_pool_pda: string, currency: string) => {
       }
       toastRef.current = toast.loading("Withdraw launch pool...");
       if (currency.toUpperCase() === "REUSD") {
-        const { tx } = await withdrawTokenPool(
+        return await withdrawTokenPool(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           wallet.publicKey
         );
-        return {
-          tx,
-        };
       }
       if (currency.toUpperCase() === "RENEC") {
-        const { tx } = await withdrawNativePool(
+        return await withdrawNativePool(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           wallet.publicKey
         );
-        return {
-          tx,
-        };
       }
       return Promise.reject(new Error("Invalid currency"));
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Launch pool withdraw success",
+          render: <TxSubmitted message="Withdrawn launch pool successfully" txHash={tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -63,7 +58,7 @@ const useWithdrawLaunchPool = (launch_pool_pda: string, currency: string) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

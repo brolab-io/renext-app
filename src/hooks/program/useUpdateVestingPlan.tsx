@@ -8,6 +8,7 @@ import { PublicKey } from "@solana/web3.js";
 import { updateVestingPlan } from "@/utils/program";
 import { BN } from "bn.js";
 import dayjs from "dayjs";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useUpdateVestingPlan = (launch_pool_pda: string, decimals: number) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -37,23 +38,14 @@ const useUpdateVestingPlan = (launch_pool_pda: string, decimals: number) => {
         amount: new BN(x.amount).mul(new BN(10).pow(new BN(decimals))),
         releaseTime: new BN(dayjs(x.releaseTime).unix()),
       }));
-      const tx = await updateVestingPlan(
-        program,
-        wallet.publicKey,
-        launch_pool,
-        _scheduleTranformed
-      );
-      console.log("Update vesting plan in tx: ", tx);
-      return {
-        tx,
-      };
+      return await updateVestingPlan(program, wallet.publicKey, launch_pool, _scheduleTranformed);
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Vesting plan updated successfully",
+          render: <TxSubmitted message="Vesting plan updated successfully" txHash={tx} />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -62,7 +54,7 @@ const useUpdateVestingPlan = (launch_pool_pda: string, decimals: number) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },

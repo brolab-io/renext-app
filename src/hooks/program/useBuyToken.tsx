@@ -15,6 +15,7 @@ import {
 import { BN } from "@project-serum/anchor";
 import { formatToken, getProgramErrorMessage } from "@/utils/format.util";
 import { findMintTokenAccount } from "@/utils/account.util";
+import TxSubmitted from "@/components/TxSubmitted";
 
 const useBuyToken = (launch_pool_pda: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -29,7 +30,7 @@ const useBuyToken = (launch_pool_pda: string) => {
 
   return useMutation(
     ["buyToken", wallet?.publicKey.toBase58() || "", launch_pool_pda],
-    async (amount: string) => {
+    async (amount: string): Promise<{ tx: string }> => {
       if (!wallet?.publicKey) {
         return Promise.reject(new Error("Please connect your wallet"));
       }
@@ -69,15 +70,12 @@ const useBuyToken = (launch_pool_pda: string) => {
           );
         }
 
-        const tx = await buyWithRenec(
+        return await buyWithRenec(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           amount
         );
-        return {
-          tx,
-        };
       } else if (
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
@@ -100,15 +98,12 @@ const useBuyToken = (launch_pool_pda: string) => {
           );
         }
 
-        const tx = await buyWithReUSD(
+        return await buyWithReUSD(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           amount
         );
-        return {
-          tx,
-        };
       } else if (
         CURRENCY_POOL.RENEC in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
@@ -123,16 +118,13 @@ const useBuyToken = (launch_pool_pda: string) => {
             )
           );
         }
-        console.log("renec in whitelist");
-        const tx = await buyWithRenecAndWhitelist(
+
+        return await buyWithRenecAndWhitelist(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           amount
         );
-        return {
-          tx,
-        };
       } else if (
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
@@ -143,7 +135,6 @@ const useBuyToken = (launch_pool_pda: string) => {
         );
 
         const { value: usdBalance } = await connection.getTokenAccountBalance(userTokenAccount);
-        console.log({ usdBalance });
 
         if (new BN(usdBalance.amount).lt(_mustPay)) {
           return Promise.reject(
@@ -155,24 +146,22 @@ const useBuyToken = (launch_pool_pda: string) => {
           );
         }
 
-        const tx = await buyWithReUSDAndWhitelist(
+        return await buyWithReUSDAndWhitelist(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
           amount
         );
-
-        return {
-          tx,
-        };
       }
+      return Promise.reject(new Error("This pool is not supported"));
     },
     {
-      onSuccess: () => {
+      onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
-          render: "Token bought successfully",
+          // render: "Token bought successfully",
+          render: <TxSubmitted txHash={tx} message="Token bought successfully" />,
           type: "success",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
@@ -182,7 +171,7 @@ const useBuyToken = (launch_pool_pda: string) => {
         toast.update(toastRef.current!, {
           render: getProgramErrorMessage(error),
           type: "error",
-          autoClose: 5000,
+          autoClose: 10000,
           isLoading: false,
         });
       },
