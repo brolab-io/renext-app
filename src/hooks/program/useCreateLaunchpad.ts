@@ -4,7 +4,9 @@ import { useRef } from "react";
 import { toast } from "react-toastify";
 import { useProgram } from "../useProgram";
 import { useDemonAdapter } from "../useDemonAdapter";
-import { CURRENCY, createNativePool, createTokenPool } from "@/utils/program.util";
+import { CURRENCY, createNativePool, createTokenPool } from "@/utils/program";
+import { getProgramErrorMessage } from "@/utils/format.util";
+
 const useCreateLaunchpad = () => {
   const router = useRouter();
   const toastRef = useRef<ReturnType<typeof toast>>();
@@ -53,22 +55,12 @@ const useCreateLaunchpad = () => {
         router.push(`/project/${result!.slug || result!.id}`);
       },
       onError: (error) => {
-        if (error instanceof Error) {
-          toast.update(toastRef.current!, {
-            render: error.message,
-            type: "error",
-            autoClose: 5000,
-            isLoading: false,
-          });
-        } else {
-          toast.update(toastRef.current!, {
-            render: "An error occurred while creating launchpad",
-            type: "error",
-            autoClose: 5000,
-            isLoading: false,
-          });
-        }
-        console.log(error);
+        toast.update(toastRef.current!, {
+          render: getProgramErrorMessage(error),
+          type: "error",
+          autoClose: 5000,
+          isLoading: false,
+        });
       },
     }
   );

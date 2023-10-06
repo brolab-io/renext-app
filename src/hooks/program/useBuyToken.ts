@@ -8,21 +8,21 @@ import {
   CAMPAIGN_TYPE_POOL,
   CURRENCY_POOL,
   buyWithReUSD,
-  buyWithReUSDAnWhitelist,
   buyWithRenec,
   buyWithRenecAndWhitelist,
-} from "@/utils/program.util";
+  buyWithReUSDAndWhitelist,
+} from "@/utils/program";
 import { BN } from "@project-serum/anchor";
-import { formatLamportToNumber, formatToken, getProgramErrorMessage } from "@/utils/format.util";
+import { formatToken, getProgramErrorMessage } from "@/utils/format.util";
 import { findMintTokenAccount } from "@/utils/account.util";
-
-
-
 
 const useBuyToken = (launch_pool_pda: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
 
-  const { anchorWallet: wallet, connectionContext: { connection } } = useDemonAdapter();
+  const {
+    anchorWallet: wallet,
+    connectionContext: { connection },
+  } = useDemonAdapter();
 
   const { program } = useProgram();
   const queryClient = useQueryClient();
@@ -48,29 +48,27 @@ const useBuyToken = (launch_pool_pda: string) => {
       );
 
       if (new BN(amount).lt(minCanBuy) || new BN(amount).gt(maxCanBuy)) {
-        return Promise.reject(
-          new Error(`Amount should be between ${minCanBuy} and ${maxCanBuy}`)
-        );
+        return Promise.reject(new Error(`Amount should be between ${minCanBuy} and ${maxCanBuy}`));
       }
 
       // const _price = new BN(10).pow(new BN(9)).div(new BN(poolData.rate))
-      const _mustPay = new BN(Number(amount)).mul(
-        new BN(10).pow(new BN(9))
-      ).div(poolData.rate)
-      console.log({ _mustPay: _mustPay.toString() })
-
+      const _mustPay = new BN(Number(amount)).mul(new BN(10).pow(new BN(9))).div(poolData.rate);
 
       if (
         CURRENCY_POOL.RENEC in poolData.currency &&
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
       ) {
-        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
+        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey));
         if (_balance.lt(_mustPay)) {
           return Promise.reject(
-            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+            new Error(
+              `Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(
+                poolData.currency
+              )[0].toUpperCase()} to buy ${amount} token`
+            )
           );
         }
-        console.log("renec in FairLaunch");
+
         const tx = await buyWithRenec(
           program,
           new PublicKey(launch_pool_pda),
@@ -84,7 +82,6 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.FairLaunch in poolData.poolType
       ) {
-
         const userTokenAccount = await findMintTokenAccount(
           wallet.publicKey,
           new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!)
@@ -95,11 +92,14 @@ const useBuyToken = (launch_pool_pda: string) => {
 
         if (new BN(usdBalance.amount).lt(_mustPay)) {
           return Promise.reject(
-            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+            new Error(
+              `Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(
+                poolData.currency
+              )[0].toUpperCase()} to buy ${amount} token`
+            )
           );
         }
 
-        console.log("usd in FairLaunch");
         const tx = await buyWithReUSD(
           program,
           new PublicKey(launch_pool_pda),
@@ -113,10 +113,14 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.RENEC in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
       ) {
-        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey))
+        const _balance = new BN(await program.provider.connection.getBalance(wallet.publicKey));
         if (_balance.lt(_mustPay)) {
           return Promise.reject(
-            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+            new Error(
+              `Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(
+                poolData.currency
+              )[0].toUpperCase()} to buy ${amount} token`
+            )
           );
         }
         console.log("renec in whitelist");
@@ -133,7 +137,6 @@ const useBuyToken = (launch_pool_pda: string) => {
         CURRENCY_POOL.REUSD in poolData.currency &&
         CAMPAIGN_TYPE_POOL.Whitelist in poolData.poolType
       ) {
-
         const userTokenAccount = await findMintTokenAccount(
           wallet.publicKey,
           new PublicKey(process.env.NEXT_PUBLIC_REUSD_MINT!)
@@ -144,14 +147,15 @@ const useBuyToken = (launch_pool_pda: string) => {
 
         if (new BN(usdBalance.amount).lt(_mustPay)) {
           return Promise.reject(
-            new Error(`Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(poolData.currency)[0].toUpperCase()} to buy ${amount} token`)
+            new Error(
+              `Insufficient balance, you need ${formatToken(_mustPay.toString())} ${Object.keys(
+                poolData.currency
+              )[0].toUpperCase()} to buy ${amount} token`
+            )
           );
         }
 
-
-
-        console.log("usd in whitelist");
-        const tx = await buyWithReUSDAnWhitelist(
+        const tx = await buyWithReUSDAndWhitelist(
           program,
           new PublicKey(launch_pool_pda),
           wallet.publicKey,
@@ -172,11 +176,7 @@ const useBuyToken = (launch_pool_pda: string) => {
           isLoading: false,
         });
         queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
-        queryClient.invalidateQueries([
-          "user-pool",
-          launch_pool_pda,
-          wallet?.publicKey || "",
-        ]);
+        queryClient.invalidateQueries(["user-pool", launch_pool_pda, wallet?.publicKey || ""]);
       },
       onError: (error) => {
         toast.update(toastRef.current!, {

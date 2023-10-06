@@ -5,7 +5,7 @@ import { useDemonAdapter } from "../useDemonAdapter";
 import { useProgram } from "../useProgram";
 import { getProgramErrorMessage } from "@/utils/format.util";
 import { PublicKey } from "@solana/web3.js";
-import { updateVestingPlan } from "@/utils/program.util";
+import { updateVestingPlan } from "@/utils/program";
 import { BN } from "bn.js";
 import dayjs from "dayjs";
 
@@ -25,9 +25,7 @@ const useUpdateVestingPlan = (launch_pool_pda: string, decimals: number) => {
         releaseTime: string;
       }[]
     ) => {
-      toastRef.current = toast.loading(
-        "Updating vesting plan for launch pool..."
-      );
+      toastRef.current = toast.loading("Updating vesting plan for launch pool...");
       if (!wallet?.publicKey) {
         return Promise.reject(new Error("Please connect your wallet"));
       }
