@@ -35,7 +35,15 @@ export const formatToken = (amount: number | string, decimal = 9, decimalsDigits
   return `${inc}.${dec}`;
 };
 
-export const getProgramErrorMessage = (error: unknown) => {
+export const getProgramErrorMessage = (
+  error: unknown,
+  fallback = "An error occurred while processing the transaction. Please try again later."
+) => {
+  if (typeof error === "string") {
+    if (error.includes("user denied")) {
+      return "Transaction rejected!";
+    }
+  }
   if (error instanceof Error && error.message.includes("Error Message")) {
     // Error: AnchorError thrown in programs/renec-renext-program/src/instructions/start_launch_pool.rs:23. Error Code: InvalidAuthority. Error Number: 6002. Error Message: Invalid authority.
     // Extract Error Message
@@ -45,10 +53,7 @@ export const getProgramErrorMessage = (error: unknown) => {
     if (!errorMessage || !errorNumber) return error.message;
     return `Program Error: ${errorMessage} (Code: ${errorNumber})`;
   }
-  return (
-    (error as Error).message ||
-    "An error occurred while processing the transaction. Please try again later."
-  );
+  return (error as Error).message || fallback;
 };
 
 export const getTokenRate = (rate: number, decimals: number = 9) => {

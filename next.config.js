@@ -13,9 +13,7 @@ const nextConfig = {
   compiler: {
     // ssr and displayName are configured by default
     styledComponents: true,
-    removeConsole: {
-      exclude: ["error"],
-    },
+    removeConsole: process.env.NODE_ENV === "production" ? { exclude: ["error"] } : false,
   },
   experimental: {
     serverActions: true,
