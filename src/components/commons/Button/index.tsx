@@ -10,10 +10,19 @@ type ButtonProps = {
   href?: string;
   target?: HTMLAttributeAnchorTarget;
 } & LinkStyleProps;
-const Button: React.FC<ButtonProps> = ({ children, href, className, target, ...props }) => {
+const Button: React.FC<ButtonProps> = ({
+  children,
+  href,
+  className,
+  target,
+  ...props
+}) => {
   if (!href) {
     return (
-      <ButtonStyle {...props} className={clsx("btn_wrapper disabled:bg-gray-500", className)}>
+      <ButtonStyle
+        {...props}
+        className={clsx("btn_wrapper disabled:bg-gray-500", className)}
+      >
         {children}
 
         <div className="hover_shape_wrapper">
@@ -26,8 +35,8 @@ const Button: React.FC<ButtonProps> = ({ children, href, className, target, ...p
   }
 
   return (
-    <Link href={href ? href : "#"} passHref legacyBehavior target={target}>
-      <LinkStyle {...props} href={href ? href : "#"} className="btn_wrapper">
+    <Link href={href ? href : "#"} legacyBehavior target={target}>
+      <LinkStyle {...props} className="btn_wrapper">
         {children}
 
         <div className="hover_shape_wrapper">

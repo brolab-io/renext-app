@@ -10,7 +10,7 @@ export type LinkStyleProps = {
   isCenter?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const LinkStyle = styled.a<LinkStyleProps>`
+const LinkStyle = styled.span<LinkStyleProps>`
   position: relative;
   display: flex;
   justify-content: center;
