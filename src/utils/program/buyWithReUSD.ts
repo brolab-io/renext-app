@@ -1,6 +1,6 @@
 import { RenextProgram } from "@/artifacts/renext_program";
 import { BN, Program } from "@project-serum/anchor";
-import { ASSOCIATED_TOKEN_PROGRAM_ID, TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { PublicKey, SYSVAR_RENT_PUBKEY, SystemProgram } from "@solana/web3.js";
 import { findMintTokenAccount, findUserPoolAccount } from "../account.util";
 
@@ -57,7 +57,6 @@ export default async function buyWithReUSD(
       tokenMint: poolData.tokenMint,
       tokenProgram: TOKEN_PROGRAM_ID,
       systemProgram: SystemProgram.programId,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       rent: SYSVAR_RENT_PUBKEY,
     })
     .rpc();

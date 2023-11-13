@@ -27,6 +27,7 @@ const LinkStyle = styled.span<LinkStyleProps>`
   background: #6d4afe;
   overflow: hidden;
   z-index: 1;
+  cursor: pointer;
 
   .hover_shape_wrapper {
     position: absolute;

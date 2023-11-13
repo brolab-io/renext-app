@@ -2,7 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Button from "@/components/commons/Button";
 import ActionsStyleWrapper from "./Actions.style";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TProject } from "@/types/project.type";
 import { formatLamportToNumber } from "@/utils/format.util";
 import useUserPool from "@/hooks/program/useUserPool";
@@ -17,17 +17,22 @@ type Props = {
 };
 const Actions: React.FC<Props> = ({ project, launchPool }) => {
   const [amount, setAmount] = useState<string | undefined>();
-  const { data: usePool } = useUserPool(project.launch_pool_pda, project.token_address);
+  const { data: usePool } = useUserPool(
+    project.launch_pool_pda,
+    project.token_address
+  );
 
-  const handleBuyMax = () => {
+  const handleBuyMax = useCallback(() => {
     const max = usePool
       ? new BN(project.maximum_token_amount).sub(usePool.amount).toString()
       : project.maximum_token_amount;
     setAmount(formatLamportToNumber(max, project.token_decimals).toString());
-  };
+  }, [project.maximum_token_amount, project.token_decimals, usePool]);
 
   const _buyed = useMemo(() => {
-    return usePool ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals) : 0;
+    return usePool
+      ? formatLamportToNumber(usePool.amount.toString(), project.token_decimals)
+      : 0;
   }, [project.token_decimals, usePool]);
 
   return (
@@ -56,7 +61,13 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
             <ButtonBuy
               pool={project.launch_pool_pda}
               value={amount}
-              disabled={!launchPool?.status.active}
+              disabled={
+                !launchPool?.status.active ||
+                (usePool != null &&
+                  new BN(project.maximum_token_amount)
+                    .sub(usePool?.amount)
+                    .lte(new BN(0)))
+              }
             />
           </div>
         </div>
@@ -67,7 +78,10 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(project.minimum_token_amount, project.token_decimals)}
+                value={formatLamportToNumber(
+                  project.minimum_token_amount,
+                  project.token_decimals
+                )}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>
@@ -77,7 +91,10 @@ const Actions: React.FC<Props> = ({ project, launchPool }) => {
 
               <DisplayNumber
                 className="info_value"
-                value={formatLamportToNumber(project.maximum_token_amount, project.token_decimals)}
+                value={formatLamportToNumber(
+                  project.maximum_token_amount,
+                  project.token_decimals
+                )}
               >
                 {project.token_symbol.toUpperCase()}
               </DisplayNumber>

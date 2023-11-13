@@ -31,7 +31,7 @@ export default async function startLaunchPool(
       authority: creator,
       tokenProgram: TOKEN_PROGRAM_ID,
       rent: SYSVAR_RENT_PUBKEY,
-      systemProgram: SystemProgram.programId,
+      systemProgram: SystemProgram.programId
     })
     .rpc();
   return {
