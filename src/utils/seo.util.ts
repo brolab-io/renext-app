@@ -7,5 +7,8 @@ export function buildMetadata(title?: string, description?: string): Metadata {
   return {
     title: title ? `${title} | ${SITE_TITLE}` : SITE_TITLE,
     description: description || SITE_DESCRIPTION,
+    openGraph: {
+      images: ["https://renext.xyz/banner.jpg"],
+    },
   };
 }

@@ -22,6 +22,11 @@ export const getMenuData = (isLoggedIn = false) => {
         // },
       ],
     },
+    {
+      id: "3XZ01",
+      title: "AirDrops",
+      url: "/airdrops",
+    },
     // {
     //   id: "ZZUVV",
     //   title: "About",

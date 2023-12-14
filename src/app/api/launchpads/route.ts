@@ -36,6 +36,7 @@ export async function GET(request: NextRequest) {
   } = await builder.order("created_at", { ascending: false }).range(offset, offset + limit - 1);
 
   if (error) {
+    console.error(error);
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
   return NextResponse.json({
