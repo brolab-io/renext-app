@@ -5,10 +5,10 @@ import { toast } from "react-toastify";
 import { useDemonAdapter } from "../useDemonAdapter";
 import { useProgram } from "../useProgram";
 import { PublicKey } from "@solana/web3.js";
-import { claimToken, claimTokenVesting } from "@/utils/program";
 import TxSubmitted from "@/components/TxSubmitted";
+import { collectRemainToken } from "@/utils/program/collectToken";
 
-const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
+const useCollectToken = (launch_pool_pda: string) => {
   const toastRef = useRef<ReturnType<typeof toast>>();
 
   const { anchorWallet: wallet } = useDemonAdapter();
@@ -17,7 +17,7 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    ["claimToken", wallet?.publicKey.toBase58() || ""],
+    ["collectToken", wallet?.publicKey.toBase58() || ""],
     async () => {
       toastRef.current = toast.loading("Claiming tokens...");
       if (!wallet?.publicKey) {
@@ -26,14 +26,7 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
       if (!program) {
         return Promise.reject(new Error("Program has not been initialized"));
       }
-      if (isVesting) {
-        return await claimTokenVesting(
-          program,
-          new PublicKey(launch_pool_pda),
-          wallet.publicKey
-        );
-      }
-      return await claimToken(
+      return await collectRemainToken(
         program,
         new PublicKey(launch_pool_pda),
         wallet.publicKey
@@ -43,13 +36,15 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
       onSuccess: ({ tx }) => {
         toast.update(toastRef.current!, {
           render: (
-            <TxSubmitted message="Claimed tokens successfully" txHash={tx} />
+            <TxSubmitted
+              message="Collect remain tokens successfully"
+              txHash={tx}
+            />
           ),
           type: "success",
           autoClose: 10000,
           isLoading: false,
         });
-        queryClient.invalidateQueries(["launchpools", launch_pool_pda]);
       },
       onError: (error) => {
         toast.update(toastRef.current!, {
@@ -63,4 +58,4 @@ const useClaimToken = (launch_pool_pda: string, isVesting: boolean = false) => {
   );
 };
 
-export default useClaimToken;
+export default useCollectToken;
