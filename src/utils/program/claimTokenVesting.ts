@@ -13,15 +13,16 @@ import {
 export default async function claimTokenVesting(
   program: Program<RenextProgram>,
   pool: PublicKey,
-  mint: PublicKey,
   buyer: PublicKey
 ) {
-  const [treasurer] = findTreasurerAccount(pool, mint, program.programId);
-  const treasury = await findMintTokenAccount(treasurer, mint);
+  const launch_pool = new PublicKey(pool);
+  const poolData = await program.account.launchPool.fetch(launch_pool);
+  const [treasurer] = findTreasurerAccount(pool, poolData.tokenMint, program.programId);
+  const treasury = await findMintTokenAccount(treasurer, poolData.tokenMint);
   const [vesting_plan] = findVestingPlanAccount(pool, program.programId);
-  const [user_pool] = findUserPoolAccount(buyer, pool, mint, program.programId);
+  const [user_pool] = findUserPoolAccount(buyer, pool, poolData.tokenMint, program.programId);
 
-  const userTokenAccount = await findMintTokenAccount(buyer, mint);
+  const userTokenAccount = await findMintTokenAccount(buyer, poolData.tokenMint);
 
   const tx = await program.methods
     .claimTokenVesting()
@@ -32,7 +33,7 @@ export default async function claimTokenVesting(
       treasury,
       user: buyer,
       userTokenAccount,
-      tokenMint: mint,
+      tokenMint: poolData.tokenMint,
       vestingPlan: vesting_plan,
       tokenProgram: TOKEN_PROGRAM_ID,
       associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,

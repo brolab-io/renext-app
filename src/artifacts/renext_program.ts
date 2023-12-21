@@ -1,12 +1,19 @@
 export type RenextProgram = {
   "version": "0.1.0",
   "name": "renext_program",
-  "instructions": [
+  "constants": [
     {
-      "name": "initialize",
-      "accounts": [],
-      "args": []
+      "name": "REUSD_MINT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"4Q89182juiadeFgGw3fupnrwnnDmBhf7e7fHWxnUP3S3\")"
     },
+    {
+      "name": "REUSD_MINT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"AJABAYSrSuFCgmRnxTVBY2zfSpYx9gXrWPCP5QZ16TNu\")"
+    }
+  ],
+  "instructions": [
     {
       "name": "createTokenPool",
       "accounts": [
@@ -451,11 +458,6 @@ export type RenextProgram = {
           "isSigner": false
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "rent",
           "isMut": false,
           "isSigner": false
@@ -578,11 +580,6 @@ export type RenextProgram = {
           "isSigner": false
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "rent",
           "isMut": false,
           "isSigner": false
@@ -615,6 +612,16 @@ export type RenextProgram = {
         },
         {
           "name": "beneficiary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemInfo",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeReceiver",
           "isMut": true,
           "isSigner": false
         },
@@ -666,6 +673,21 @@ export type RenextProgram = {
         },
         {
           "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemInfo",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeReceiver",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -888,6 +910,175 @@ export type RenextProgram = {
           }
         }
       ]
+    },
+    {
+      "name": "collectRemainToken",
+      "accounts": [
+        {
+          "name": "launchPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "treasurer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "desTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancelLaunchPool",
+      "accounts": [
+        {
+          "name": "launchPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "treasurer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "desTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initSystem",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "feeReceiver",
+          "type": "publicKey"
+        },
+        {
+          "name": "feeInPercent",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "updateFeeRecevier",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "feeReceiver",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "updateFeeInPercent",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "feeInPercent",
+          "type": "u8"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -957,6 +1148,26 @@ export type RenextProgram = {
             "type": {
               "defined": "LaunchPoolState"
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "systemInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
+            "name": "feeReceiver",
+            "type": "publicKey"
+          },
+          {
+            "name": "feeInPercent",
+            "type": "u8"
           }
         ]
       }
@@ -1140,31 +1351,6 @@ export type RenextProgram = {
   ],
   "events": [
     {
-      "name": "BuyTokenWithNativeEvent",
-      "fields": [
-        {
-          "name": "buyer",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "amount",
-          "type": "u64",
-          "index": false
-        },
-        {
-          "name": "tokenAmount",
-          "type": "u64",
-          "index": false
-        },
-        {
-          "name": "vaultAmount",
-          "type": "u64",
-          "index": false
-        }
-      ]
-    },
-    {
       "name": "BuyTokenWithTokenEvent",
       "fields": [
         {
@@ -1180,6 +1366,141 @@ export type RenextProgram = {
         {
           "name": "tokenAmount",
           "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "BuyTokenEvent",
+      "fields": [
+        {
+          "name": "buyer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "totalUserAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "vaultAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ClaimTokenEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "NewPoolCreatedEvent",
+      "fields": []
+    },
+    {
+      "name": "PoolCompletedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "tokenRemaining",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "vaultAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PoolStartedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "treasurer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "treasury",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "whitelist",
+          "type": {
+            "option": "publicKey"
+          },
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "VestingPlanUpdatedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "schedule",
+          "type": {
+            "vec": {
+              "defined": "VestingSchedule"
+            }
+          },
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "RemainTokenCollectedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PoolCancelledEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
           "index": false
         }
       ]
@@ -1350,6 +1671,51 @@ export type RenextProgram = {
       "code": 6032,
       "name": "ThisIsVestingPool",
       "msg": "This is vesting pool"
+    },
+    {
+      "code": 6033,
+      "name": "WhitelistMaxSizeExceeded",
+      "msg": "Reached maximum whitelist size"
+    },
+    {
+      "code": 6034,
+      "name": "InvalidReleaseTime",
+      "msg": "Invalid release time"
+    },
+    {
+      "code": 6035,
+      "name": "InvalidTokenMintDecimals",
+      "msg": "Invalid token mint decimals"
+    },
+    {
+      "code": 6036,
+      "name": "Initialized",
+      "msg": "Account is initialized"
+    },
+    {
+      "code": 6037,
+      "name": "NotInitialized",
+      "msg": "Account is not initialized"
+    },
+    {
+      "code": 6038,
+      "name": "InvalidPoolSize",
+      "msg": "Invalid pool size"
+    },
+    {
+      "code": 6039,
+      "name": "InvalidFeeValue",
+      "msg": "Invalid fee value"
+    },
+    {
+      "code": 6040,
+      "name": "InvalidAccount",
+      "msg": "Invalid account"
+    },
+    {
+      "code": 6041,
+      "name": "NotHaveToken",
+      "msg": "You don't have token"
     }
   ]
 };
@@ -1357,12 +1723,19 @@ export type RenextProgram = {
 export const IDL: RenextProgram = {
   "version": "0.1.0",
   "name": "renext_program",
-  "instructions": [
+  "constants": [
     {
-      "name": "initialize",
-      "accounts": [],
-      "args": []
+      "name": "REUSD_MINT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"4Q89182juiadeFgGw3fupnrwnnDmBhf7e7fHWxnUP3S3\")"
     },
+    {
+      "name": "REUSD_MINT",
+      "type": "publicKey",
+      "value": "pubkey ! (\"AJABAYSrSuFCgmRnxTVBY2zfSpYx9gXrWPCP5QZ16TNu\")"
+    }
+  ],
+  "instructions": [
     {
       "name": "createTokenPool",
       "accounts": [
@@ -1807,11 +2180,6 @@ export const IDL: RenextProgram = {
           "isSigner": false
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "rent",
           "isMut": false,
           "isSigner": false
@@ -1934,11 +2302,6 @@ export const IDL: RenextProgram = {
           "isSigner": false
         },
         {
-          "name": "associatedTokenProgram",
-          "isMut": false,
-          "isSigner": false
-        },
-        {
           "name": "rent",
           "isMut": false,
           "isSigner": false
@@ -1971,6 +2334,16 @@ export const IDL: RenextProgram = {
         },
         {
           "name": "beneficiary",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemInfo",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeReceiver",
           "isMut": true,
           "isSigner": false
         },
@@ -2022,6 +2395,21 @@ export const IDL: RenextProgram = {
         },
         {
           "name": "userTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemInfo",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeReceiver",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "feeTokenAccount",
           "isMut": true,
           "isSigner": false
         },
@@ -2244,6 +2632,175 @@ export const IDL: RenextProgram = {
           }
         }
       ]
+    },
+    {
+      "name": "collectRemainToken",
+      "accounts": [
+        {
+          "name": "launchPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "treasurer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "desTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "cancelLaunchPool",
+      "accounts": [
+        {
+          "name": "launchPool",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "tokenMint",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "treasurer",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "treasury",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "desTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "tokenProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "associatedTokenProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initSystem",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "feeReceiver",
+          "type": "publicKey"
+        },
+        {
+          "name": "feeInPercent",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "updateFeeRecevier",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "feeReceiver",
+          "type": "publicKey"
+        }
+      ]
+    },
+    {
+      "name": "updateFeeInPercent",
+      "accounts": [
+        {
+          "name": "systemInfo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "feeInPercent",
+          "type": "u8"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -2313,6 +2870,26 @@ export const IDL: RenextProgram = {
             "type": {
               "defined": "LaunchPoolState"
             }
+          }
+        ]
+      }
+    },
+    {
+      "name": "systemInfo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "admin",
+            "type": "publicKey"
+          },
+          {
+            "name": "feeReceiver",
+            "type": "publicKey"
+          },
+          {
+            "name": "feeInPercent",
+            "type": "u8"
           }
         ]
       }
@@ -2496,31 +3073,6 @@ export const IDL: RenextProgram = {
   ],
   "events": [
     {
-      "name": "BuyTokenWithNativeEvent",
-      "fields": [
-        {
-          "name": "buyer",
-          "type": "publicKey",
-          "index": false
-        },
-        {
-          "name": "amount",
-          "type": "u64",
-          "index": false
-        },
-        {
-          "name": "tokenAmount",
-          "type": "u64",
-          "index": false
-        },
-        {
-          "name": "vaultAmount",
-          "type": "u64",
-          "index": false
-        }
-      ]
-    },
-    {
       "name": "BuyTokenWithTokenEvent",
       "fields": [
         {
@@ -2536,6 +3088,141 @@ export const IDL: RenextProgram = {
         {
           "name": "tokenAmount",
           "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "BuyTokenEvent",
+      "fields": [
+        {
+          "name": "buyer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "totalUserAmount",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "vaultAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "ClaimTokenEvent",
+      "fields": [
+        {
+          "name": "user",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "NewPoolCreatedEvent",
+      "fields": []
+    },
+    {
+      "name": "PoolCompletedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "tokenRemaining",
+          "type": "u64",
+          "index": false
+        },
+        {
+          "name": "vaultAmount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PoolStartedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "treasurer",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "treasury",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "whitelist",
+          "type": {
+            "option": "publicKey"
+          },
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "VestingPlanUpdatedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "schedule",
+          "type": {
+            "vec": {
+              "defined": "VestingSchedule"
+            }
+          },
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "RemainTokenCollectedEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
+          "index": false
+        },
+        {
+          "name": "amount",
+          "type": "u64",
+          "index": false
+        }
+      ]
+    },
+    {
+      "name": "PoolCancelledEvent",
+      "fields": [
+        {
+          "name": "launchPool",
+          "type": "publicKey",
           "index": false
         }
       ]
@@ -2706,6 +3393,51 @@ export const IDL: RenextProgram = {
       "code": 6032,
       "name": "ThisIsVestingPool",
       "msg": "This is vesting pool"
+    },
+    {
+      "code": 6033,
+      "name": "WhitelistMaxSizeExceeded",
+      "msg": "Reached maximum whitelist size"
+    },
+    {
+      "code": 6034,
+      "name": "InvalidReleaseTime",
+      "msg": "Invalid release time"
+    },
+    {
+      "code": 6035,
+      "name": "InvalidTokenMintDecimals",
+      "msg": "Invalid token mint decimals"
+    },
+    {
+      "code": 6036,
+      "name": "Initialized",
+      "msg": "Account is initialized"
+    },
+    {
+      "code": 6037,
+      "name": "NotInitialized",
+      "msg": "Account is not initialized"
+    },
+    {
+      "code": 6038,
+      "name": "InvalidPoolSize",
+      "msg": "Invalid pool size"
+    },
+    {
+      "code": 6039,
+      "name": "InvalidFeeValue",
+      "msg": "Invalid fee value"
+    },
+    {
+      "code": 6040,
+      "name": "InvalidAccount",
+      "msg": "Invalid account"
+    },
+    {
+      "code": 6041,
+      "name": "NotHaveToken",
+      "msg": "You don't have token"
     }
   ]
 };

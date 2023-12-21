@@ -20,6 +20,7 @@ import ButtonComplete from "../Actions/ButtonComplete";
 import ButtonClaim from "../Actions/ButtonClaim";
 import ButtonWithdraw from "../Actions/ButtonWithdraw";
 import ButtonUpdateVestingPlan from "../Actions/ButtonUpdateVestingPlan";
+import ButtonCollectToken from "../Actions/ButtonCollectToken";
 // @ts-ignore
 const Countdown = dynamic(() => import("react-countdown"), { ssr: false });
 
@@ -29,7 +30,6 @@ type Props = {
 };
 
 const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
-  console.log({ pool });
   const { anchorWallet } = useDemonAdapter();
 
   const CountdownRender = ({
@@ -223,10 +223,13 @@ const ProjectInfo: React.FC<Props> = ({ project, launchPool: pool }) => {
               ) : !!pool.status.active ? (
                 <ButtonComplete pool={project.launch_pool_pda} />
               ) : !!pool.status.completed ? (
-                <ButtonWithdraw
-                  pool={project.launch_pool_pda}
-                  currency={Object.keys(pool.currency)[0]}
-                />
+                <>
+                  <ButtonCollectToken pool={project.launch_pool_pda} />
+                  <ButtonWithdraw
+                    pool={project.launch_pool_pda}
+                    currency={Object.keys(pool.currency)[0]}
+                  />
+                </>
               ) : null
             ) : null}
 

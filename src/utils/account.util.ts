@@ -2,6 +2,13 @@ import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pub
 import { PublicKey } from "@solana/web3.js";
 import { associatedAddress } from "@project-serum/anchor/dist/cjs/utils/token";
 
+export function findSystemInfoAccount(programId: PublicKey) {
+  return PublicKey.findProgramAddressSync(
+    [Buffer.from("renext-systeminfo")],
+    programId
+  );
+}
+
 export function findLaunchPoolAccount(
   creator: PublicKey,
   mint: PublicKey,
