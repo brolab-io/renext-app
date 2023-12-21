@@ -51,7 +51,6 @@ export default async function buyWithReUSDAndWhitelist(
       tokenMint: poolData.tokenMint,
       tokenProgram: TOKEN_PROGRAM_ID,
       systemProgram: SystemProgram.programId,
-      associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID,
       rent: SYSVAR_RENT_PUBKEY,
     })
     .rpc();
